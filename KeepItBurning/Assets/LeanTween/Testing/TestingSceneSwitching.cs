@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using DentedPixel;
+using Managers;
 
 public class TestingSceneSwitching : MonoBehaviour {
 
@@ -47,6 +48,7 @@ public class TestingSceneSwitching : MonoBehaviour {
 			LeanTest.expect( tweenCompleteCnt==3, "Scheduled tweens completed:"+sceneIter);
 			if(sceneIter<5){
 				sceneIter++;
+				
 				SceneManager.LoadScene(0);
 			}
 		});

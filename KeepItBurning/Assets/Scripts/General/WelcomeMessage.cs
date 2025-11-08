@@ -6,15 +6,19 @@
    ╲ ╲  ╲╲ ╲  ╲ ╲  ╲_│╲ ╲ ╲  ╲_│╲ ╲ ╲  ╲___│      ╲ ╲  ╲   ╲ ╲  ╲       ╲ ╲  ╲│╲  ╲ ╲  ╲╲╲  ╲ ╲  ╲╲  ╲╲ ╲  ╲╲ ╲  ╲ ╲  ╲ ╲  ╲╲ ╲  ╲ ╲  ╲│╲  ╲     
     ╲ ╲__╲╲ ╲__╲ ╲_______╲ ╲_______╲ ╲__╲          ╲ ╲__╲   ╲ ╲__╲       ╲ ╲_______╲ ╲_______╲ ╲__╲╲ _╲╲ ╲__╲╲ ╲__╲ ╲__╲ ╲__╲╲ ╲__╲ ╲_______╲    
      ╲│__│ ╲│__│╲│_______│╲│_______│╲│__│           ╲│__│    ╲│__│        ╲│_______│╲│_______│╲│__│╲│__│╲│__│ ╲│__│╲│__│╲│__│ ╲│__│╲│_______│ 
-*/   
+*/
+
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class WelcomeMessage : MonoBehaviour
+namespace General
 {
-    private const string Message = "Welcome to the Keep It Burning!";
-    private void OnEnable()
+    [ExecuteInEditMode]
+    public class WelcomeMessage : MonoBehaviour
     {
-        Debug.Log(Message);
+        private const string Message = "Welcome to the Keep It Burning!";
+        private void OnEnable()
+        {
+            Debug.Log(Message);
+        }
     }
 }
