@@ -58,9 +58,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce9e6761acf41f419f4d23a64ad2800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sampleScene: SampleScene
-  mainMenuScene: MainMenu
-  gameplaySceneName: GameScene
+  SampleScene: SampleScene
+  MainMenuScene: MainMenu
+  GameplaySceneName: GameScene
 --- !u!114 &1908637996581347223
 MonoBehaviour:
   m_ObjectHideFlags: 0
