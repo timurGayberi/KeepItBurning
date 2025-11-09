@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using General;
+using System;
 
 namespace Managers
 {
@@ -31,7 +33,6 @@ namespace Managers
         
         void OnDestroy()
         {
-            // CRITICAL: Unsubscribe when destroyed
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
         

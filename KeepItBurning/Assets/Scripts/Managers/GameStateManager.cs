@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using General;
 using UnityEngine.SceneManagement;
 
 /*
@@ -29,7 +30,7 @@ namespace Managers
         // Scenes state machine
         public enum GameState
         {
-            Default, // < == The Sample scene is default
+            Default, // < === The Sample scene is default
 
             MainMenu,
             GamePlay,
@@ -112,7 +113,7 @@ namespace Managers
 
         public void StartGame()
         {
-            LoadDefaultScene(); // <=== comment this and uncomment LoadGamePlayScene(); in initial build !!! //
+            LoadDefaultScene(); // <=== comment this and uncomment LoadGamePlayScene(); in initial build !!!! //
             //LoadGamePlayScene();
         }
 

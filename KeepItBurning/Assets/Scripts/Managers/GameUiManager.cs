@@ -11,7 +11,6 @@ namespace Managers
 {
     public class GameUiManager : MonoBehaviour
     {
-        // Now stores the reliable, inspector-assigned references from the CanvasRegistrar
         private Dictionary<UIPanelID, GameObject> currentPanelMap = new Dictionary<UIPanelID, GameObject>();
         
         private static bool isInitialized = false;

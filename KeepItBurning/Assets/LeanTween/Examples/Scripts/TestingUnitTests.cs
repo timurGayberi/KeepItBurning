@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -291,6 +292,7 @@ namespace DentedPixel.LTExamples
             return cube;
         }
 
+        [Obsolete("Obsolete")]
         IEnumerator timeBasedTesting()
         {
             yield return new WaitForEndOfFrame();
