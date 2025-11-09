@@ -1,27 +1,14 @@
 using UnityEngine;
 using System;
 using General;
-using UnityEngine.SceneManagement;
-
-/*
- /$$$$$$  /$$                     /$$             /$$                        
- /$$__  $$|__/                    | $$            | $$                        
-| $$  \__/ /$$ /$$$$$$$   /$$$$$$ | $$  /$$$$$$  /$$$$$$    /$$$$$$  /$$$$$$$ 
-|  $$$$$$ | $$| $$__  $$ /$$__  $$| $$ /$$__  $$|_  $$_/   /$$__  $$| $$__  $$
- \____  $$| $$| $$  \ $$| $$  \ $$| $$| $$$$$$$$  | $$    | $$  \ $$| $$  \ $$
- /$$  \ $$| $$| $$  | $$| $$  | $$| $$| $$_____/  | $$ /$$| $$  | $$| $$  | $$
-|  $$$$$$/| $$| $$  | $$|  $$$$$$$| $$|  $$$$$$$  |  $$$$/|  $$$$$$/| $$  | $$
- \______/ |__/|__/  |__/ \____  $$|__/ \_______/   \___/   \______/ |__/  |__/
-                         /$$  \ $$                                            
-                        |  $$$$$$/                                            
-                         \______/                                             
- */
+using Interfaces;
 
 namespace Managers
 {
+
     public class GameStateManager : MonoBehaviour
     {
-        public static GameStateManager Instance {get; private set;}
+        public static GameStateManager instance {get; private set;}
         
         public GameState currentState { get; private set;}
         
@@ -30,143 +17,145 @@ namespace Managers
         // Scenes state machine
         public enum GameState
         {
-            Default, // < === The Sample scene is default
-
+            Default,
+            
             MainMenu,
             GamePlay,
             Paused
         }
-        
-        void Awake()
+
+        private IInputService inputService;
+
+        private void Awake()
         {
-            if (Instance == null)
+            if (instance == null)
             {
-                Instance = this;
+                instance = this;
                 DontDestroyOnLoad(gameObject);
             }
             else
             {
                 Destroy(gameObject);
-            }
-            
-            if (SceneManager.GetActiveScene().name == "MainMenu")
-            {
-                UpdateGameState(GameState.MainMenu);
-            }
-            else if (currentState != GameState.MainMenu && currentState != GameState.Paused)
-            {
-                UpdateGameState(GameState.GamePlay);
+                return;
             }
         }
 
         void Start()
         {
-            if (SceneManager.GetActiveScene().name == "MainMenu")
+            try
             {
-                UpdateGameState(GameState.MainMenu);
+                inputService = ServiceLocator.GetService<IInputService>();
+                inputService.OnPauseEvent += HandlePauseInput; 
             }
-            else if (currentState != GameState.MainMenu && currentState != GameState.Paused)
+            catch (InvalidOperationException _)
             {
-                UpdateGameState(GameState.Default);
+                //Debug.LogError("[GameStateManager] FAILED: Could not get IInputService. Check if InputReader (Execution Order -200) ran successfully. " + e.Message);
             }
+        }
+
+        void OnDestroy()
+        {
+            if (inputService != null)
+            {
+                inputService.OnPauseEvent -= HandlePauseInput;
+            }
+        }
+        
+        public void UpdateState(GameState newState)
+        {
+            if (currentState == newState) return;
+            
+            currentState = newState;
+            
+            //Debug.Log("[GameStateManager] STATE: Changed to: " + newState); 
+            OnGameStateChanged?.Invoke(newState);
+            ApplyInputSettings(newState);
         }
         
         public void ForceUpdateState(GameState newState)
         {
-            UpdateGameState(newState);
-        }
-
-        private void UpdateGameState(GameState newState)
-        {
-            if (newState == currentState) return;
-            
             currentState = newState;
-            
-            OnGameStateChanged?.Invoke(newState);
-            Debug.Log("Game State changed to: " + newState);
-        }
-        
-        #region Scene Management
-
-        private void LoadDefaultScene()
-        {
-            SceneLoader.Instance.LoadSampleScene();
-            UpdateGameState(GameState.Default);
+            //Debug.Log("[GameStateManager] STATE: Forced update to: " + newState);
+            OnGameStateChanged?.Invoke(currentState);
+            ApplyInputSettings(newState);
         }
 
-        private void LoadMainMenuScene()
+        private void HandlePauseInput()
         {
-            SceneLoader.Instance.LoadMainMenuScene();
-            UpdateGameState(GameState.MainMenu);
+            if (currentState == GameState.GamePlay)
+            {
+                UpdateState(GameState.Paused);
+            }
+            else if (currentState == GameState.Paused)
+            {
+                UpdateState(GameState.GamePlay);
+            }
         }
 
-        private void LoadGamePlayScene()
+        private void ApplyInputSettings(GameState state)
         {
-            SceneLoader.Instance.LoadGameScene();
-            UpdateGameState(GameState.GamePlay);
+            if (inputService == null) 
+            {
+                //Debug.LogWarning($"[GameStateManager] WARNING: Input settings for state {state} not applied, _inputService is NULL.");
+                return;
+            }
+
+            switch (state)
+            {
+                case GameState.GamePlay:
+                    Time.timeScale = 1.0f;
+                    inputService.EnablePlayerInput();
+                    inputService.DisableUIInput();
+                    break;
+                case GameState.Paused:
+                    Time.timeScale = 0.0f; 
+                    inputService.DisablePlayerInput();
+                    inputService.EnableUIInput();
+                    break;
+                case GameState.MainMenu:
+                case GameState.Default:
+                    Time.timeScale = 1.0f;
+                    inputService.DisablePlayerInput();
+                    inputService.EnableUIInput();
+                    break;
+            }
         }
         
-        #endregion
         
-        
-        #region Current Scene Controll
+        #region Flow Control (Scene and Game Management)
 
         public void StartGame()
         {
-            LoadDefaultScene(); // <=== comment this and uncomment LoadGamePlayScene(); in initial build !!!! //
-            //LoadGamePlayScene();
+            SceneLoader.Instance.LoadSampleScene(); 
         }
 
         public void QuitToMainMenu()
         {
-            Debug.Log("Button Clicked: Returning to Main Menu.");
-            LoadMainMenuScene();
+            SceneLoader.Instance.LoadMainMenuScene();
         }
 
         public void QuitGame()
         {
             Application.Quit();
         }
-
-        #endregion
-        
-        
-        #region Game Flow Functions
         
         public void TogglePause(bool pause)
         {
             if (pause && currentState == GameState.GamePlay)
             {
-                UpdateGameState(GameState.Paused);
-                Time.timeScale = 0f;
+                UpdateState(GameState.Paused);
             }
             else if (!pause && currentState == GameState.Paused)
             {
-                UpdateGameState(GameState.GamePlay);
-                Time.timeScale = 1f;
+                UpdateState(GameState.GamePlay);
             }
         }
         
         public void RestartLevel()
         {
-            Time.timeScale = 1f;
-            
-            //Main game scene reload
-            if (currentState == GameState.GamePlay || currentState == GameState.Paused)
-            {
-                SceneLoader.Instance.ReloadCurrentScene();
-                UpdateGameState(GameState.GamePlay); // Force state back to GamePlay
-            }
-            
-            //Default scene reload  
-            else if (currentState == GameState.Default)
-            {
-                SceneLoader.Instance.ReloadCurrentScene();
-                UpdateGameState(GameState.Default);
-            }
+            SceneLoader.Instance.ReloadCurrentScene();
         }
         
         #endregion
-        
     }
 }

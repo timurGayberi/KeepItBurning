@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Managers; 
 
 namespace Managers
 {
-    [DefaultExecutionOrder(-100)] 
     public class SceneLoader : MonoBehaviour
     {
         public static SceneLoader Instance { get; private set; }
@@ -30,23 +28,20 @@ namespace Managers
                 Destroy(gameObject);
             }
             
-            // CRITICAL: Subscribe to the static scene loaded event
-            SceneManager.sceneLoaded += OnSceneLoaded; // <--- This now correctly uses the Unity class
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         void OnDestroy()
         {
-            // CRITICAL: Unsubscribe to prevent memory leaks
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
         
-        // This method is called automatically AFTER a scene loads
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             Debug.Log($"[SceneLoader] Scene loaded: {scene.name}");
             
-            // Determine the GameState based on the loaded scene name
-            GameStateManager.GameState newState = GameStateManager.GameState.Default;
+            
+            var newState = GameStateManager.GameState.Default;
 
             if (scene.name == MainMenuScene)
             {
@@ -54,12 +49,10 @@ namespace Managers
             }
             else if (scene.name == GameplaySceneName || scene.name == SampleScene)
             {
-                // Assuming GameScene or SampleScene are used for actual gameplay
                 newState = GameStateManager.GameState.GamePlay;
             }
             
-            // Force the GameStateManager to update its state, which triggers the GameUiManager
-            GameStateManager.Instance.ForceUpdateState(newState);
+            GameStateManager.instance.ForceUpdateState(newState);
         }
         
         public void LoadSampleScene()
@@ -76,10 +69,7 @@ namespace Managers
         {
             SceneManager.LoadScene(GameplaySceneName);
         }
-
-        /// <summary>
-        /// Reloads the currently active scene. Used for restarting the game/level.
-        /// </summary>
+        
         public void ReloadCurrentScene()
         {
             Scene currentScene = SceneManager.GetActiveScene();

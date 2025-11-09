@@ -1,140 +1,141 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using System.Collections;
 using General;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 namespace Managers
 {
     public class GameUiManager : MonoBehaviour
     {
-        private Dictionary<UIPanelID, GameObject> currentPanelMap = new Dictionary<UIPanelID, GameObject>();
-        
-        private static bool isInitialized = false;
-        
-        #region Listener
-        
-        private void OnEnable()
+        private readonly Dictionary<string, CanvasRegistrar> activeCanvasRegistrars = new Dictionary<string, CanvasRegistrar>();
+
+        private void Awake()
         {
-            GameStateManager.OnGameStateChanged += HandleGameStateChanged;
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            CanvasRegistrar.OnCanvasRegistered += OnCanvasRegistered;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
+
+        private void Start()
+        {
+            //Debug.Log("[UIManager] START: Subscribing to GameState.OnGameStateChanged.");
+            GameStateManager.OnGameStateChanged += OnGameStateChanged;
             
-            CanvasRegistrar.OnCanvasRegistered += RegisterCanvas;
-            
-            if (!isInitialized && GameStateManager.Instance != null)
+            if (GameStateManager.instance != null)
             {
-                StartCoroutine(InitialUISetup());
+                OnGameStateChanged(GameStateManager.instance.currentState);
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            GameStateManager.OnGameStateChanged -= HandleGameStateChanged;
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-            CanvasRegistrar.OnCanvasRegistered -= RegisterCanvas;
+            CanvasRegistrar.OnCanvasRegistered -= OnCanvasRegistered;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
+            if (GameStateManager.instance != null)
+            {
+                GameStateManager.OnGameStateChanged -= OnGameStateChanged;
+            }
         }
         
-        private void RegisterCanvas(CanvasRegistrar registrar)
+        private void OnSceneUnloaded(Scene scene)
         {
-            currentPanelMap = registrar.PanelMap;
+            var sceneName = scene.name;
+            if (activeCanvasRegistrars.ContainsKey(sceneName))
+            {
+                activeCanvasRegistrars.Remove(sceneName);
+                //Debug.Log($"[UIManager] CLEANUP: Removed canvas from UNLOADED scene: {sceneName}");
+            }
+        }
 
-            Debug.Log($"[UI Manager] Canvas Registered. Total Panels: {currentPanelMap.Count}.");
-    
-            // THIS is the line that should fix it, but let's make sure it's reliable.
-            if (GameStateManager.Instance != null) 
-            {
-                HandleGameStateChanged(GameStateManager.Instance.currentState);
-            }
-        }
-        
-        private IEnumerator InitialUISetup()
+        private void OnCanvasRegistered(CanvasRegistrar registrar)
         {
-            yield return null; 
+            var sceneName = registrar.gameObject.scene.name;
+            activeCanvasRegistrars[sceneName] = registrar;
+            //Debug.Log($"[UIManager] REGISTERED: Canvas for scene '{sceneName}' added to active list.");
             
-            if (GameStateManager.Instance != null)
+            if (GameStateManager.instance != null)
             {
-                HandleGameStateChanged(GameStateManager.Instance.currentState);
+                ApplyStateToUI(GameStateManager.instance.currentState, registrar);
             }
-            
-            isInitialized = true;
-        }
-        
-        
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            currentPanelMap.Clear(); 
-            
-            if(GameStateManager.Instance != null)
+            else
             {
-                HandleGameStateChanged(GameStateManager.Instance.currentState);
+                //Debug.LogWarning("[UIManager] WARNING: Canvas registered before GameStateManager was created.");
             }
         }
-        
-        #endregion
-        
 
-        #region State's handlers
-        private void HandleGameStateChanged(GameStateManager.GameState newState)
+        private void OnGameStateChanged(GameStateManager.GameState newState)
         {
-            if (currentPanelMap.Count == 0)
+            //Debug.Log($"[UIManager] EVENT: Received GameState change to {newState}. Updating ALL active canvases.");
+
+            foreach (var registrar in activeCanvasRegistrars.Values)
             {
-                return; 
+                ApplyStateToUI(newState, registrar); 
             }
-            
-            foreach (var panel in currentPanelMap.Values)
+        }
+        
+        private void ApplyStateToUI(GameStateManager.GameState state, General.CanvasRegistrar registrar)
+        {
+            if (registrar == null)
             {
-                panel.SetActive(false);
+                //Debug.LogWarning("[UIManager] WARNING: Attempted to apply state to a destroyed CanvasRegistrar. Skipping.");
+                return;
             }
-            
-            GameObject panelToShow = null;
-            
-            bool activatePausePanel = false;
-            UIPanelID targetPanelID = UIPanelID.None;
-            
-            switch (newState)
+
+            if (SceneLoader.Instance == null)
             {
-                case GameStateManager.GameState.MainMenu:
-                    targetPanelID = UIPanelID.MainMenu;
-                    break;
-                
-                case GameStateManager.GameState.GamePlay:
-                    targetPanelID = UIPanelID.GameplayHUD;
-                    break;
-                
-                case GameStateManager.GameState.Default:
-                    targetPanelID = UIPanelID.GameplayHUD;
-                    break;
-                
-                case GameStateManager.GameState.Paused:
-                    targetPanelID = UIPanelID.GameplayPause;
-                    activatePausePanel = true;
-                    break;
-                
-                
-                default:
-                    Debug.LogError($"[UI Manager] Invalid game state: {newState}");
-                    break;
+                //Debug.LogError("[UIManager] ERROR: SceneLoader.Instance is NULL. Cannot determine scene names.");
+                return;
             }
+
+            var currentSceneName = registrar.gameObject.scene.name;
+            var isMainMenuScene = currentSceneName == SceneLoader.Instance.MainMenuScene;
+            var isGameplayScene = currentSceneName == SceneLoader.Instance.GameplaySceneName || currentSceneName == SceneLoader.Instance.SampleScene;
             
-            if (targetPanelID != UIPanelID.None)
+            //Debug.Log($"[UIManager] APPLYING STATE: {state} to Canvas in scene: {currentSceneName}. (IsMenu: {isMainMenuScene}, IsGame: {isGameplayScene})");
+
+            foreach (var entry in registrar.panelMap)
             {
-                if (currentPanelMap.TryGetValue(targetPanelID, out panelToShow))
+                var panelId = entry.Key;
+                var panelObject = entry.Value;
+                var shouldBeActive = false;
+
+                switch (state)
                 {
-                    panelToShow.SetActive(true);
+                    case GameStateManager.GameState.MainMenu:
+                        // Only show MainMenu panel if player in the Main Menu scene.
+                        if (isMainMenuScene && panelId == UIPanelID.MainMenu)
+                        {
+                            shouldBeActive = true;
+                        }
+                        break;
+
+                    case GameStateManager.GameState.GamePlay:
+                        // Only show HUD if player in a Gameplay scene.
+                        if (isGameplayScene && panelId == UIPanelID.GameplayHUD)
+                        {
+                            shouldBeActive = true;
+                        }
+                        break;
+
+                    case GameStateManager.GameState.Paused:
+                        // Only show Pause panel if player in a Gameplay scene and Paused.
+                        if (isGameplayScene && panelId == UIPanelID.GameplayPause)
+                        {
+                            shouldBeActive = true;
+                        }
+                        break;
+                    
+                    case GameStateManager.GameState.Default:
+                        // No panels should be active in the default/loading state.
+                        shouldBeActive = false;
+                        break;
+                }
+                
+                if (panelObject != null && panelObject.activeSelf != shouldBeActive)
+                {
+                     panelObject.SetActive(shouldBeActive);
+                     // Debug.Log($"[UIManager] -> PANEL VISIBILITY: Panel {panelId} set to: {shouldBeActive} in scene {currentSceneName}.");
                 }
             }
-            
-            if (activatePausePanel)
-            {
-                if (currentPanelMap.TryGetValue(UIPanelID.GameplayPause, out var pausePanel))
-                {
-                    pausePanel.SetActive(true);
-                }
-            }
         }
-        #endregion
     }
 }
