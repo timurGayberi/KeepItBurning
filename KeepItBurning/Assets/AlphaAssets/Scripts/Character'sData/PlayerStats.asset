@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   movementSpeed: 6.6
-  sprintSpeed: 9.9
+  sprintSpeed: 6.6
