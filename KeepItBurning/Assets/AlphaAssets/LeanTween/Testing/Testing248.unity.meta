@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: babef2044551e8c4bb1248afb0b69183
+timeCreated: 1533586059
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Testing/Testing248.unity
+  uploadId: 469983

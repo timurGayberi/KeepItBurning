@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 51caf7fbd19e1814e88b4b42d09505af
+DefaultImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Scenes/GeneralUISpace.unity
+  uploadId: 469983

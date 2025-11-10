@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e4aef4a985ca7204588ebe1b59294252
+timeCreated: 1476543857
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Testing/TestingRotate.unity
+  uploadId: 469983

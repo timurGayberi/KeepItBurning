@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ae0f08b9eab471c4389acd5b32bd2b0e
+timeCreated: 1488722111
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Scenes/GeneralSequencer.unity
+  uploadId: 469983

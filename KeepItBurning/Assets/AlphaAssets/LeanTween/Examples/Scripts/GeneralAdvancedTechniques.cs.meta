@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 1eb75ab1b94915648a661c17794c3b32
+timeCreated: 1461150844
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Scripts/GeneralAdvancedTechniques.cs
+  uploadId: 469983

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 09bdb716b036a1b41a9efbea5159386c
+timeCreated: 1460314600
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Scenes/PathSplineEndless.unity
+  uploadId: 469983

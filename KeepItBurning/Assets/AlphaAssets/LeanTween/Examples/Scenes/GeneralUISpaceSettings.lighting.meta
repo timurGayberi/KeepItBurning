@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 78e7381e5e45bb9468c2b7ed8c3e04d6
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Scenes/GeneralUISpaceSettings.lighting
+  uploadId: 469983

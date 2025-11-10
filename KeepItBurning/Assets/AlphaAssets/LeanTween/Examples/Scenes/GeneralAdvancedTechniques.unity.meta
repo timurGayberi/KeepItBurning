@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6e318ee2f350c724191766aaf1dee95f
+timeCreated: 1461066353
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Scenes/GeneralAdvancedTechniques.unity
+  uploadId: 469983

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9bf09e9498fdfa4419f0faed4eea2305
+timeCreated: 1540897805
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Testing/TestingOptionalCancel.unity
+  uploadId: 469983

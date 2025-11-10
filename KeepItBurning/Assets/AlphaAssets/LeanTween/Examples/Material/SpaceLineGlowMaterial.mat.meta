@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4c0989ab75d2c7d4b9e9d24e6b304017
+timeCreated: 1535294217
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Material/SpaceLineGlowMaterial.mat
+  uploadId: 469983

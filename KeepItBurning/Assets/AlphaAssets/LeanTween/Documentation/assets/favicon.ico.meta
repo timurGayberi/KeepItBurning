@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e6983da7dc2eef54d93a93ec56115e48
+timeCreated: 1479470953
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Documentation/assets/favicon.ico
+  uploadId: 469983

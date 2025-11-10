@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 82f95e336b27ce545bd6f6002063bbeb
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Editor/LeanTweenDocumentationEditor.cs
+  uploadId: 469983

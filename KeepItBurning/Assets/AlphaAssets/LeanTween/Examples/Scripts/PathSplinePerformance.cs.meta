@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 2e52a50884ca23b4981d9998aa6591eb
+timeCreated: 1460894008
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Scripts/PathSplinePerformance.cs
+  uploadId: 469983

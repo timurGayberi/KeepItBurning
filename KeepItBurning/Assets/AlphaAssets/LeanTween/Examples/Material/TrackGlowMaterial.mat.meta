@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7be309d440793f940af09e2272abc13e
+timeCreated: 1460232340
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Material/TrackGlowMaterial.mat
+  uploadId: 469983

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 72313db21b00f804aaf8b206c934575d
+timeCreated: 1465674294
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Material/ParticleGlow.mat
+  uploadId: 469983

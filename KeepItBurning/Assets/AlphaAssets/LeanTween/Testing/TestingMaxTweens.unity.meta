@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6a5fe3dc29feeef4faa3c6f8c1f5a69e
+timeCreated: 1481809933
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Testing/TestingMaxTweens.unity
+  uploadId: 469983

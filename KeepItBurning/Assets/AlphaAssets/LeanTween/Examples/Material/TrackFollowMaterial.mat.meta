@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 80e5cc1cd0f84824daf7a83e13a9ca2f
+timeCreated: 1460232167
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3595
+  packageName: LeanTween
+  packageVersion: 2.51
+  assetPath: Assets/LeanTween/Examples/Material/TrackFollowMaterial.mat
+  uploadId: 469983
