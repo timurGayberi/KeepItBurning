@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e4c4bd716065c148a3b3e0a11c24c1d, type: 3}
+  m_Name: YellowMushroomData
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1690484144431726752, guid: 89a37dc9399b5e842aaa8089b3fba626, type: 3}
+  spawnLimitType: 2
+  maxSpawnCount: 10
+  currentSpawnedCount: 0
