@@ -1,4 +1,9 @@
 ﻿<Solution>
   <Project Path="Assembly-CSharp.csproj" />
+<<<<<<< Updated upstream
+=======
+  <Project Path="Unity.RenderPipelines.Core.Samples.Runtime.csproj" />
+  <Project Path="Unity.RenderPipelines.Core.Samples.Editor.csproj" />
+>>>>>>> Stashed changes
   <Project Path="Assembly-CSharp-Editor.csproj" />
 </Solution>
