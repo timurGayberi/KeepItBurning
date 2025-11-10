@@ -18,12 +18,10 @@ namespace Player
         private PlayerStatsSo movementData;
         
         private CharacterController _characterController;
-        // This holds the movement input direction, equivalent to your 'moveInput' converted to a Vector3
         private Vector3 _currentMoveDirection; 
         private bool _isSprinting;
         private IInputService _inputService; 
         
-        // --- Dependencies to be added later (e.g., PlayerInventory) ---
         // private PlayerInventory _playerInventory; 
         
         #endregion
@@ -78,7 +76,7 @@ namespace Player
             }
         }
 
-        public void SetPlayerState(PlayerState newState)
+        private void SetPlayerState(PlayerState newState)
         {
             if (CurrentState != newState)
             {
@@ -86,8 +84,8 @@ namespace Player
                 OnPlayerStateChange?.Invoke(CurrentState); 
             }
         }
-        
-        public void HandleMoveInput(Vector2 inputVector)
+
+        private void HandleMoveInput(Vector2 inputVector)
         {
             if (CurrentState != PlayerState.IsInteracting) 
             {
@@ -108,9 +106,6 @@ namespace Player
             _isSprinting = false;
         }
         
-        /// <summary>
-        /// Equivalent to your requested Update: Applies movement using the cached direction.
-        /// </summary>
         private void Update()
         {
             if (_characterController == null || movementData == null) return;

@@ -698,6 +698,9 @@ PrefabInstance:
       addedObject: {fileID: 777650433327601917}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a689f433bd1b372449230b980a6aaf3b, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1300217532017107536}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a689f433bd1b372449230b980a6aaf3b, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1406133840840387746}
     - targetCorrespondingSourceObject: {fileID: -8572902205080083327, guid: a689f433bd1b372449230b980a6aaf3b, type: 3}
       insertIndex: -1
@@ -804,6 +807,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementData: {fileID: 11400000, guid: d1b98779bf154414c8221dd66ce905d1, type: 2}
+--- !u!114 &1300217532017107536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201993983504019449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de91d881e87aef440b7dc9a1823e8483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &1406133840840387746
 Animator:
   serializedVersion: 7

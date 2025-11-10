@@ -5,6 +5,8 @@ using Managers.GeneralManagers;
 [RequireComponent(typeof(Button))]
 public class ResumeButtonHelper : MonoBehaviour
 {
+    
+    // This is asshole type of script the only way to make work asshole resume buton jesus christ
     void Start()
     {
         Button btn = GetComponent<Button>();

@@ -132,10 +132,8 @@ namespace General
 
         public void OnPauseGame(InputAction.CallbackContext context)
         {
-            // We only want to trigger this once when the key is pressed
             if (context.phase == InputActionPhase.Performed)
             {
-                // This fires the event that GameStateManager is listening to
                 OnPauseEvent?.Invoke();
             }
         }
@@ -155,7 +153,7 @@ namespace General
         public void OnTrackedDeviceOrientation(InputAction.CallbackContext context) { }
         public void OnOnPauseGame(InputAction.CallbackContext context)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
         // --- IInputService Implementation (Control Flow) ---
