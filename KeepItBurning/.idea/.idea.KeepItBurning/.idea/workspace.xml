@@ -6,25 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="77d39179-a0bd-4433-b0bd-e3b946c1d673" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.KeepItBurning/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KeepItBurning/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/InputSystem_Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/InputSystem_Actions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/InputSystem_Actions.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/InputSystem_Actions.inputactions" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UI_Prefabs/canvASS.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/UI_Prefabs/canvASS.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Managers.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Managers.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/General/InputReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/General/InputReader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/General/InputSystem_Actions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/General/InputSystem_Actions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GameStateManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GameStateManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GameUiManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GameUiManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerBootstrapper.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/ManagerBootstrapper.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/SceneLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/SceneLoader.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Visuals.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/test.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +124,7 @@
       <option name="presentableId" value="Default" />
       <updated>1762704859980</updated>
       <workItem from="1762704861922" duration="13228000" />
-      <workItem from="1762773468200" duration="6063000" />
+      <workItem from="1762773468200" duration="6837000" />
     </task>
     <servers />
   </component>
