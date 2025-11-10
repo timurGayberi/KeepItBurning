@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-using Managers; 
+using Managers.GeneralManagers; 
 using Interfaces;
 
 namespace General

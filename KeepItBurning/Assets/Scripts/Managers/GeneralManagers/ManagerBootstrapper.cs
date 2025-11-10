@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Managers
+namespace Managers.GeneralManagers
 {
     public static class ManagerBootstrapper
     {

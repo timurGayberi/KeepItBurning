@@ -1,9 +1,10 @@
-using UnityEngine;
 using System;
 using General;
 using Interfaces;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-namespace Managers
+namespace Managers.GeneralManagers
 {
 
     public class GameStateManager : MonoBehaviour
@@ -139,7 +140,7 @@ namespace Managers
             Application.Quit();
         }
         
-        public void TogglePause(bool pause)
+        /*public void TogglePause(bool pause)
         {
             if (pause && currentState == GameState.GamePlay)
             {
@@ -149,11 +150,30 @@ namespace Managers
             {
                 UpdateState(GameState.GamePlay);
             }
+        }*/
+        
+        public void OnPauseAction(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
+            
+            if (currentState == GameState.GamePlay)
+            {
+                UpdateState(GameState.Paused);
+                Debug.Log("Game Pause");
+            }
+            else if (currentState == GameState.Paused)
+            {
+                UpdateState(GameState.GamePlay);
+                Debug.Log("Game UnPause");
+            }
         }
         
         public void RestartLevel()
         {
-            SceneLoader.Instance.ReloadCurrentScene();
+            if (SceneLoader.Instance != null)
+            {
+                SceneLoader.Instance.ReloadCurrentScene();
+            }
         }
         
         #endregion

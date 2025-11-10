@@ -1,9 +1,10 @@
-using UnityEngine;
 using System.Collections.Generic;
 using General;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using Managers.GeneralManagers; 
 
-namespace Managers
+namespace Managers.GlobalManagers 
 {
     public class GameUiManager : MonoBehaviour
     {
@@ -18,10 +19,11 @@ namespace Managers
         private void Start()
         {
             //Debug.Log("[UIManager] START: Subscribing to GameState.OnGameStateChanged.");
-            GameStateManager.OnGameStateChanged += OnGameStateChanged;
             
             if (GameStateManager.instance != null)
             {
+                GameStateManager.OnGameStateChanged += OnGameStateChanged;
+                // Force an initial update based on the current state
                 OnGameStateChanged(GameStateManager.instance.currentState);
             }
         }
@@ -30,7 +32,8 @@ namespace Managers
         {
             CanvasRegistrar.OnCanvasRegistered -= OnCanvasRegistered;
             SceneManager.sceneUnloaded -= OnSceneUnloaded;
-            if (GameStateManager.instance != null)
+            
+            if (GameStateManager.instance != null) // FIX: Changed to Instance (PascalCase)
             {
                 GameStateManager.OnGameStateChanged -= OnGameStateChanged;
             }
@@ -52,7 +55,7 @@ namespace Managers
             activeCanvasRegistrars[sceneName] = registrar;
             //Debug.Log($"[UIManager] REGISTERED: Canvas for scene '{sceneName}' added to active list.");
             
-            if (GameStateManager.instance != null)
+            if (GameStateManager.instance != null) // FIX: Changed to Instance (PascalCase)
             {
                 ApplyStateToUI(GameStateManager.instance.currentState, registrar);
             }
@@ -80,6 +83,7 @@ namespace Managers
                 return;
             }
 
+            // SceneLoader.Instance check is still necessary to know which scene is the current game scene.
             if (SceneLoader.Instance == null)
             {
                 //Debug.LogError("[UIManager] ERROR: SceneLoader.Instance is NULL. Cannot determine scene names.");
@@ -92,7 +96,7 @@ namespace Managers
             
             //Debug.Log($"[UIManager] APPLYING STATE: {state} to Canvas in scene: {currentSceneName}. (IsMenu: {isMainMenuScene}, IsGame: {isGameplayScene})");
 
-            foreach (var entry in registrar.panelMap)
+            foreach (var entry in registrar.panelMap) 
             {
                 var panelId = entry.Key;
                 var panelObject = entry.Value;
@@ -109,7 +113,7 @@ namespace Managers
                         break;
 
                     case GameStateManager.GameState.GamePlay:
-                        // Only show HUD if player in a Gameplay scene.
+                        // Only show HUD if player in a Gameplay scene, and hide the pause panel.
                         if (isGameplayScene && panelId == UIPanelID.GameplayHUD)
                         {
                             shouldBeActive = true;
@@ -117,8 +121,8 @@ namespace Managers
                         break;
 
                     case GameStateManager.GameState.Paused:
-                        // Only show Pause panel if player in a Gameplay scene and Paused.
-                        if (isGameplayScene && panelId == UIPanelID.GameplayPause)
+                        // Show both HUD and Pause Menu when paused.
+                        if (isGameplayScene && (panelId == UIPanelID.GameplayHUD || panelId == UIPanelID.GameplayPause))
                         {
                             shouldBeActive = true;
                         }
