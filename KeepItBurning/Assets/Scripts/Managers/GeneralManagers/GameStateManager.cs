@@ -3,6 +3,8 @@ using General;
 using Interfaces;
 using UnityEngine;
 using Managers.GamePlayManagers;
+using UnityEngine.UI;
+using Managers.GeneralManagers;
 
 namespace Managers.GeneralManagers
 {

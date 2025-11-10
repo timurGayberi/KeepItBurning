@@ -132,11 +132,11 @@ namespace General
 
         public void OnPauseGame(InputAction.CallbackContext context)
         {
-            if (context.started)
+            // We only want to trigger this once when the key is pressed
+            if (context.phase == InputActionPhase.Performed)
             {
-                //Debug.Log($"[INPUT] Pause input received from {context.control.device.displayName}.");
+                // This fires the event that GameStateManager is listening to
                 OnPauseEvent?.Invoke();
-                CheckAndReportDevice(context); 
             }
         }
         

@@ -104,7 +104,8 @@ namespace Managers.GeneralManagers
                         break;
 
                     case GameStateManager.GameState.Paused:
-                        if (isGameplayScene && (panelId == UIPanelID.GameplayHUD || panelId == UIPanelID.GameplayPause))
+                        // FIX: Only show the pause panel, ensure HUD is inactive
+                        if (isGameplayScene && panelId == UIPanelID.GameplayPause)
                         {
                             shouldBeActive = true;
                         }

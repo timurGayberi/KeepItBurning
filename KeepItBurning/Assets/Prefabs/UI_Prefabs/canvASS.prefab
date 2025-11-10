@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 2466617033783459523}
   - component: {fileID: 1475575107958201186}
   - component: {fileID: 6807554785726564136}
+  - component: {fileID: 5797556030476404023}
   m_Layer: 5
   m_Name: Resume
   m_TagString: Untagged
@@ -399,9 +400,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2643686113482309760, guid: b80a1503d7bc92c4ea7f6f02496e3405, type: 3}
+      - m_Target: {fileID: 5797556030476404023}
         m_TargetAssemblyTypeName: Managers.GeneralManagers.GameStateManager, Assembly-CSharp
-        m_MethodName: ResumeGameFromUI
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -411,6 +412,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5797556030476404023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340384247311887375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf54371638a2234fad98a49519017c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2419474020262548081
 GameObject:
   m_ObjectHideFlags: 0
