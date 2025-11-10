@@ -73,8 +73,8 @@ public class AlphaSpawnManager : MonoBehaviour
         var collectible = spawned.GetComponent<CollectibleBase>();
         if (collectible != null)
         {
-            collectible.originSpawner = this;
-            collectible.originPoint = point;
+            //collectible.originSpawner = this;
+            //collectible.originPoint = point;
         }
 
         if (data.spawnLimitType == SpawnLimitType.Limited)
