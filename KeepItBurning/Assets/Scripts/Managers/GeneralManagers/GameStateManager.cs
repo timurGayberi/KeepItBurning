@@ -2,7 +2,7 @@ using System;
 using General;
 using Interfaces;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Managers.GamePlayManagers;
 
 namespace Managers.GeneralManagers
 {
@@ -68,7 +68,6 @@ namespace Managers.GeneralManagers
             
             currentState = newState;
             
-            //Debug.Log("[GameStateManager] STATE: Changed to: " + newState); 
             OnGameStateChanged?.Invoke(newState);
             ApplyInputSettings(newState);
         }
@@ -76,7 +75,6 @@ namespace Managers.GeneralManagers
         public void ForceUpdateState(GameState newState)
         {
             currentState = newState;
-            //Debug.Log("[GameStateManager] STATE: Forced update to: " + newState);
             OnGameStateChanged?.Invoke(currentState);
             ApplyInputSettings(newState);
         }
@@ -97,7 +95,6 @@ namespace Managers.GeneralManagers
         {
             if (inputService == null) 
             {
-                //Debug.LogWarning($"[GameStateManager] WARNING: Input settings for state {state} not applied, _inputService is NULL.");
                 return;
             }
 
@@ -106,7 +103,7 @@ namespace Managers.GeneralManagers
                 case GameState.GamePlay:
                     Time.timeScale = 1.0f;
                     inputService.EnablePlayerInput();
-                    inputService.DisableUIInput();
+                    inputService.EnableUIInput();
                     break;
                 case GameState.Paused:
                     Time.timeScale = 0.0f; 
@@ -132,25 +129,27 @@ namespace Managers.GeneralManagers
 
         public void QuitToMainMenu()
         {
+            if (PlayGameManager.Instance != null)
+            {
+                PlayGameManager.Instance.ResetAllStats();
+            }
+
             SceneLoader.Instance.LoadMainMenuScene();
+        }
+        
+        public void ResumeGameFromUI()
+        {
+            if (currentState == GameState.Paused )
+            {
+                UpdateState(GameState.GamePlay);
+                Debug.Log("Resume game pressed");
+            }
         }
 
         public void QuitGame()
         {
             Application.Quit();
         }
-        
-        /*public void TogglePause(bool pause)
-        {
-            if (pause && currentState == GameState.GamePlay)
-            {
-                UpdateState(GameState.Paused);
-            }
-            else if (!pause && currentState == GameState.Paused)
-            {
-                UpdateState(GameState.GamePlay);
-            }
-        }*/
         
         public void OnPauseAction(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
@@ -159,17 +158,20 @@ namespace Managers.GeneralManagers
             if (currentState == GameState.GamePlay)
             {
                 UpdateState(GameState.Paused);
-                Debug.Log("Game Pause");
             }
             else if (currentState == GameState.Paused)
             {
                 UpdateState(GameState.GamePlay);
-                Debug.Log("Game UnPause");
             }
         }
         
         public void RestartLevel()
         {
+            if (Managers.GamePlayManagers.PlayGameManager.Instance != null)
+            {
+                Managers.GamePlayManagers.PlayGameManager.Instance.ResetAllStats();
+            }
+
             if (SceneLoader.Instance != null)
             {
                 SceneLoader.Instance.ReloadCurrentScene();

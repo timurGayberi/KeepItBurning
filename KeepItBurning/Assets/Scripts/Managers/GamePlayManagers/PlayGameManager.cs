@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Managers.GamePlayManagers
 {
-
     public class PlayGameManager : MonoBehaviour
     {
         public static PlayGameManager Instance { get; private set; }
@@ -21,19 +20,17 @@ namespace Managers.GamePlayManagers
             if (Instance == null)
             {
                 Instance = this;
+                // CRITICAL FIX: Make this manager persistent across scene loads
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
-                // If another instance exists, destroy this one.
+                // If another instance exists (from a previous scene load), destroy this one.
                 Destroy(gameObject);
                 return;
             }
         }
-
-        private void Start()
-        {
-            ResetAllStats();
-        }
+        
 
         private void Update()
         {

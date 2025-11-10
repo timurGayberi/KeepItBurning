@@ -16,8 +16,12 @@ namespace Managers.GamePlayManagers
         {
             if (PlayGameManager.Instance != null)
             {
+                // 1. START SUBSCRIPTION FOR TIME UPDATES
+                PlayGameManager.Instance.OnTimeUpdated += UpdateTimeDisplay;
+                
                 PlayGameManager.Instance.OnScoreUpdated += UpdateScoreDisplay;
 
+                // 2. Initial synchronization check
                 if (timeText != null)
                 {
                     UpdateTimeDisplay(PlayGameManager.Instance.GetCurrentFormattedTime());
