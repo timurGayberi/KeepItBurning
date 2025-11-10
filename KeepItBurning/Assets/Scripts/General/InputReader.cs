@@ -10,8 +10,6 @@ namespace General
     {
         // IInputService Events
         public event Action<Vector2> OnMoveEvent;
-        public event Action OnSprintStarted;
-        public event Action OnSprintCanceled;
         public event Action OnInteractEvent;
         public event Action OnPauseEvent;
         
@@ -108,11 +106,6 @@ namespace General
             OnMoveEvent?.Invoke(_.ReadValue<Vector2>());
         }
         
-        public void OnSprint(InputAction.CallbackContext context)
-        {
-            if (context.started) OnSprintStarted?.Invoke();
-            if (context.canceled) OnSprintCanceled?.Invoke();
-        }
 
         public void OnInteract(InputAction.CallbackContext context)
         {

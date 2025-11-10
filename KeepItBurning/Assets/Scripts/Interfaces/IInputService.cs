@@ -15,8 +15,6 @@ namespace Interfaces
     {
         // Player Input Events
         event Action<Vector2> OnMoveEvent;
-        event Action OnSprintStarted;
-        event Action OnSprintCanceled;
         event Action OnInteractEvent;
         // more to come ?
         

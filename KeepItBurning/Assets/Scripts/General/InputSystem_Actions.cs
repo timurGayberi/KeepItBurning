@@ -13,7 +13,6 @@ namespace General
             void OnLook(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context); 
             void OnAttack(InputAction.CallbackContext context); 
-            void OnSprint(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
         }
 
