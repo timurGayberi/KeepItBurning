@@ -142,7 +142,7 @@ namespace PlayerScripts
                 // CARRYING CHECK (Passive State: affects speed, not enum state)
                 if (_playerInventory.IsCarryingBurden)
                 {
-                    currentSpeed = movementData.movementSpeed / 2f; 
+                    currentSpeed = movementData.movementSpeed; 
                     // State remains IsWalking if moving while carrying
                     if (CurrentState != PlayerState.IsWalking) SetPlayerState(PlayerState.IsWalking); 
                     _isSprinting = false; // Cannot sprint while carrying

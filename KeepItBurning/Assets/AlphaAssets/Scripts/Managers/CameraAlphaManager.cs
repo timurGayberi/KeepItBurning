@@ -100,9 +100,9 @@ namespace Managers
 
         private void HandlePlayerStateChange(PlayerState newState)
         {
-            _targetFOV = (newState == PlayerState.IsInteracting)
-                ? interactionFOV
-                : _defaultFOV;
+            //_targetFOV = (newState == PlayerState.IsInteracting)
+            //    ? interactionFOV
+            //    : _defaultFOV;
         }
 
         private void FixedUpdate()
