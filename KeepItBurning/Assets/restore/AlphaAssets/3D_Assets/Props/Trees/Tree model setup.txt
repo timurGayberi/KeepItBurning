@@ -1,4 +1,0 @@
-Tree model setup:
-1. Leaf texture - turn on the "Alpha is Transparency" option
-2. Leaves material - Render Face - change to "both"; enable Alpha Clipping; set Metallic and Smoothness to 0
-3. Apply the leaves material for the leaves, and the Trimsheet material for the trunk
