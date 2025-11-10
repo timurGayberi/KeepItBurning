@@ -41,8 +41,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Dissolve: 0
-    - _Dissolve2: 0
+    - _Dissolve: 0.616
+    - _Dissolve2: 0.364
     - _NoisePower: 20
     - _smoothstep: 0.2
     m_Colors:
