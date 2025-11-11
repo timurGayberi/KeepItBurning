@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 public class VisitorsManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> visitorPrefabs = new List<GameObject>(); 
-    [SerializeField] private int maxVisitors = 3;
+    [SerializeField] private List<GameObject> visitorPrefabs = new List<GameObject>();
+    [SerializeField] private int maxVisitors;
+    [SerializeField] private float CountToSpawVisitors;
+    [SerializeField] private float TimeToSpawVisitors;
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
     private List<GameObject> activeVisitors = new List<GameObject>();
@@ -19,10 +21,17 @@ public class VisitorsManager : MonoBehaviour
 
     void Update()
     {
+        CountToSpawVisitors += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.C))
             SpawnVisitor();
-        if (Input.GetKeyDown(KeyCode.V ) && activeVisitors.Count > 0)
+        if (Input.GetKeyDown(KeyCode.V) && activeVisitors.Count > 0)
             RemoveVisitor(activeVisitors[0]);
+        if (CountToSpawVisitors > TimeToSpawVisitors)
+        {
+            CountToSpawVisitors = 0f;
+            SpawnVisitor();
+        }
+            
     }
 
     public void SpawnVisitor()
