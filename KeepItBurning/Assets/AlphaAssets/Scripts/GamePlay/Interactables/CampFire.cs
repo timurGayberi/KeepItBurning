@@ -137,7 +137,7 @@ namespace GamePlay.Interactables
         {
             if (_currentFuel > thresholdToScore)
             {
-                ScoreManager.Instance.AddScore(baseCampfireScore);
+               // ScoreManager.Instance.AddScore(baseCampfireScore);
             }
         }
 
