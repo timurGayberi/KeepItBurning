@@ -69,7 +69,6 @@ namespace GamePlay.Interactables
 
         public void SetIdle()
         {
-            currentVisitorStatus = VisitorStatus.Idle;
             SetVisitorVisuals(VisitorStatus.Idle);
             if (idleRoutine != null)
                 StopCoroutine(idleRoutine);
@@ -79,7 +78,7 @@ namespace GamePlay.Interactables
 
         private IEnumerator RandomRequestAfterIdle()
         {
-            float waitTime = Random.Range(20f, 40f);
+            float waitTime = Random.Range(5f, 10f);
             yield return new WaitForSeconds(waitTime);
 
             if (currentVisitorStatus == VisitorStatus.Idle)
@@ -127,6 +126,7 @@ namespace GamePlay.Interactables
 
             if (newStatus == VisitorStatus.Idle)
             {
+                SetIconsToFalse();
                 requestCanva.SetActive(false);
                 return;
             }
