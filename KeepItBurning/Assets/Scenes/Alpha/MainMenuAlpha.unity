@@ -1637,6 +1637,84 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1001 &313762335
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1450857228}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 119.999985
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 119.999985
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5750053
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.81814975
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -109.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_Name
+      value: mainmenu_board_simple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+--- !u!4 &313762336 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5edd3d0e65720814d81762c3ab4686b0, type: 3}
+  m_PrefabInstance: {fileID: 313762335}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &314706603
 GameObject:
   m_ObjectHideFlags: 0
@@ -6490,7 +6568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b523922f05cf75a488ee8d8ba2991358, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8373,6 +8451,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 313762336}
   - {fileID: 1154138572}
   - {fileID: 784312383}
   m_Father: {fileID: 602069689}
@@ -10460,8 +10539,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 7587395e810190b4ab5fb8430d683aa0, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
