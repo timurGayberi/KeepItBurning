@@ -12,7 +12,6 @@ namespace General
         {
             if (service == null)
             {
-                //Debug.LogError($"Cannot register a null service for type {typeof(T).Name}.");
                 return;
             }
 
@@ -20,11 +19,9 @@ namespace General
             
             if (Services.ContainsKey(serviceType))
             {
-                //Debug.LogWarning($"Service {serviceType.Name} already registered. Overwriting with new instance.");
             }
             
             Services[serviceType] = service;
-            //Debug.Log($"Service registered: {serviceType.Name}");
         }
         
         public static T GetService<T>() where T : class
@@ -46,7 +43,6 @@ namespace General
         public static void ClearServices()
         {
             Services.Clear();
-            //Debug.Log("Service Locator cleared.");
         }
     }
 }
