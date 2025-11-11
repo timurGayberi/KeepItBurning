@@ -1,4 +1,5 @@
-/*using System;
+/*
+using System;
 using General;
 using Interfaces;
 using UnityEngine;
@@ -49,7 +50,7 @@ namespace Player
             if (_playerMovement.CurrentState == PlayerState.IsInteracting || _playerMovement.CurrentState == PlayerState.IsChopping)
             {
                 Debug.Log($"[DEBUG: CANCELLATION] Player interaction state reset to Idle from {_playerMovement.CurrentState}.");
-                _playerMovement.SetPlayerState(PlayerState.IsIdle);
+                //_playerMovement.SetPlayerState(PlayerState.IsIdle);
                 return; 
             }
             
@@ -57,8 +58,8 @@ namespace Player
             // _detector.UpdateInteractionCandidate(forceUpdate: true); 
 
             IInteractable interactable = _detector.CurrentInteractable;
-            ITreeTarget chopTarget = _detector.CurrentChopTarget;
-            ICollectible collectible = _detector.CurrentCollectible;
+            //ITreeTarget chopTarget = _detector.CurrentChopTarget;
+            //ICollectible collectible = _detector.CurrentCollectible;
             
             // --- PRIORITY 1: GENERAL INTERACTABLE (TENT, FIREPLACE, ETC.) ---
             if (interactable != null)

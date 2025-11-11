@@ -126,7 +126,7 @@ namespace Managers.GeneralManagers
 
         public void StartGame()
         {
-            SceneLoader.Instance.LoadSampleScene(); 
+            SceneLoader.Instance.LoadGameScene();
         }
 
         public void QuitToMainMenu()
