@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7299364771403395278
 Transform:
   m_ObjectHideFlags: 0
@@ -26,12 +26,11 @@ Transform:
   m_GameObject: {fileID: 501148757195940806}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1407.9999, y: -392.00015, z: 37}
-  m_LocalScale: {x: -604.0564, y: -604.0564, z: -604.0564}
+  m_LocalPosition: {x: 0.03, y: 0.1, z: -0.13}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2295438746885709087}
-  m_Father: {fileID: 5789512315413471739}
+  m_Children: []
+  m_Father: {fileID: 2295438746885709087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6354563862445452858
 SpriteRenderer:
@@ -120,8 +119,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3321579631822614324}
-  - {fileID: 7299364771403395278}
-  - {fileID: 8636684173090392775}
+  - {fileID: 2295438746885709087}
+  - {fileID: 7612605469831203023}
   - {fileID: 8483065796980411011}
   m_Father: {fileID: 4961407743824806697}
   m_LocalEulerAnglesHint: {x: 36, y: 0, z: 0}
@@ -204,12 +203,12 @@ GameObject:
   - component: {fileID: 7612605469831203023}
   - component: {fileID: 6191796931829413005}
   m_Layer: 0
-  m_Name: UI_thinking_bubble_0
+  m_Name: Sausage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7612605469831203023
 Transform:
   m_ObjectHideFlags: 0
@@ -219,11 +218,12 @@ Transform:
   m_GameObject: {fileID: 3292856191250872449}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1556144, y: -0.39896944, z: -0.06713281}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1382.0002, y: -229.99997, z: 52.55201}
+  m_LocalScale: {x: -604.0564, y: -604.0564, z: -604.0564}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8636684173090392775}
+  m_Children:
+  - {fileID: 8636684173090392775}
+  m_Father: {fileID: 5789512315413471739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6191796931829413005
 SpriteRenderer:
@@ -306,7 +306,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3453244051696908487}
   m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -0.052975196}
+  m_LocalPosition: {x: 0, y: 0, z: -0.27}
   m_LocalScale: {x: -0.0016554745, y: -0.0016554745, z: -0.0016554745}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -314,7 +314,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.404, y: 0.124}
+  m_AnchoredPosition: {x: -0.61, y: -0.19}
   m_SizeDelta: {x: 890.1202, y: 409.3}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &7329620420978413376
@@ -516,12 +516,12 @@ GameObject:
   - component: {fileID: 2295438746885709087}
   - component: {fileID: 1649931251384647189}
   m_Layer: 0
-  m_Name: UI_thinking_bubble_0
+  m_Name: Marshmallow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2295438746885709087
 Transform:
   m_ObjectHideFlags: 0
@@ -531,11 +531,12 @@ Transform:
   m_GameObject: {fileID: 4195504347674706672}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.043041933, y: -0.2681872, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1382.0002, y: -229.99995, z: 36.99999}
+  m_LocalScale: {x: -604.0564, y: -604.0564, z: -604.0564}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7299364771403395278}
+  m_Children:
+  - {fileID: 7299364771403395278}
+  m_Father: {fileID: 5789512315413471739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1649931251384647189
 SpriteRenderer:
@@ -603,7 +604,7 @@ GameObject:
   - component: {fileID: 8483065796980411011}
   - component: {fileID: 2218147450346290219}
   m_Layer: 0
-  m_Name: UI_thinking_bubble_0
+  m_Name: HotChocolate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -828,7 +829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8636684173090392775
 Transform:
   m_ObjectHideFlags: 0
@@ -838,12 +839,11 @@ Transform:
   m_GameObject: {fileID: 8777340504784828460}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1476, y: -471, z: 12}
-  m_LocalScale: {x: -604.0564, y: -604.0564, z: -604.0564}
+  m_LocalPosition: {x: 0.03, y: 0.05, z: -0.14}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7612605469831203023}
-  m_Father: {fileID: 5789512315413471739}
+  m_Children: []
+  m_Father: {fileID: 7612605469831203023}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &865352729630886285
 SpriteRenderer:
