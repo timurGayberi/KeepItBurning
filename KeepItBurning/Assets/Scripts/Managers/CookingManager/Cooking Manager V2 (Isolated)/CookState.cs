@@ -1,6 +1,6 @@
-using UnityEngine;
-
-public class CookState
+public enum CookState
 {
-    
+    Raw,
+    Cooked,
+    Burned
 }
