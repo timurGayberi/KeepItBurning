@@ -53,6 +53,7 @@ public class CookableItems : MonoBehaviour
     public void StartCooking()
     {
         isOnHeat = true;
+        timer = 0f;
     }
 
     public void StopCooking()

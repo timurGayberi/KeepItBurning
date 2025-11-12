@@ -6,7 +6,7 @@ namespace General
 {
     public abstract class CollectibleBase : MonoBehaviour, ICollectible
     {
-        public enum CookState { Raw, Cooked, Burnt }
+        public enum CookState { Raw, Cooked, Burnt } // Ruzgar Editted
         public CookState currentState = CookState.Raw;
 
         #region Visual Settings
