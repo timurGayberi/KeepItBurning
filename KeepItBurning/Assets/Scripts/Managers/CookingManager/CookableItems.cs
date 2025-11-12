@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CookableItems : MonoBehaviour
 {
@@ -13,16 +13,18 @@ public class CookableItems : MonoBehaviour
     private float timer = 0f;
     private bool isOnHeat = false;
 
-    [Header("Prefabs")]
-    public GameObject rawPrefab;
-    public GameObject cookedPrefab;
-    public GameObject burntPrefab;
+    [Header("State Objects (Child visuals)")]
+    [Tooltip("Raw version (default active at start)")]
+    [SerializeField] private GameObject rawVisual;
+    [Tooltip("Cooked version (hidden until ready)")]
+    [SerializeField] private GameObject cookedVisual;
+    [Tooltip("Burnt version (hidden until burnt)")]
+    [SerializeField] private GameObject burntVisual;
 
-    private GameObject currentVisual;
-
-    void Start()
+    void Awake()
     {
-        SpawnVisual(rawPrefab);
+        SetActiveVisual(rawVisual);
+        currentState = CookState.Raw;
     }
 
     void Update()
@@ -44,44 +46,40 @@ public class CookableItems : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
 
-        if (currentVisual != null)
-            Destroy(currentVisual);
-
         switch (newState)
         {
             case CookState.Raw:
-                SpawnVisual(rawPrefab);
+                SetActiveVisual(rawVisual);
                 break;
             case CookState.Cooked:
-                SpawnVisual(cookedPrefab);
+                SetActiveVisual(cookedVisual);
                 break;
             case CookState.Burnt:
-                SpawnVisual(burntPrefab);
+                SetActiveVisual(burntVisual);
                 break;
         }
 
-        Debug.Log($"{itemName} now: {newState}");
+        Debug.Log($"{itemName} state → {newState}");
     }
 
-    void SpawnVisual(GameObject prefab)
+    void SetActiveVisual(GameObject activeObj)
     {
-        if (prefab == null) return;
-        currentVisual = Instantiate(prefab, transform.position, transform.rotation, transform);
-    }
-
-    public float GetCookingProgress()
-    {
-        return Mathf.Clamp01(timer / burnTime);
+        if (rawVisual != null) rawVisual.SetActive(activeObj == rawVisual);
+        if (cookedVisual != null) cookedVisual.SetActive(activeObj == cookedVisual);
+        if (burntVisual != null) burntVisual.SetActive(activeObj == burntVisual);
     }
 
     public void StartCooking()
     {
         isOnHeat = true;
+        Debug.Log($"{itemName} cooking started.");
     }
 
     public void StopCooking()
     {
         isOnHeat = false;
-        timer = 0;
+        Debug.Log($"{itemName} cooking stopped.");
     }
+
+    public float GetCookingProgress() => Mathf.Clamp01(timer / burnTime);
 }
