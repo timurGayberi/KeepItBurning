@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /s /b *.anim *.controller 2)",
+      "Bash(nul)",
+      "Bash(find:*)",
+      "Bash(dir /s /b *.meta 2)",
+      "Bash(findstr:*)",
+      "Bash(for id in 133905865813515199 1448185386 559561772)",
+      "Bash(do grep -A10 \"^--- !u!1 &$id\" \"Scenes/GameScene.unity\")",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
