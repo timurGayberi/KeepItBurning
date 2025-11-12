@@ -13,13 +13,12 @@ namespace GamePlay.Interactibles
         public Transform cookPoint;
 
         public bool isCooking = false;
-        private string interactionPrompt = "Start Cooking";
 
         public InteractionData GetInteractionData()
         {
             return new InteractionData
             {
-                promptText = isCooking ? "Stop Cooking" : interactionPrompt,
+                promptText = isCooking ? "Stop Cooking" : "Start Cooking",
                 actionDuration = 0f
             };
         }
@@ -32,27 +31,44 @@ namespace GamePlay.Interactibles
                 StopCooking();
         }
 
-        public void StopInteraction()
-        {
-
-        }
+        public void StopInteraction() { }
 
         void StartCooking()
         {
-            if (cookableItem == null) return;
+            if (cookableItem == null || collectiblesLogic == null) return;
 
-            collectiblesLogic.chocolateVisual.SetActive(hasChocolate);
-            cookableItem.transform.position = cookPoint.position;
-
-            cookableItem.StartCooking();
-            isCooking = true;
+            if (collectiblesLogic.HasChocolate)
+            {
+                cookableItem.collectiblesLogic = collectiblesLogic;
+                cookableItem.StartCooking();
+                collectiblesLogic.chocolateVisual.SetActive(true);
+                isCooking = true;
+                Debug.Log("Started cooking CHOCOLATE.");
+            }
+            else if (collectiblesLogic.HasMarshmallow)
+            {
+                Debug.Log("Started cooking MARSHMALLOW (todo)");
+            }
+            else if (collectiblesLogic.HasSausage)
+            {
+                Debug.Log("Started cooking SAUSAGE (todo)");
+            }
+            else
+            {
+                Debug.Log("No cookable item in hand.");
+            }
         }
 
         void StopCooking()
         {
             if (cookableItem == null) return;
+
             cookableItem.StopCooking();
             isCooking = false;
+
+            collectiblesLogic.chocolateVisual.SetActive(false);
+            collectiblesLogic.hotChocolateVisual.SetActive(false);
+            collectiblesLogic.burnedHotChocolateVisual.SetActive(false);
         }
     }
 }
