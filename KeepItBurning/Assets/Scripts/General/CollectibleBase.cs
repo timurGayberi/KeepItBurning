@@ -7,6 +7,7 @@ namespace General
     public abstract class CollectibleBase : MonoBehaviour, ICollectible
     {
         #region Visual Settings
+        
         [Header("Visual Effects")]
         [Tooltip("How high the object bobs (vertical distance).")]
         [SerializeField] protected float amplitude = 0.2f;
@@ -17,12 +18,14 @@ namespace General
         
         private Vector3 _initialSpawnPosition; 
         private Vector3 _basePosition; 
+        
         #endregion
 
         #region Collectible Settings
         [Header("Collectible Settings")]
-        [Tooltip("A unique ID for this item. This should be unique across all collectibles.")]
-        [SerializeField] protected string collectibleID = "item_default";
+        [Tooltip("A unique ID for this item (using constants from CollectibleIDs).")]
+        [SerializeField] 
+        protected int collectibleID = CollectibleIDs.DEFAULT_ITEM; 
         
         [Tooltip("The text prompt shown when the player looks at this object.")]
         [SerializeField] 
@@ -36,23 +39,25 @@ namespace General
             return new CollectibleData(collectibleID, 0f); 
         }
         
-        public void Collect(GameObject interactor)
+        public bool Collect(GameObject interactor)
         {
-            CollectiblesLogic inventory = interactor.GetComponent<CollectiblesLogic>();
-            
-            if (inventory != null)
+            if (interactor.TryGetComponent(out PlayerInventory inventory))
             {
-                OnCollectedWithInstance(this.gameObject); 
+                bool success = OnCollectedWithInstance(interactor); 
                 
-                OnCollected(); 
+                if (success)
+                {
+                    OnCollected(); // Hook for sound/VFX
+                    Debug.Log($"Collected: {gameObject.name} (ID: {collectibleID}).");
+                    Destroy(gameObject); 
+                }
                 
-                Debug.Log($"Collected: {gameObject.name} (ID: {collectibleID}).");
-                
-                Destroy(gameObject); 
+                return success; 
             }
             else
             {
                 Debug.LogError($"Interactor '{interactor.name}' is missing the PlayerInventory component! Cannot collect.");
+                return false;
             }
         }
         
@@ -64,7 +69,10 @@ namespace General
         
         protected virtual void OnCollected() { }
         
-        protected virtual void OnCollectedWithInstance(GameObject collectedObject) { } 
+        protected virtual bool OnCollectedWithInstance(GameObject interactor) 
+        {
+            return true;
+        } 
         
         
         protected virtual void Awake()

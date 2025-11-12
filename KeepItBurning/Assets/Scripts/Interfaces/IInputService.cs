@@ -18,6 +18,9 @@ namespace Interfaces
         event Action OnSprintStarted;
         event Action OnSprintCanceled;
         event Action OnInteractEvent;
+        
+        event Action OnDropEvent;
+        
         // more to come ?
         
         

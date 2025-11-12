@@ -112,5 +112,6 @@ MonoBehaviour:
   amplitude: 0.2
   frequency: 1
   rotationSpeed: 60
+  collectibleID: 1
   collectionPrompt: Pick up Item
   FuelValue: 25

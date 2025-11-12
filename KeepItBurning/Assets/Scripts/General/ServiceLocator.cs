@@ -24,6 +24,26 @@ namespace General
             Services[serviceType] = service;
         }
         
+        public static void UnregisterService<T>(T service) where T : class
+        {
+            if (service == null)
+            {
+                return;
+            }
+
+            var serviceType = typeof(T);
+            
+            if (Services.TryGetValue(serviceType, out object registeredService) && registeredService == service)
+            {
+                Services.Remove(serviceType);
+            }
+            else
+            {
+                Debug.LogWarning($"Service of type {serviceType.Name} was not unregistered. " +
+                                 $"It might have been replaced by a new instance.");
+            }
+        }
+        
         public static T GetService<T>() where T : class
         {
             var serviceType = typeof(T);

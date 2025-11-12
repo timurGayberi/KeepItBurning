@@ -7,12 +7,12 @@ namespace General
     public struct CollectibleData
     {
         [Tooltip("A unique identifier for the item (e.g., 'FireWoodLogs').")]
-        public string ID;
+        public int ID;
         
         [Tooltip("The amount of fuel or resource value the item provides.")]
         public float FuelValue;
         
-        public CollectibleData(string id, float fuelValue)
+        public CollectibleData(int id, float fuelValue)
         {
             ID = id;
             FuelValue = fuelValue;
