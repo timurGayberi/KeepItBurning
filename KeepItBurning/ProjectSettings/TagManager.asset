@@ -6,11 +6,12 @@ TagManager:
   tags:
   - ChopTarget
   - Interactable
+  - Collectible
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - UI_Board
   - Water
   - UI
   - 
