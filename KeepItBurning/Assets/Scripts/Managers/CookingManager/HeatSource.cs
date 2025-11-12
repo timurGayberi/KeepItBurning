@@ -14,6 +14,7 @@ namespace GamePlay.Interactibles
 
         public bool isCooking = false;
         private string interactionPrompt = "Start Cooking";
+        private bool hasChocolate;
 
         public InteractionData GetInteractionData()
         {
