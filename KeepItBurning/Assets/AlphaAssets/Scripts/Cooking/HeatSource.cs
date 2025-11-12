@@ -21,11 +21,7 @@ public class HeatSource : MonoBehaviour
 
     void StartCooking()
     {
-        if (cookableItem == null)
-        {
-            Debug.LogWarning("HeatSource: cookable item isn't assigned!");
-            return;
-        }
+        if (cookableItem == null) return;
 
         cookableItem.transform.position = cookPoint.position;
         cookableItem.StartCooking();
