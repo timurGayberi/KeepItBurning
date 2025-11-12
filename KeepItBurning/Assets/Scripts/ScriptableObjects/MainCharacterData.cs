@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ScriptableObjects
 {
@@ -8,5 +9,9 @@ namespace ScriptableObjects
         [Header("PlayerStats")]
         public float movementSpeed;
         public float sprintSpeed;
+        
+        [Header("Number of logs player  can carry")]
+        [Tooltip("The number of logs player can carry at once")]
+        public int maxNumberOfLogsCarry;
     }
 }

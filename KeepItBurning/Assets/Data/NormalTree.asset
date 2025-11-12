@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: NormalTree
   m_EditorClassIdentifier: 
   regrowthTime: 30
-  chopDuration: 1
-  logPrefab: {fileID: 0}
+  chopDuration: 3
   numberOfLogs: 3
-  scatterRadius: 0.5
+  scatterRadius: 2
   interactionPrompt: Chop Tree

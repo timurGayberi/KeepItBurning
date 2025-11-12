@@ -11,12 +11,13 @@ namespace Managers.GamePlayManagers
         public TextMeshProUGUI scoreText;
         
         public TextMeshProUGUI timeText;
+        
+        public TextMeshProUGUI carriedLogsNumber;
 
         void OnEnable()
         {
             if (PlayGameManager.Instance != null)
             {
-                // 1. START SUBSCRIPTION FOR TIME UPDATES
                 PlayGameManager.Instance.OnTimeUpdated += UpdateTimeDisplay;
                 
                 PlayGameManager.Instance.OnScoreUpdated += UpdateScoreDisplay;

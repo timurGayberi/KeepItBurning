@@ -145,10 +145,8 @@ namespace GamePlay.Interactables
 
         private IEnumerator RegrowCoroutine()
         {
-            // Reset the timer and start tracking regrowth time.
             _regrowTimer = 0f;
             
-            // Regrowth time retrieved from Scriptable Object
             while (_regrowTimer < treeData.regrowthTime)
             {
                 _regrowTimer += Time.deltaTime;

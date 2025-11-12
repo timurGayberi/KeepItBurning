@@ -6,16 +6,15 @@ using ScriptableObjects;
 
 namespace Player
 {
-    // The PlayerState enum has been moved to its own file (PlayerState.cs)
     
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour
     {
         #region References & Data
         
-        [Header("Players Movement Data")] 
+        [Header("Players Stats")] 
         [SerializeField]
-        private PlayerStatsSo movementData;
+        private PlayerStatsSo data;
         
         private CharacterController _characterController;
         private Vector3 _currentMoveDirection; 
@@ -43,7 +42,7 @@ namespace Player
             {
                 Debug.LogError("PlayerMovement requires a CharacterController component.");
             }
-            if (movementData == null)
+            if (data == null)
             {
                 Debug.LogError("MovementData (PlayerStatsSo) is not assigned to PlayerMovement. Movement will fail.");
             }
@@ -108,12 +107,11 @@ namespace Player
         
         private void Update()
         {
-            if (_characterController == null || movementData == null) return;
+            if (_characterController == null || data == null) return;
             
             var moveDirection = _currentMoveDirection;
             float currentSpeed;
             
-            // --- CORE FIX: BLOCK ALL MOVEMENT/STATE UPDATES IF INTERACTING ---
             if (CurrentState == PlayerState.IsInteracting)
             {
                 _characterController.Move(Vector3.zero); 
@@ -127,13 +125,13 @@ namespace Player
                 // --- SPRINTING CHECK ---
                 if (_isSprinting)
                 {
-                    currentSpeed = movementData.sprintSpeed;
+                    currentSpeed = data.sprintSpeed;
                     if (CurrentState != PlayerState.IsSprinting) SetPlayerState(PlayerState.IsSprinting);
                 }
                 // --- WALKING CHECK ---
                 else 
                 {
-                    currentSpeed = movementData.movementSpeed;
+                    currentSpeed = data.movementSpeed;
                     if (CurrentState != PlayerState.IsWalking) SetPlayerState(PlayerState.IsWalking); 
                 }
                 
