@@ -28,25 +28,32 @@ namespace Player
 
         #endregion
 
-        #region Chocolate_Variable
+        #region Chocolate_Variables
 
         [Header("Chocolate State")]
         [Tooltip("True if the player is currently holding chocolate.")]
-        [SerializeField]
-        private bool hasChocolate = false;
+        [SerializeField] private bool hasChocolate = false;
+        [SerializeField] private bool hasBurnedHotChocolate = false;
+        [SerializeField] public bool hasHotChocolate = false;
 
         [Tooltip("The GameObject representing the chocolate visual, usually a child of the player.")]
-        [SerializeField]
-        public GameObject chocolateVisual;
+        [SerializeField] public GameObject chocolateVisual;
+        [SerializeField] public GameObject burnedHotChocolateVisual;
+        [SerializeField] public GameObject hotChocolateVisual;
 
         [Header("Chocolate Drop References")]
-        [Tooltip("The Log Prefab that is instantiated when the player drops chocolate (if the original collected instance is lost).")]
-        [SerializeField]
-        private GameObject chocolateForDrop;
+        [Tooltip("The chocolate Prefab that is instantiated when the player drops chocolate (if the original collected instance is lost).")]
+        [SerializeField] private GameObject chocolateForDrop;
+        [SerializeField] private GameObject burnedHotChocolateForDrop;
+        [SerializeField] private GameObject hotChocolateForDrop;
 
         private GameObject chocolateToCarry;
+        private GameObject burnedHotChocolateToCarry;
+        private GameObject hotChocolateToCarry;
 
         public bool HasChocolate => hasChocolate;
+        public bool HasBurnedHotChocolate => hasBurnedHotChocolate;
+        public bool HasHotChocolate => hasHotChocolate;
 
         #endregion
 
@@ -100,6 +107,8 @@ namespace Player
         {
             if (woodVisual != null) woodVisual.SetActive(hasWood);
             if (chocolateVisual != null) chocolateVisual.SetActive(hasChocolate);
+            if (burnedHotChocolateVisual != null) burnedHotChocolateVisual.SetActive(hasBurnedHotChocolate);
+            if (hotChocolateVisual != null) hotChocolateVisual.SetActive(hotChocolateVisual);
             if (marshmallowVisual != null) marshmallowVisual.SetActive(hasMarshmallow);
             if (sausageVisual != null) sausageVisual.SetActive(hasSausage);
         }
@@ -179,6 +188,8 @@ namespace Player
 
         #region Chocolate_Methods
 
+        #region Chocolate
+
         public void SetHasChocolate(bool state, GameObject collectedInstance = null)
         {
             if (hasChocolate != state)
@@ -247,6 +258,154 @@ namespace Player
         {
             return chocolateToCarry;
         }
+
+        #endregion
+
+        #region Burned Hot Chocolate
+
+        public void SetHasBurnedHotChocolate(bool state, GameObject collectedInstance = null)
+        {
+            if (hasBurnedHotChocolate != state)
+            {
+                if (state == true)
+                {
+                    if (collectedInstance != null)
+                    {
+                        burnedHotChocolateToCarry = collectedInstance;
+                        burnedHotChocolateToCarry.SetActive(false);
+                    }
+                }
+                else
+                {
+                    burnedHotChocolateToCarry = null;
+                }
+
+                hasBurnedHotChocolate = state;
+
+                if (burnedHotChocolateVisual != null) burnedHotChocolateVisual.SetActive(hasBurnedHotChocolate);
+
+                Debug.Log($"Chocolate state changed to: {hasBurnedHotChocolate}.");
+            }
+        }
+
+        public void DropBurnedHotChocolate(Vector3 dropPosition)
+        {
+            if (hasBurnedHotChocolate)
+            {
+                if (burnedHotChocolateToCarry != null)
+                {
+                    burnedHotChocolateToCarry.transform.position = dropPosition;
+                    burnedHotChocolateToCarry.SetActive(true);
+                    SetHasBurnedHotChocolate(false);
+                    Debug.Log("Burned Hot Chocolate dropped successfully (original instance returned).");
+                    return;
+                }
+
+                if (burnedHotChocolateForDrop == null)
+                {
+                    Debug.LogError("FATAL DROP ERROR: Chocolate Prefab For Dropping is not assigned!");
+                    return;
+                }
+
+                Instantiate(burnedHotChocolateForDrop, dropPosition, Quaternion.identity);
+                SetHasBurnedHotChocolate(false);
+                Debug.Log("Burned Hot Chocolate dropped successfully (instantiated new collectible).");
+            }
+        }
+
+        public void ConsumeBurnedHotChocolate()
+        {
+            if (hasBurnedHotChocolate && burnedHotChocolateToCarry != null)
+            {
+                Destroy(burnedHotChocolateToCarry);
+                SetHasBurnedHotChocolate(false);
+                Debug.Log("[INVENTORY] Successfully consumed and destroyed carried chocolate instance.");
+            }
+            else
+            {
+                Debug.LogWarning("[INVENTORY] Attempted to consume chocolate, but no trackable instance was carried.");
+            }
+        }
+
+        public GameObject GetCarriedBurnedHotChocolateInstance()
+        {
+            return burnedHotChocolateToCarry;
+        }
+
+        #endregion
+
+        #region Hot Chocolate
+
+        public void SetHasHotChocolate(bool state, GameObject collectedInstance = null)
+        {
+            if (hasHotChocolate != state)
+            {
+                if (state == true)
+                {
+                    if (collectedInstance != null)
+                    {
+                        hotChocolateToCarry = collectedInstance;
+                        hotChocolateToCarry.SetActive(false);
+                    }
+                }
+                else
+                {
+                    hotChocolateToCarry = null;
+                }
+
+                hasHotChocolate = state;
+
+                if (hotChocolateVisual != null) hotChocolateVisual.SetActive(hasHotChocolate);
+
+                Debug.Log($"Chocolate state changed to: {hasHotChocolate}.");
+            }
+        }
+
+        public void DropHotChocolate(Vector3 dropPosition)
+        {
+            if (hasHotChocolate)
+            {
+                if (hotChocolateToCarry != null)
+                {
+                    hotChocolateToCarry.transform.position = dropPosition;
+                    hotChocolateToCarry.SetActive(true);
+                    SetHasHotChocolate(false);
+                    Debug.Log("Hot Chocolate dropped successfully (original instance returned).");
+                    return;
+                }
+
+                if (hotChocolateForDrop == null)
+                {
+                    Debug.LogError("FATAL DROP ERROR: Chocolate Prefab For Dropping is not assigned!");
+                    return;
+                }
+
+                Instantiate(hotChocolateForDrop, dropPosition, Quaternion.identity);
+                SetHasHotChocolate(false);
+                Debug.Log("Hot Chocolate dropped successfully (instantiated new collectible).");
+            }
+        }
+
+        public void ConsumeHotChocolate()
+        {
+            if (hasHotChocolate && hotChocolateToCarry != null)
+            {
+                Destroy(hotChocolateToCarry);
+                SetHasHotChocolate(false);
+                Debug.Log("[INVENTORY] Successfully consumed and destroyed carried chocolate instance.");
+            }
+            else
+            {
+                Debug.LogWarning("[INVENTORY] Attempted to consume chocolate, but no trackable instance was carried.");
+            }
+        }
+
+        public GameObject GetCarriedHotChocolateInstance()
+        {
+            return hotChocolateToCarry;
+        }
+
+        #endregion
 
         #endregion
 

@@ -1,37 +1,26 @@
 using UnityEngine;
 using Interfaces;
-using System.Collections;
 using Player;
 
 namespace GamePlay.Interactibles
 {
     public class HeatSource : MonoBehaviour, IInteractable
     {
+        [Header("References")]
         public CookableItems cookableItem;
         public CollectiblesLogic collectiblesLogic;
 
         public Transform cookPoint;
 
         public bool isCooking = false;
-
         private string interactionPrompt = "Start Cooking";
-
-        private bool hasChocolate = false;
-
-        void Update()
-        {
-
-        }
 
         public InteractionData GetInteractionData()
         {
-            string prompt = interactionPrompt;
-            float duration = 0f;
-
             return new InteractionData
-            { 
-                promptText = prompt,
-                actionDuration = duration
+            {
+                promptText = isCooking ? "Stop Cooking" : interactionPrompt,
+                actionDuration = 0f
             };
         }
 
