@@ -10,6 +10,9 @@ namespace GamePlay.Interactables
         RequestMarshmallow,
         RequestHotChocolate,
         RequestSausage
+        
+        // more to come ?
+        
     }
 
     public class Visitor : MonoBehaviour , IInteractable
