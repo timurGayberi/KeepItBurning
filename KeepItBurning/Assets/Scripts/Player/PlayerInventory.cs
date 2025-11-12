@@ -1,32 +1,35 @@
 using UnityEngine;
 using System;
 using General;
-using Interfaces;
 using GamePlay.Collectibles;
 
 namespace Player
 {
+    public enum CarryingType
+    {
+        None,
+        Wood,
+        Mushrooms,
+        //More to come.
+    }
+    
+    
     public class PlayerInventory : MonoBehaviour
     {
-        private IInputService _inputService;
         
+        private PlayersActivities _playersActivities;
         
         [Header("Resources")]
-        [Tooltip("The current number of wood logs the player is carrying.")]
         [SerializeField]
         private int _woodCount = 0;
-
-        [Tooltip("The maximum number of wood logs the player can carry.")]
         [SerializeField]
         private int maxWoodCount = 3;
 
         [Header("Visual Attachments")]
-        [Tooltip("The GameObject representing the wood log visual, child of the player (active if WoodCount > 0).")]
         [SerializeField]
         private GameObject woodVisual; 
 
         [Header("Drop Settings")]
-        [Tooltip("The Log Prefab that is instantiated when the player drops wood.")]
         [SerializeField]
         private GameObject woodLogPrefabForDropping;
         
@@ -34,34 +37,23 @@ namespace Player
         public int WoodCount => _woodCount;
         public int MaxWoodCount => maxWoodCount;
         public bool IsWoodInventoryFull => _woodCount >= maxWoodCount;
-        
         public event Action<int> OnWoodCountChanged;
         
-        private void OnEnable()
-        {
-            try
-            {
-                _inputService = ServiceLocator.GetService<IInputService>();
-                _inputService.OnDropEvent += DropWood;
-            }
-            catch (InvalidOperationException e)
-            {
-                Debug.LogError("IInputService not found. Error: " + e.Message);
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (_inputService != null)
-            {
-                _inputService.OnDropEvent -= DropWood;
-            }
-        }
+        [Header("Current State")]
+        [Tooltip("What is the player currently holding?")]
+        public CarryingType CurrentCarryingType { get; private set; } = CarryingType.None;
+        
         
         #region Service Locator Registration
 
         private void Awake()
         {
+            _playersActivities = GetComponent<PlayersActivities>();
+            if (_playersActivities == null)
+            {
+                Debug.LogError("PlayerInventory is missing a reference to PlayersActivities!");
+            }
+            
             try
             {
                 ServiceLocator.RegisterService<PlayerInventory>(this);
@@ -89,15 +81,38 @@ namespace Player
         private void Start()
         {
             UpdateWoodState();
+        }
+        
+        private void Update()
+        {
+            if (_playersActivities == null) return;
+
+            var currentState = _playersActivities.currentState;
             
-            if (woodVisual != null)
+            if (CurrentCarryingType != CarryingType.None)
             {
-                woodVisual.SetActive(HasWood);
+                if (currentState == PlayerState.IsIdle)
+                {
+                    _playersActivities.SetPlayerState(PlayerState.IsCarrying);
+                }
+            }
+            else
+            {
+                if (currentState == PlayerState.IsCarrying)
+                {
+                    _playersActivities.SetPlayerState(PlayerState.IsIdle);
+                }
             }
         }
         
         public bool AddCollectible(CollectibleData data)
         {
+            // if (CurrentCarryingType != CarryingType.None && CurrentCarryingType != CarryingType.Wood)
+            // {
+            //    Debug.Log("Cannot carry two different types of items!");
+            //    return false;
+            // }
+
             if (data.ID == CollectibleIDs.FIREWOOD_LOGS)
             {
                 if (IsWoodInventoryFull)
@@ -110,10 +125,20 @@ namespace Player
                 UpdateWoodState();
                 return true;
             }
+            
+            // Consumebles logic to come 
+            // else if (data.ID == CollectibleIDs.MUSHROOM)
+            // {
+            //    ...
+            //    CurrentCarryingType = CarryingType.Mushrooms;
+            //    ...
+            // }
+            
             return false;
         }
         
         #region WoodLogic
+        
         private void UpdateWoodState()
         {
             if (woodVisual != null)
@@ -122,19 +147,35 @@ namespace Player
             }
             OnWoodCountChanged?.Invoke(_woodCount);
             Debug.Log($"Inventory: Wood count set to {_woodCount}.");
+            
+            if (HasWood)
+            {
+                CurrentCarryingType = CarryingType.Wood;
+            }
+            else
+            {
+                if (CurrentCarryingType == CarryingType.Wood)
+                {
+                    CurrentCarryingType = CarryingType.None;
+                }
+            }
         }
-        
-        /*
-        public void ConsumeWood()
+
+        public bool ConsumeWood()
         {
             if (HasWood)
             {
                 _woodCount--;
                 UpdateWoodState();
                 Debug.Log("Inventory: Wood consumed.");
+                return true;
             }
+            
+            Debug.Log("Tried to consume wood, but have none.");
+            return false;
         }
-        */
+        
+        // This method is now only called by InteractionHandler
         public void DropWood()
         {
             if (HasWood)
@@ -164,6 +205,5 @@ namespace Player
         }
         
         #endregion
-        
     }
 }

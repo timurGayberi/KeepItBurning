@@ -1,61 +1,35 @@
 using UnityEngine;
-
 using Interfaces;
 
-
-
 namespace Player
-
 {
-
     public class PlayersInteractionTargetDetector : MonoBehaviour
-
     {
-
         [Header("Detection Settings")]
-
-        [SerializeField] private float detectionRadius = 0.5f;
-
-        [SerializeField] private float detectionDistance = 3f;
-
+        [SerializeField] private float      detectionRadius ;
+        [SerializeField] private float      detectionDistance ;
         
-
         [Tooltip("The tags we consider valid targets (e.g., 'Interactable', 'Collectible').")]
-
         [SerializeField] private string[] targetTags = { "Interactable", "Collectible" }; 
-
         
-
         // Expose both potential interaction types
-
         public IInteractable currentInteractable { get; private set; }
-
         public ICollectible currentCollectible { get; private set; } // New property for collectibles
-
-
-
+        
         private void Update()
-
         {
-
             DetectTarget();
-
         }
-
-
-
+        
         private void DetectTarget()
-
         {
             
-
             currentInteractable = null;
             currentCollectible = null;
             
             var ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;
             
-
             if (Physics.SphereCast(ray, detectionRadius, out hit, detectionDistance, ~0)) 
             {
                 var hitTag = hit.collider.gameObject.tag;
@@ -77,10 +51,8 @@ namespace Player
                     if (collectible != null)
                     {
                         currentCollectible = collectible;
-
                         Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.blue); 
-
-                        return; // Found a collectible, stop here
+                        return; 
 
                     }
                     

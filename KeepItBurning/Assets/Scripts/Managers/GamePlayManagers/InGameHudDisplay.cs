@@ -18,7 +18,7 @@ namespace Managers.GamePlayManagers
         public TextMeshProUGUI carriedLogsNumber;
         
         // Player inventory reference
-        private PlayerInventory _playerInventory;
+        private PlayerInventory playerInventory;
 
         void OnEnable()
         {
@@ -40,14 +40,13 @@ namespace Managers.GamePlayManagers
 
                 try
                 {
-                    _playerInventory = ServiceLocator.GetService<PlayerInventory>();
+                    playerInventory = ServiceLocator.GetService<PlayerInventory>();
                     
-                    _playerInventory.OnWoodCountChanged += UpdateLogDisplay;
+                    playerInventory.OnWoodCountChanged += UpdateLogDisplay;
                     
                     if (carriedLogsNumber != null)
                     {
-                        // We must pass in the current count
-                        UpdateLogDisplay(_playerInventory.WoodCount); 
+                        UpdateLogDisplay(playerInventory.WoodCount); 
                     }
                 }
                 catch (InvalidOperationException e)
@@ -64,9 +63,9 @@ namespace Managers.GamePlayManagers
                 PlayGameManager.Instance.OnTimeUpdated -= UpdateTimeDisplay;
                 PlayGameManager.Instance.OnScoreUpdated -= UpdateScoreDisplay;
             }
-            if (_playerInventory != null)
+            if (playerInventory != null)
             {
-                _playerInventory.OnWoodCountChanged -= UpdateLogDisplay;
+                playerInventory.OnWoodCountChanged -= UpdateLogDisplay;
             }
         }
         
@@ -88,9 +87,9 @@ namespace Managers.GamePlayManagers
 
         private void UpdateLogDisplay(int currentCount)
         {
-            if (carriedLogsNumber != null && _playerInventory != null)
+            if (carriedLogsNumber != null && playerInventory != null)
             {
-                carriedLogsNumber.text = $"{currentCount}/{_playerInventory.MaxWoodCount}";
+                carriedLogsNumber.text = $"{currentCount}/{playerInventory.MaxWoodCount}";
             }
         }
     }

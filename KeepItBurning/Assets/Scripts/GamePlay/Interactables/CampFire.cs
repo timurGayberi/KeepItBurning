@@ -1,4 +1,3 @@
-/*
 using Interfaces;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ namespace GamePlay.Interactables
 {
     public class FireplaceInteraction : MonoBehaviour, IInteractable
     {
-        //public static event Action OnFireplaceOut;
+        //public static event Action OnFireplaceOut; // Keep commented for now
 
         #region Variables
 
@@ -23,148 +22,121 @@ namespace GamePlay.Interactables
         [Tooltip("The rate at which fuel decays per second.")]
         [SerializeField]
         private float decayRate = 1f;
+        [Tooltip("The standard fuel value added per log.")]
+        [SerializeField]
+        private float fuelPerLog = 25f;
 
         [Header("Current Status")]
         [Tooltip("The current fuel level (displayed at runtime).")]
         [SerializeField]
         private float _currentFuel;
 
-        /*
+        /* (VFX and Scoring References kept commented out for future use)
         [Header("VFX References")]
-        [Tooltip("The CampfireVFXController controlling the fire visuals.")]
-        [SerializeField]
-        private CampfireVFXController vfxController;
-
+        [SerializeField] private CampfireVFXController vfxController;
         [Space]
         [SerializeField] private float baseCampfireScore;
         [SerializeField] private float thresholdToScore = 50f;
-
+        */
 
         #endregion
 
-        //public event Action<float, float> OnFuelChanged;
+        //public event Action<float, float> OnFuelChanged; // Keep commented for future UI
 
         private void Awake()
         {
-            /*
-            _currentFuel = maxFuel;
-            OnFuelChanged?.Invoke(_currentFuel, maxFuel);
+            // Initializing fuel to max to start the fire
+            _currentFuel = maxFuel; 
+            // OnFuelChanged?.Invoke(_currentFuel, maxFuel);
         }
 
         private void UpdateVFXController()
         {
-            /*
-            if (vfxController != null)
-            {
-                float normalizedFuel = _currentFuel / maxFuel;
-                vfxController.SetFuelNormalized(normalizedFuel);
-            }
+            // if (vfxController != null) { ... }
         }
 
         private void Update()
         {
+            // --- UNCOMMENTED DECAY LOGIC ---
             if (_currentFuel > 0)
             {
                 _currentFuel -= decayRate * Time.deltaTime;
                 _currentFuel = Mathf.Max(0, _currentFuel);
 
-                //OnFuelChanged?.Invoke(_currentFuel, maxFuel);
+                // OnFuelChanged?.Invoke(_currentFuel, maxFuel);
                 UpdateVFXController();
-                //UpdateScore();
+                // UpdateScore();
 
                 if (_currentFuel <= 0)
                 {
-                    Debug.Log("The campfire has gone out. Triggering Game Over.");
-                    /*
-
-                    if (vfxController != null)
-                    {
-                        vfxController.ShutDownFire();
-                    }
-
-                    OnFireplaceOut?.Invoke();
-
+                    Debug.Log("The campfire has gone out.");
+                    // OnFireplaceOut?.Invoke();
                     enabled = false;
                 }
             }
         }
-
-        public void Interact(GameObject interactor)
+        
+        public bool AddFuel()
         {
-            //PlayerInventory inventory = interactor.GetComponent<PlayerInventory>();
+            if (_currentFuel >= maxFuel)
+            {
+                Debug.Log("[FIREPLACE] Cannot add fuel, already full.");
+                return false;
+            }
             
-            /*
-            if (inventory == null)
+            _currentFuel += fuelPerLog;
+            _currentFuel = Mathf.Min(maxFuel, _currentFuel);
+
+            // Re-enable the Update loop if fire was out
+            if (!enabled)
             {
-                Debug.LogError("PlayerInventory component not found on interactor!");
-                return;
+                enabled = true;
             }
 
-            if (inventory.HasWood)
-            {
-                float fuelToAdd = GetFuelFromCarriedLog(inventory);
+            // OnFuelChanged?.Invoke(_currentFuel, maxFuel);
+            UpdateVFXController();
 
-                if (fuelToAdd > 0)
-                {
-                    _currentFuel += fuelToAdd;
-                    _currentFuel = Mathf.Min(maxFuel, _currentFuel);
-
-                    inventory.ConsumeWood();
-
-                    OnFuelChanged?.Invoke(_currentFuel, maxFuel);
-
-                    UpdateVFXController();
-
-                    // Re-enable the Update loop if fuel was added when it was previously zero
-                    if (!enabled)
-                    {
-                        enabled = true;
-                    }
-
-                    Debug.Log($"[CAMPFIRE] Added {fuelToAdd} fuel. Current Fuel: {_currentFuel:F1}/{maxFuel}.");
-                }
-                else
-                {
-                    Debug.LogWarning("[CAMPFIRE] Log carried has zero fuel value, or the log instance wasn't found.");
-                }
-            }
-            else
-            {
-                Debug.Log("[CAMPFIRE] Interaction attempted, but player is not carrying wood.");
-            }
+            Debug.Log($"[FIREPLACE] Added {fuelPerLog} fuel. Current Fuel: {_currentFuel:F1}/{maxFuel}.");
+            return true;
         }
 
-        private void UpdateScore()
+
+        public InteractionData GetInteractionData()
         {
-            if (_currentFuel > thresholdToScore)
+            return new InteractionData
             {
-                //ScoreManager.Instance.AddScore(baseCampfireScore);
-            }
+                promptText = InteractionPrompt,
+                actionDuration = 0f 
+            };
         }
         
-        /*
+        public void StopInteraction()
+        {
+            // 
+        }
 
+        public void Interact()
+        {
+            Debug.Log("[FIREPLACE] Interact called. The InteractionHandler should manage wood consumption and call AddFuel() directly.");
+        }
+        
+        
+        // This method is no longer needed since the Handler consumes the wood.
+        /*
         private float GetFuelFromCarriedLog(PlayerInventory inventory)
         {
-            // ... (GetFuelFromCarriedLog logic remains the same)
-            GameObject carriedLog = inventory.GetCarriedWoodInstance();
-            if (carriedLog == null)
-            {
-                Debug.LogError("[FUEL GET] Carried wood instance is NULL.");
-                return 0f;
-            }
-
-            FireWoodLogs logComponent = carriedLog.GetComponent<FireWoodLogs>();
-
-            if (logComponent == null)
-            {
-                Debug.LogError("[FUEL GET] Carried log is missing FireWoodLogs component.");
-                return 0f;
-            }
-
-            return logComponent.FuelValue;
+            // ... (old logic removed) ...
+            return 0f;
         }
+
+        public InteractionData GetInteractionData()
+        {
+            // Return data for an instant interaction (duration 0)
+            return new InteractionData(InteractionPrompt, 0f);
+        }
+        
+        public void StopInteraction() { } // Required by IInteractable
+        */
         
     }
 }
-*/

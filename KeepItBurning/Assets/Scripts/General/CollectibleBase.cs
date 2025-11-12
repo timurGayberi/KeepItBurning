@@ -1,6 +1,7 @@
 using UnityEngine;
 using Interfaces;
 using Player;
+using System.Collections;
 
 namespace General
 {
@@ -19,6 +20,10 @@ namespace General
         private Vector3 _initialSpawnPosition; 
         private Vector3 _basePosition; 
         
+        private Rigidbody _rb;
+        private bool _isSettled = false;
+        private static readonly float SettleTime = 1f;
+        
         #endregion
 
         #region Collectible Settings
@@ -32,6 +37,7 @@ namespace General
         protected string collectionPrompt = "Pick up Item";
 
         public string CollectionPrompt => collectionPrompt; 
+        
         #endregion
         
         public virtual CollectibleData GetCollectibleData()
@@ -41,6 +47,10 @@ namespace General
         
         public bool Collect(GameObject interactor)
         {
+            
+            _isSettled = true;
+            if (_rb != null) _rb.isKinematic = true;
+            
             if (interactor.TryGetComponent(out PlayerInventory inventory))
             {
                 bool success = OnCollectedWithInstance(interactor); 
@@ -77,12 +87,42 @@ namespace General
         
         protected virtual void Awake()
         {
+            _rb = GetComponent<Rigidbody>();
+            if (_rb == null)
+            {
+                Debug.LogError($"Collectible '{gameObject.name}' is missing a Rigidbody! This is required to prevent it from falling through the ground. Please add one.");
+            }
+            
             _initialSpawnPosition = transform.position;
         }
         
         protected virtual void OnEnable()
         {
+            _isSettled = false;
             _basePosition = transform.position;
+        }
+        
+        private IEnumerator SettleOnGround()
+        {
+            // 1. Make sure physics is on
+            if (_rb != null)
+            {
+                _rb.isKinematic = false;
+                _rb.WakeUp(); // Ensure it's not sleeping
+            }
+
+            // 2. Wait for a moment to let it fall and stop bouncing
+            yield return new WaitForSeconds(SettleTime); 
+
+            // 3. Now that it's on the ground, get its position
+            _basePosition = transform.position;
+            _isSettled = true;
+            
+            // 4. Turn off physics so our bobbing animation can take over
+            if (_rb != null)
+            {
+                _rb.isKinematic = true; 
+            }
         }
 
         protected virtual void Update() 

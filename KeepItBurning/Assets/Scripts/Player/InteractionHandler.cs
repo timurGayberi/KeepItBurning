@@ -97,7 +97,24 @@ namespace Player
             if (interactable != null)
             {
                 
-                if (interactable is TreeToCut treeToCut)
+                if (interactable is FireplaceInteraction fireplace)
+                {
+                    if (_playerActivities.currentState == PlayerState.IsCarrying && _inventory.CurrentCarryingType == CarryingType.Wood)
+                    {
+                        if (_inventory.ConsumeWood())
+                        {
+                            fireplace.AddFuel();
+                            Debug.Log("[INTERACTION: SUCCESS] Added log to fireplace.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("[INTERACTION: BLOCKED] Must be carrying wood to add to fireplace.");
+                    }
+                    return;
+                }
+                
+                else if (interactable is TreeToCut treeToCut)
                 {
                     var data = treeToCut.GetInteractionData();
 
@@ -113,8 +130,7 @@ namespace Player
                     Debug.Log($"[INTERACTION: BLOCKED] {data.promptText}. Cannot start action.");
                     return;
                 }
-            
-                // --- Fallback for Instant/Simple Interactions ---
+                
                 _playerActivities.SetPlayerState(PlayerState.IsInteracting); 
                 interactable.Interact();
                 _playerActivities.SetPlayerState(PlayerState.IsIdle); 
@@ -133,7 +149,7 @@ namespace Player
         
         private IEnumerator PerformLongInteraction(float duration)
         {
-            float timer = 0f;
+            var timer = 0f;
             while (timer < duration)
             {
                 timer += Time.deltaTime;
