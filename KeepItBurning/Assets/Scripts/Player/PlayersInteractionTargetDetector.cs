@@ -21,7 +21,7 @@ namespace Player
 
         private void DetectTarget()
         {
-            Ray ray = new Ray(transform.position, transform.forward);
+            var ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;
             
             if (Physics.SphereCast(ray, detectionRadius, out hit, detectionDistance, ~0)) 
@@ -39,7 +39,7 @@ namespace Player
 
                 if (isTargetTag)
                 {
-                    IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+                    var interactable = hit.collider.GetComponent<IInteractable>();
                     
                     currentInteractable = interactable;
                     

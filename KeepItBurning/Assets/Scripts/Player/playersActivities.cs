@@ -5,6 +5,7 @@ namespace Player
     public class PlayersActivities : MonoBehaviour
     {
         public PlayerState currentState { get; private set; } = PlayerState.IsIdle;
+        
         public void SetPlayerState(PlayerState newState)
         {
             currentState = newState;

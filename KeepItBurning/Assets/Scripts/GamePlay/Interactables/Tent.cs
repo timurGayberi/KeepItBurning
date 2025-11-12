@@ -1,3 +1,4 @@
+/*
 using Interfaces;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -92,3 +93,4 @@ namespace GamePlay.Interactables
         }
     }
 }
+*/

@@ -29,7 +29,7 @@ namespace GamePlay.Interactables
         [Tooltip("The text prompt shown to the player.")]
         [SerializeField]
         private string interactionPrompt = "Chop Tree";
-        public string InteractionPrompt => interactionPrompt;
+        
 
         [Header("Action Timings")] 
         [Tooltip("Time (in seconds) for the tree to regrow after being chopped.")]
@@ -52,9 +52,7 @@ namespace GamePlay.Interactables
         [Tooltip("Maximum radius logs will scatter from the tree's position.")]
         [SerializeField]
         private float scatterRadius = 0.5f;
-
-        private bool isChopping = false;
-        private Coroutine chopCoroutineInstance;
+        
 
         private void Awake()
         {
@@ -66,17 +64,29 @@ namespace GamePlay.Interactables
             SetTreeVisuals(currentTreeStatus);
         }
         
-        public void Interact(GameObject interactor)
+        public InteractionData GetInteractionData()
+        {
+            string prompt = interactionPrompt;
+            float duration = chopDuration;
+            
+            if (currentTreeStatus != TreeStatus.Uncut)
+            {
+                prompt = $"Regrowing ({Mathf.CeilToInt(regrowthTime)}s remaining)"; // Placeholder prompt for regrowing
+                // Note: The timer logic for regrowth is still internal to this component.
+            }
+
+            return new InteractionData
+            {
+                promptText = prompt,
+                actionDuration = currentTreeStatus == TreeStatus.Uncut ? duration : -1f // Return -1 or 0 to block interaction if uncut
+            };
+        }
+        
+        public void Interact()
         {
             if (currentTreeStatus != TreeStatus.Uncut)
             {
-                Debug.Log($"[CHOP BLOCKED] Tree is already cut ({currentTreeStatus}).");
-                return;
-            }
-
-            if (isChopping)
-            {
-                Debug.Log($"[CHOP IN PROGRESS] Tree is already being chopped. Wait for completion.");
+                Debug.Log($"[CHOP BLOCKED] Tree is already cut ({currentTreeStatus}). Final interact step cancelled.");
                 return;
             }
 
@@ -85,29 +95,6 @@ namespace GamePlay.Interactables
                 Debug.LogError("[CHOP ERROR] Log Prefab is not assigned on TreeToCut component! Tree cannot drop resources.");
                 return;
             }
-
-            isChopping = true;
-            
-
-            Debug.Log($"[CHOP START] Player ({interactor.name}) started chopping! Will take {chopDuration} seconds.");
-            chopCoroutineInstance = StartCoroutine(ChopTreeCoroutine(interactor));
-        }
-        
-        public void StopInteraction()
-        {
-            if (chopCoroutineInstance != null)
-            {
-                StopCoroutine(chopCoroutineInstance);
-                chopCoroutineInstance = null;
-                isChopping = false; // Reset the internal flag
-                Debug.Log("[TREE TO CUT] Chopping interaction successfully cancelled by player.");
-            }
-        }
-        
-        private IEnumerator ChopTreeCoroutine(GameObject interactor)
-        {
-            yield return new WaitForSeconds(chopDuration);
-            
             
             Debug.Log($"[CHOP COMPLETE] Spawning {numberOfLogs} logs.");
 
@@ -124,11 +111,13 @@ namespace GamePlay.Interactables
             }
             
             SetTreeVisuals(TreeStatus.Cut);
-            
-            isChopping = false;
-            
         }
-
+        
+        public void StopInteraction()
+        {
+            Debug.Log("[TREE TO CUT] Chopping interaction successfully cancelled by player.");
+        }
+        
         private void SetTreeVisuals(TreeStatus newStatus)
         {
             currentTreeStatus = newStatus;
@@ -154,7 +143,12 @@ namespace GamePlay.Interactables
 
         private IEnumerator RegrowCoroutine()
         {
-            yield return new WaitForSeconds(regrowthTime);
+            float timer = 0f;
+            while (timer < regrowthTime)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
 
             Debug.Log("[TREE TO CUT] Tree regrowth complete! Setting state to Uncut.");
             

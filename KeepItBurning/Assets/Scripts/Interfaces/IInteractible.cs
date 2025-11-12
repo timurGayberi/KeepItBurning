@@ -2,9 +2,18 @@ using UnityEngine;
 
 namespace Interfaces
 {
+    public struct InteractionData
+    {
+        public string promptText;
+        public float actionDuration;
+    }
+
     public interface IInteractable
     {
-        string InteractionPrompt { get; }
-        void Interact(GameObject interactor);
+        InteractionData GetInteractionData();
+        
+        void Interact(); 
+        
+        void StopInteraction();
     }
 }
