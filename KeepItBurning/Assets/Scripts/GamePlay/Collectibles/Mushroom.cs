@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Player;
 using General;
@@ -26,7 +27,7 @@ namespace GamePlay.Collectibles
 
         [SerializeField] private GameObject _yellowMushroomPrefab;
 
-        private void Awake()
+        protected override void Awake()
         {
             if (_mushroomType == MushroomType.Default)
             {
@@ -53,10 +54,14 @@ namespace GamePlay.Collectibles
                 case MushroomType.Yellow:
                     if (_yellowMushroomPrefab != null) _yellowMushroomPrefab.SetActive(true);
                     break;
+                case MushroomType.Default:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        protected override void OnCollected() //  < == players inventory 
+        protected override void OnCollected() //  < == players inventory or collectibles logic in our case  
         {
             Destroy(gameObject);
 

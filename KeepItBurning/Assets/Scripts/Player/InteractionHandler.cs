@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using General;
 using Interfaces;
@@ -11,6 +12,10 @@ namespace Player
         private PlayersInteractionTargetDetector _detector;
         private PlayersActivities _playerActivities;
         private IInputService _inputService; 
+        
+        // State management for long interactions
+        private IInteractable _activeInteractable = null;
+        private Coroutine _interactionCoroutine = null;
 
         private void Awake()
         {
@@ -40,38 +45,142 @@ namespace Player
             {
                 _inputService.OnInteractEvent -= HandleInteractionInput;
             }
+            // Ensure any running coroutine is stopped if the handler is disabled
+            if (_interactionCoroutine != null)
+            {
+                CancelInteraction(false);
+            }
+        }
+
+        /// <summary>
+        /// Continuous check to ensure player stays within range of the target during a long interaction.
+        /// </summary>
+        private void Update()
+        {
+            // Only perform the check if a long-running interaction is active (player is chopping)
+            if (_interactionCoroutine != null)
+            {
+                // Check 1: Did the target get destroyed? (Unity null check)
+                if (_activeInteractable == null)
+                {
+                    Debug.Log("[INTERACTION: OBJECT DESTROYED] Target was destroyed mid-interaction.");
+                    // We use 'false' because we can't notify a destroyed object.
+                    CancelInteraction(false); 
+                    return;
+                }
+                
+                // Check 2: Did the player move out of range?
+                // The detector should still be reporting the _activeInteractable as the current target.
+                // If it's not (it's null or a different target), the player moved.
+                if (_detector.currentInteractable != _activeInteractable)
+                {
+                    HandleMovementInterruption(); 
+                }
+            }
         }
         
         private void HandleInteractionInput()
         {
-            if ( _playerActivities.currentState == PlayerState.IsInteracting ||  _playerActivities.currentState == PlayerState.IsChopping)
+            // --- 1. Cancellation Check (If the player is currently busy and presses the button again) ---
+            if (_playerActivities.currentState == PlayerState.IsInteracting || _playerActivities.currentState == PlayerState.IsChopping)
             {
-                Debug.Log($"[INTERACTION: CANCELLATION] Player interaction state reset to Idle from { _playerActivities.currentState}.");
-                
-                if (_detector.currentInteractable is TreeToCut treeToCut)
-                {
-                    treeToCut.StopInteraction(); 
-                }
-                
-                _playerActivities.SetPlayerState(PlayerState.IsIdle);
+                CancelInteraction(true); 
                 return; 
             }
             
+            // --- 2. Start Interaction Check ---
             IInteractable interactable = _detector.currentInteractable;
             
-            if (interactable != null)
+            if (interactable == null)
             {
-                
-                Debug.Log($"[INTERACTION: START] Starting long interaction with: {interactable.InteractionPrompt}.");
-                
-                _playerActivities.SetPlayerState(PlayerState.IsInteracting); 
-                
-                interactable.Interact(gameObject); 
-                
-                return; 
+                Debug.Log("[INTERACTION: NO TARGET] No interactable target found.");
+                return;
             }
             
-            Debug.Log("[INTERACTION: NO TARGET] No interactable target found.");
+            // Check if it's a long-running interaction like TreeToCut
+            if (interactable is TreeToCut treeToCut)
+            {
+                InteractionData data = treeToCut.GetInteractionData();
+
+                if (data.actionDuration > 0f)
+                {
+                    // Start a long interaction (chopping)
+                    _activeInteractable = treeToCut;
+                    _interactionCoroutine = StartCoroutine(PerformLongInteraction(data.actionDuration));
+                    _playerActivities.SetPlayerState(PlayerState.IsChopping);
+                    Debug.Log($"[INTERACTION: LONG START] Starting {data.promptText}. Will take {data.actionDuration} seconds.");
+                    return;
+                }
+                
+                // If duration is <= 0 (e.g., resource is regrowing), log and block
+                Debug.Log($"[INTERACTION: BLOCKED] {data.promptText}. Cannot start action.");
+                return;
+            }
+            
+            // --- 3. Fallback for Instant/Simple Interactions ---
+            
+            _playerActivities.SetPlayerState(PlayerState.IsInteracting); 
+            
+            interactable.Interact();
+            
+            _playerActivities.SetPlayerState(PlayerState.IsIdle); 
+        }
+        
+        private IEnumerator PerformLongInteraction(float duration)
+        {
+            float timer = 0f;
+            while (timer < duration)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            
+            // Interaction completed successfully!
+            Debug.Log("[INTERACTION: SUCCESS] Long interaction timer finished.");
+            
+            if (_activeInteractable is TreeToCut treeToCut)
+            {
+                treeToCut.Interact(); 
+            }
+            
+            // Clean up state
+            _activeInteractable = null;
+            _interactionCoroutine = null;
+            _playerActivities.SetPlayerState(PlayerState.IsIdle);
+        }
+        
+        /// <summary>
+        /// Stops the currently active interaction timer and resets player state.
+        /// </summary>
+        /// <param name="notifyTarget">If true, calls StopInteraction() on the target.</param>
+        private void CancelInteraction(bool notifyTarget)
+        {
+            if (_interactionCoroutine != null)
+            {
+                StopCoroutine(_interactionCoroutine);
+                _interactionCoroutine = null;
+                Debug.Log($"[INTERACTION: CANCELLATION] Interaction timer stopped. State reset from {_playerActivities.currentState}.");
+            }
+            
+            if (notifyTarget && _activeInteractable != null)
+            {
+                _activeInteractable.StopInteraction(); 
+            }
+
+            _activeInteractable = null;
+            _playerActivities.SetPlayerState(PlayerState.IsIdle);
+        }
+        
+        /// <summary>
+        /// Public method to interrupt interaction, typically called by player movement or proximity checks.
+        /// </summary>
+        public void HandleMovementInterruption()
+        {
+            if (_interactionCoroutine != null)
+            {
+                Debug.Log("[INTERACTION: MOVEMENT CANCEL] Interaction interrupted due to movement.");
+                CancelInteraction(true);
+            }
         }
     }
 }

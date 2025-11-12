@@ -1,6 +1,7 @@
 using System.Collections;
 using Interfaces;
 using UnityEngine;
+using ScriptableObjects; // Necessary to reference TreeData
 
 namespace GamePlay.Interactables
 {
@@ -13,49 +14,29 @@ namespace GamePlay.Interactables
 
     public class TreeToCut : MonoBehaviour, IInteractable
     {
+        [Header("Configuration")]
+        [Tooltip("The ScriptableObject containing all the tree's stats and output resources.")]
+        [SerializeField]
+        private TreeData treeData;
+        
+        [Header("Resource Output")]
+        [Tooltip("The Log Prefab to be spawned when the tree is destroyed.")]
+        public GameObject logPrefab;
+
         [Header("Visual References")]
         [SerializeField]
         private GameObject _trunk;
 
         [SerializeField]
-        private GameObject _log;
+        private GameObject _log; 
 
         [SerializeField]
         private GameObject _leaves;
 
         public TreeStatus currentTreeStatus = TreeStatus.Default;
-
-        [Header("Interaction Settings")]
-        [Tooltip("The text prompt shown to the player.")]
-        [SerializeField]
-        private string interactionPrompt = "Chop Tree";
-        public string InteractionPrompt => interactionPrompt;
-
-        [Header("Action Timings")] 
-        [Tooltip("Time (in seconds) for the tree to regrow after being chopped.")]
-        [SerializeField]
-        private float regrowthTime = 30f;
-
-        [Tooltip("The time (in seconds) required to fully chop down the tree.")]
-        [SerializeField]
-        private float chopDuration = 1.0f;
-
-        [Header("Resource Output")]
-        [Tooltip("The Log Prefab to be spawned when the tree is destroyed.")]
-        [SerializeField]
-        private GameObject logPrefab;
-
-        [Tooltip("The number of logs that will be spawned.")]
-        [SerializeField]
-        private int numberOfLogs = 3;
-
-        [Tooltip("Maximum radius logs will scatter from the tree's position.")]
-        [SerializeField]
-        private float scatterRadius = 0.5f;
-
-        private bool isChopping = false;
-        private Coroutine chopCoroutineInstance;
-
+        
+        private float _regrowTimer;
+        
         private void Awake()
         {
             if (currentTreeStatus == TreeStatus.Default)
@@ -66,54 +47,62 @@ namespace GamePlay.Interactables
             SetTreeVisuals(currentTreeStatus);
         }
         
-        public void Interact(GameObject interactor)
+        public InteractionData GetInteractionData()
         {
+            if (treeData == null)
+            {
+                Debug.LogError($"TreeData is not assigned on {gameObject.name}!");
+                return new InteractionData { promptText = "Error: No Data", actionDuration = -1f };
+            }
+
+            // --- DATA RETRIEVED FROM SCRIPTABLE OBJECT ---
+            string prompt = treeData.interactionPrompt;
+            float duration = treeData.chopDuration;
+            
             if (currentTreeStatus != TreeStatus.Uncut)
             {
-                Debug.Log($"[CHOP BLOCKED] Tree is already cut ({currentTreeStatus}).");
+                // Calculate remaining time using the local timer and the data's regrowth time
+                float remainingTime = treeData.regrowthTime - _regrowTimer;
+
+                prompt = $"Regrowing ({Mathf.CeilToInt(remainingTime)}s remaining)"; 
+                
+                // Block interaction if the tree is cut
+                duration = -1f; 
+            }
+
+            return new InteractionData
+            {
+                promptText = prompt,
+                actionDuration = duration
+            };
+        }
+        
+        public void Interact()
+        {
+            if (treeData == null)
+            {
+                Debug.LogError($"TreeData is not assigned on {gameObject.name}! Cannot interact.");
                 return;
             }
 
-            if (isChopping)
+            if (currentTreeStatus != TreeStatus.Uncut)
             {
-                Debug.Log($"[CHOP IN PROGRESS] Tree is already being chopped. Wait for completion.");
+                Debug.Log($"[CHOP BLOCKED] Tree is already cut ({currentTreeStatus}). Final interact step cancelled.");
                 return;
             }
 
             if (logPrefab == null)
             {
-                Debug.LogError("[CHOP ERROR] Log Prefab is not assigned on TreeToCut component! Tree cannot drop resources.");
+                Debug.LogError("[CHOP ERROR] Log Prefab is not assigned in the TreeData Scriptable Object! Tree cannot drop resources.");
                 return;
             }
-
-            isChopping = true;
             
+            Debug.Log($"[CHOP COMPLETE] Spawning {treeData.numberOfLogs} logs.");
 
-            Debug.Log($"[CHOP START] Player ({interactor.name}) started chopping! Will take {chopDuration} seconds.");
-            chopCoroutineInstance = StartCoroutine(ChopTreeCoroutine(interactor));
-        }
-        
-        public void StopInteraction()
-        {
-            if (chopCoroutineInstance != null)
+            // Spawning logic uses data from Scriptable Object
+            for (int i = 0; i < treeData.numberOfLogs; i++)
             {
-                StopCoroutine(chopCoroutineInstance);
-                chopCoroutineInstance = null;
-                isChopping = false; // Reset the internal flag
-                Debug.Log("[TREE TO CUT] Chopping interaction successfully cancelled by player.");
-            }
-        }
-        
-        private IEnumerator ChopTreeCoroutine(GameObject interactor)
-        {
-            yield return new WaitForSeconds(chopDuration);
-            
-            
-            Debug.Log($"[CHOP COMPLETE] Spawning {numberOfLogs} logs.");
-
-            for (int i = 0; i < numberOfLogs; i++)
-            {
-                var randomCircle = Random.insideUnitCircle * scatterRadius;
+                var randomCircle = Random.insideUnitCircle * treeData.scatterRadius;
                 var spawnPosition = new Vector3(
                     transform.position.x + randomCircle.x,
                     transform.position.y + 0.1f, 
@@ -124,11 +113,13 @@ namespace GamePlay.Interactables
             }
             
             SetTreeVisuals(TreeStatus.Cut);
-            
-            isChopping = false;
-            
         }
-
+        
+        public void StopInteraction()
+        {
+            Debug.Log("[TREE TO CUT] Chopping interaction successfully cancelled by player.");
+        }
+        
         private void SetTreeVisuals(TreeStatus newStatus)
         {
             currentTreeStatus = newStatus;
@@ -154,7 +145,13 @@ namespace GamePlay.Interactables
 
         private IEnumerator RegrowCoroutine()
         {
-            yield return new WaitForSeconds(regrowthTime);
+            _regrowTimer = 0f;
+            
+            while (_regrowTimer < treeData.regrowthTime)
+            {
+                _regrowTimer += Time.deltaTime;
+                yield return null;
+            }
 
             Debug.Log("[TREE TO CUT] Tree regrowth complete! Setting state to Uncut.");
             

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ChopTarget
   - Interactable
+  - Collectible
   layers:
   - Default
   - TransparentFX

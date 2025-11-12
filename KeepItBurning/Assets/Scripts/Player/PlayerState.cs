@@ -6,6 +6,7 @@ namespace Player
         IsWalking,
         IsSprinting,
         IsInteracting,
-        IsChopping
+        IsChopping,
+        IsCarrying
     }
 }

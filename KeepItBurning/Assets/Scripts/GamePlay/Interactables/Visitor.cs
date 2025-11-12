@@ -1,6 +1,5 @@
 using UnityEngine;
 using Interfaces;
-using Player;
 using System.Collections;
 
 namespace GamePlay.Interactables
@@ -11,6 +10,9 @@ namespace GamePlay.Interactables
         RequestMarshmallow,
         RequestHotChocolate,
         RequestSausage
+        
+        // more to come ?
+        
     }
 
     public class Visitor : MonoBehaviour , IInteractable
@@ -27,8 +29,10 @@ namespace GamePlay.Interactables
         private Coroutine popupRoutine;
         private Coroutine idleRoutine;
 
-        [SerializeField] private string interactionPrompt = "Talk to Visitor";
-        public string InteractionPrompt => interactionPrompt;
+        private const string BASE_PROMPT = "Interact with visitor";
+        
+        public string InteractionPrompt => BASE_PROMPT;
+        
         public void Interact(GameObject interactor)
         {
             Debug.Log($"Player ({interactor.name}) is interacting with the {InteractionPrompt}");
@@ -38,34 +42,63 @@ namespace GamePlay.Interactables
         {
             SetIdle();
         }
+        
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.X))
                 SetIdle();
         }
-    
 
-        public void Interact(GameObject interactor, PlayerMovement playerMovement)
+
+        public InteractionData GetInteractionData()
         {
-            /* string heldItem = timur pls help i dont understand interactable script
+            var prompt = BASE_PROMPT;
+            
+            if (currentVisitorStatus != VisitorStatus.Idle)
+            {
+                var request = currentVisitorStatus.ToString().Replace("Request", "");
+                prompt = $"Serve {request} to visitor";
+            }
+            
+            return new InteractionData
+            {
+                actionDuration = 0f, 
+                promptText = prompt
+            };
+        }
+
+        public void Interact()
+        {
+            var heldItem = "Marshmallow"; 
+
+            if (currentVisitorStatus == VisitorStatus.Idle)
+            {
+                Debug.Log("Visitor is currently idle and not requesting anything. Nothing happens.");
+                return;
+            }
 
             if (IsCorrectItem(heldItem))
             {
+                Debug.Log($"SUCCESS! Served '{heldItem}' to satisfy request: {currentVisitorStatus}. (+SCORE, +HAPPINESS)");
                 SetIdle();
-                //add score
-                //addhappiness
+                // TODO: Add score/happiness logic here
             }
             else
             {
+                Debug.Log($"FAILURE. Player attempted to serve '{heldItem}', but visitor requested: {currentVisitorStatus}. (-SCORE, -HAPPINESS)");
                 SetIdle();
-                //add less score
-                //remove happiness
-            }*/
+                // TODO: Add less score/remove happiness logic here
+            }
+        }
+
+        public void StopInteraction()
+        {
+            //TODO: Stop interaction logic 
         }
 
         private void ChooseRandomRequest()
         {
-            int random = Random.Range(0, 3);
+            int random = Random.Range(0, 3); 
             VisitorStatus newStatus = (VisitorStatus)(random + 1);
             SetVisitorVisuals(newStatus);
         }
@@ -96,7 +129,7 @@ namespace GamePlay.Interactables
                 return false;
 
             var isCorrect = false;
-
+            
             switch (currentVisitorStatus)
             {
                 case VisitorStatus.RequestMarshmallow:
@@ -108,8 +141,6 @@ namespace GamePlay.Interactables
                 case VisitorStatus.RequestSausage:
                     isCorrect = itemName.Equals("Sausage", System.StringComparison.OrdinalIgnoreCase);
                     break;
-                
-                //Case more to come ???
                 
                 default:
                     isCorrect = false;
@@ -144,29 +175,32 @@ namespace GamePlay.Interactables
         {
             requestCanva.SetActive(true);
             alertIcon.SetActive(true);
+            SetIconsToFalse(alertOnly: true);
 
             yield return new WaitForSeconds(alertDuration);
+            
+            alertIcon.SetActive(false);
 
             switch (status)
             {
                 case VisitorStatus.RequestMarshmallow:
-                    SetIconsToFalse();
                     marshmallowIcon.SetActive(true);
                     break;
                 case VisitorStatus.RequestHotChocolate:
-                    SetIconsToFalse();
                     hotChocolateIcon.SetActive(true);
                     break;
                 case VisitorStatus.RequestSausage:
-                    SetIconsToFalse();
                     sausageIcon.SetActive(true);
                     break;
             }
         }
         
-        private void SetIconsToFalse()
+        private void SetIconsToFalse(bool alertOnly = false)
         {
-            alertIcon.SetActive(false);
+            if (!alertOnly)
+            {
+                alertIcon.SetActive(false);
+            }
             marshmallowIcon.SetActive(false);
             hotChocolateIcon.SetActive(false);
             sausageIcon.SetActive(false);

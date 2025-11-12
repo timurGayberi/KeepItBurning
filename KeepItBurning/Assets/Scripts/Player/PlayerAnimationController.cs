@@ -26,6 +26,7 @@ namespace Player
         }
 
         private void OnEnable()
+        
         {
             if (playerMovement != null)
             {
@@ -41,8 +42,7 @@ namespace Player
                 playerMovement.OnPlayerStateChange -= SetAnimatorState;
             }
         }
-        
-        private void SetAnimatorState(PlayerState newState)
+        public void SetAnimatorState(PlayerState newState)
         {
             animator.SetInteger(stateHash, (int)newState);
             Debug.Log($"[Animator] Setting state to: {(int)newState} ({newState})");

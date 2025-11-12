@@ -1,3 +1,4 @@
+/*
 using Interfaces;
 using UnityEngine;
 
@@ -33,7 +34,6 @@ namespace GamePlay.Interactables
         [Tooltip("The CampfireVFXController controlling the fire visuals.")]
         [SerializeField]
         private CampfireVFXController vfxController;
-        */
 
         [Space]
         [SerializeField] private float baseCampfireScore;
@@ -49,7 +49,6 @@ namespace GamePlay.Interactables
             /*
             _currentFuel = maxFuel;
             OnFuelChanged?.Invoke(_currentFuel, maxFuel);
-            */
         }
 
         private void UpdateVFXController()
@@ -60,7 +59,6 @@ namespace GamePlay.Interactables
                 float normalizedFuel = _currentFuel / maxFuel;
                 vfxController.SetFuelNormalized(normalizedFuel);
             }
-            */
         }
 
         private void Update()
@@ -87,7 +85,6 @@ namespace GamePlay.Interactables
                     OnFireplaceOut?.Invoke();
 
                     enabled = false;
-                    */
                 }
             }
         }
@@ -135,7 +132,6 @@ namespace GamePlay.Interactables
             {
                 Debug.Log("[CAMPFIRE] Interaction attempted, but player is not carrying wood.");
             }
-            */
         }
 
         private void UpdateScore()
@@ -169,6 +165,6 @@ namespace GamePlay.Interactables
             return logComponent.FuelValue;
         }
         
-        */
     }
 }
+*/

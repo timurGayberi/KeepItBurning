@@ -5,12 +5,25 @@ namespace GamePlay.Interactables
 {
     public class TrashBox : MonoBehaviour , IInteractable
     {
-        public string InteractionPrompt { get; } = "Trash box";
-
-        public void Interact(GameObject interactor)
+        private const string INTERACTION_PROMPT = "Use Trash Box";
+        
+        public InteractionData GetInteractionData()
         {
-            Debug.Log($"Player ({interactor.name}) is interacting with the {InteractionPrompt}");
-            //Destroy(gameObject);
+            return new InteractionData
+            {
+                promptText = INTERACTION_PROMPT,
+                actionDuration = 0f // <-- Key change: 0 duration means instant execution
+            };
+        }
+
+        public void Interact()
+        {
+            Debug.Log($"Trashing item in the {INTERACTION_PROMPT}.");
+        }
+
+        public void StopInteraction()
+        {
+            //Debug.Log("[TRASH BOX] Interaction stopped (not applicable for instant action).");
         }
     }
 }
