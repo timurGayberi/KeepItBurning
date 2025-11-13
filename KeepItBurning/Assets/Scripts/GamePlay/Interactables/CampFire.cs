@@ -12,7 +12,8 @@ namespace GamePlay.Interactables
         public static event Action OnFireplaceOut;
 
         #region Variables
-
+        [Header("Fire Particles")]
+        [SerializeField] private ParticleSystem[] fireParticles;
         [Header("Interaction Settings")]
         [Tooltip("The text prompt shown to the player when near the fireplace.")]
         [SerializeField]
@@ -64,6 +65,25 @@ namespace GamePlay.Interactables
             }
         }
         */
+        private void EnableFireParticles()
+        {
+            if (fireParticles == null || fireParticles.Length == 0) return;
+
+            foreach (var ps in fireParticles)
+            {
+                if (ps == null) continue;
+
+                if (!ps.gameObject.activeSelf)
+                {
+                    ps.gameObject.SetActive(true);
+                }
+
+                if (!ps.isPlaying)
+                {
+                    ps.Play();
+                }
+            }
+        }
 
         private void Update()
         {
@@ -118,7 +138,7 @@ namespace GamePlay.Interactables
 
                     // ConsumeWood() handles decrementing the count
                     inventory.ConsumeWood();
-
+                    EnableFireParticles();
                     OnFuelChanged?.Invoke(_currentFuel, maxFuel);
 
                     //UpdateVFXController();
