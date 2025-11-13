@@ -84,6 +84,13 @@ namespace Managers.GeneralManagers
 
         private void HandlePauseInput()
         {
+            // If on settings panel, let ClipboardMenuController handle the input instead
+            if (ClipboardMenuController.Instance != null && ClipboardMenuController.Instance.IsOnSettingsMenu())
+            {
+                ClipboardMenuController.Instance.ShowMainMenu();
+                return;
+            }
+
             if (currentState == GameState.GamePlay)
             {
                 SoundManager.Play(SoundAction.PauseMenu);

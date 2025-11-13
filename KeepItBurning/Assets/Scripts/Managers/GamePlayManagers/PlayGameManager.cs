@@ -75,10 +75,28 @@ namespace Managers.GamePlayManagers
         {
             if (GameStateManager.instance != null)
             {
-                //SaveManager.AddScoreToLb(ScoreManager.Instance.Score);
                 GameStateManager.instance.TriggerGameOver();
                 SoundManager.Play(SoundAction.LostGame);
                 SoundManager.Play(SoundAction.GameOver);
+
+                // Save score to leaderboard
+                SaveManager saveManager = FindObjectOfType<SaveManager>();
+                if (saveManager != null)
+                {
+                    // Try to use ScoreManager score first, fall back to PlayGameManager score
+                    float finalScore = score;
+                    if (ScoreManager.Instance != null)
+                    {
+                        finalScore = ScoreManager.Instance.Score;
+                    }
+
+                    saveManager.AddScoreToLb(finalScore);
+                    Debug.Log($"[PlayGameManager] Score {finalScore} saved to leaderboard.");
+                }
+                else
+                {
+                    Debug.LogWarning("[PlayGameManager] SaveManager not found. Score not saved to leaderboard.");
+                }
             }
             else
             {

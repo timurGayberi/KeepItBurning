@@ -11,6 +11,14 @@ public class ClipboardMenuController : MonoBehaviour
     [SerializeField] private float fadeDuration = 0.5f;
 
     private Coroutine fadeCoroutine;
+    private bool isOnSettingsMenu = false;
+
+    public static ClipboardMenuController Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -69,6 +77,7 @@ public class ClipboardMenuController : MonoBehaviour
         // Instantly hide main menu and show settings
         HideMenuInstant(clipboardMainMenu);
         ShowMenuInstant(clipboardSettings);
+        isOnSettingsMenu = true;
         yield break;
     }
 
@@ -77,7 +86,16 @@ public class ClipboardMenuController : MonoBehaviour
         // Instantly hide settings and show main menu
         HideMenuInstant(clipboardSettings);
         ShowMenuInstant(clipboardMainMenu);
+        isOnSettingsMenu = false;
         yield break;
+    }
+
+    /// <summary>
+    /// Check if currently on the settings menu
+    /// </summary>
+    public bool IsOnSettingsMenu()
+    {
+        return isOnSettingsMenu;
     }
 
     private void HideMenuInstant(CanvasGroup canvasGroup)
