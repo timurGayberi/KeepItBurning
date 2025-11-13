@@ -8,7 +8,8 @@ namespace GamePlay.Interactables
         //public static event Action OnFireplaceOut; // Keep commented for now
 
         #region Variables
-
+        [Header("Fire Particles")]
+        [SerializeField] private ParticleSystem[] fireParticles;
         [Header("Interaction Settings")]
         [Tooltip("The text prompt shown to the player when near the fireplace.")]
         [SerializeField]
@@ -95,12 +96,30 @@ namespace GamePlay.Interactables
 
             // OnFuelChanged?.Invoke(_currentFuel, maxFuel);
             UpdateVFXController();
-
+            EnableFireParticles();
             Debug.Log($"[FIREPLACE] Added {fuelPerLog} fuel. Current Fuel: {_currentFuel:F1}/{maxFuel}.");
             return true;
         }
 
+        private void EnableFireParticles()
+        {
+            if (fireParticles == null || fireParticles.Length == 0) return;
 
+            foreach (var ps in fireParticles)
+            {
+                if (ps == null) continue;
+
+                if (!ps.gameObject.activeSelf)
+                {
+                    ps.gameObject.SetActive(true);
+                }
+
+                if (!ps.isPlaying)
+                {
+                    ps.Play();
+                }
+            }
+        }
         public InteractionData GetInteractionData()
         {
             return new InteractionData
