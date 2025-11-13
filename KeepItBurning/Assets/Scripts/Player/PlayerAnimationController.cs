@@ -19,9 +19,12 @@ namespace Player
             {
                 Debug.LogError("Animator component not found on PlayerAnimatorController GameObject.");
             }
+            
             if (playerMovement == null)
             {
-                Debug.LogError("PlayerMovement component not found. Cannot subscribe to state changes.");
+                Debug.LogWarning("PlayerMovement component not found. Disabling PlayerAnimatorController to prevent errors.");
+                Destroy(this);
+                return; // Exit Awake early
             }
         }
 
@@ -42,6 +45,7 @@ namespace Player
                 playerMovement.OnPlayerStateChange -= SetAnimatorState;
             }
         }
+        
         public void SetAnimatorState(PlayerState newState)
         {
             animator.SetInteger(stateHash, (int)newState);
