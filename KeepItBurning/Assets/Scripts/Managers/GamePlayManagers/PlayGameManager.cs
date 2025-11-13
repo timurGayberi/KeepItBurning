@@ -75,6 +75,8 @@ namespace Managers.GamePlayManagers
             if (GameStateManager.instance != null)
             {
                 GameStateManager.instance.TriggerGameOver();
+                SoundManager.Play(SoundAction.LostGame);
+                SoundManager.Play(SoundAction.GameOver);
             }
             else
             {

@@ -32,11 +32,22 @@ public class CookableItems : MonoBehaviour
         timer += Time.deltaTime;
 
         if (timer >= burnTime)
+        {
             SetState(CollectibleBase.CookState.Burnt);
+            SoundManager.Play(SoundAction.BurnedFood);
+        }
+            
         else if (timer >= cookTime)
+        {
+            SoundManager.Play(SoundAction.FoodCoockedGood);
             SetState(CollectibleBase.CookState.Cooked);
+        }
+            
         else
+        {
             SetState(CollectibleBase.CookState.Raw);
+        }
+            
     }
 
     void SetState(CollectibleBase.CookState newState)
@@ -52,6 +63,7 @@ public class CookableItems : MonoBehaviour
 
     public void StartCooking()
     {
+        SoundManager.Play(SoundAction.PutingFoodInCampFire);
         isOnHeat = true;
         timer = 0f;
     }
