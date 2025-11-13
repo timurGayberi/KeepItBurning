@@ -27,7 +27,8 @@ namespace Managers.GeneralManagers
             
             MainMenu,
             GamePlay,
-            Paused
+            Paused,
+            GameOver
         }
 
         private IInputService inputService;
@@ -121,6 +122,11 @@ namespace Managers.GeneralManagers
                     inputService.DisablePlayerInput();
                     inputService.EnableUIInput();
                     break;
+                case GameState.GameOver:
+                    Time.timeScale = 0.0f;
+                    inputService.DisablePlayerInput();
+                    inputService.EnableUIInput();
+                    break;
             }
         }
         
@@ -183,7 +189,12 @@ namespace Managers.GeneralManagers
                 SceneLoader.Instance.ReloadCurrentScene();
             }
         }
-        
+
+        public void TriggerGameOver()
+        {
+            UpdateState(GameState.GameOver);
+        }
+
         #endregion
     }
 }
