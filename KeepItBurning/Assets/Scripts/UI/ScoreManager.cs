@@ -56,7 +56,7 @@ namespace Score
 
         public void AddScore(float AddScore)
         {
-            Score += AddScore * timeManager.TimeMultiplier * Time.deltaTime;
+            Score += AddScore * timeManager.TimeMultiplier * happinessManager.happinessMultiplier;
             scoreText.text=Score.ToString("F0");
         }
 

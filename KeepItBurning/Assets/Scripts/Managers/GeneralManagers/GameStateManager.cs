@@ -5,6 +5,7 @@ using UnityEngine;
 using Managers.GamePlayManagers;
 using UnityEngine.UI;
 using Managers.GeneralManagers;
+using Score;
 
 namespace Managers.GeneralManagers
 {
@@ -16,7 +17,9 @@ namespace Managers.GeneralManagers
         public GameState currentState { get; private set;}
         
         public static event Action<GameState> OnGameStateChanged;
-        
+
+        [SerializeField] public SaveManager saveManager;
+
         // Scenes state machine
         public enum GameState
         {
@@ -131,6 +134,7 @@ namespace Managers.GeneralManagers
 
         public void QuitToMainMenu()
         {
+            saveManager.AddScoreToLb(ScoreManager.Instance.Score);
             if (PlayGameManager.Instance != null)
             {
                 PlayGameManager.Instance.ResetAllStats();

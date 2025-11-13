@@ -12,8 +12,8 @@ public class VisitorsManager : MonoBehaviour
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
     [SerializeField] public Transform campfire;
-    [SerializeField] private float minRespawnTime = 3f;
-    [SerializeField] private float maxRespawnTime = 8f;
+    [SerializeField] private float minRespawnTime = 15f;
+    [SerializeField] private float maxRespawnTime = 30f;
 
     private List<GameObject> activeVisitors = new List<GameObject>();
     private List<Transform> availableSpawnPoints = new List<Transform>();
@@ -31,10 +31,6 @@ public class VisitorsManager : MonoBehaviour
     void Update()
     {
         CountToSpawVisitors += Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.C))
-            SpawnVisitor();
-        if (Input.GetKeyDown(KeyCode.V) && activeVisitors.Count > 0)
-            RemoveVisitor(activeVisitors[0]);
         if (CountToSpawVisitors > TimeToSpawVisitors)
         {
             CountToSpawVisitors = 0f;
@@ -62,6 +58,7 @@ public class VisitorsManager : MonoBehaviour
         availableSpawnPoints.RemoveAt(randomIndex);
 
         GameObject newVisitor = Instantiate(chosenPrefab, chosenPoint.position, Quaternion.identity);
+
         if (campfire != null)
         {
             newVisitor.transform.LookAt(campfire);
@@ -87,6 +84,7 @@ public class VisitorsManager : MonoBehaviour
 
         Destroy(visitor);
         currentVisitors--;
+        TimeToSpawVisitors--;
 
         StartCoroutine(RespawnVisitorAfterDelay());
     }

@@ -46,8 +46,6 @@ namespace GamePlay.Interactables
         
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.X))
-                SetIdle();
             if (Camera.main != null && requestCanva != null && requestCanva.activeSelf)
             {
                 requestCanva.transform.LookAt(Camera.main.transform);
