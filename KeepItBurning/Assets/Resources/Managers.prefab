@@ -276,6 +276,16 @@ MonoBehaviour:
     maxDistance: 10
     rolloffMode: 0
     output: {fileID: -4093017986523000424, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  - action: 3
+    clips:
+    - {fileID: 8300000, guid: a108fe035d5e02148b1cff166760eac6, type: 3}
+    volume: 1
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 1
+    maxDistance: 10
+    rolloffMode: 0
+    output: {fileID: -4093017986523000424, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
   masterVolume: 0.6
   initialPoolSize: 10
   dontDestroyOnLoad: 1
