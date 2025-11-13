@@ -282,7 +282,9 @@ namespace DentedPixel.LTExamples
             //          LTDescr descr2 = LeanTween.descr( descrId );
             //          LeanTest.expect(descr2 == null,"DESCRIPTION STARTS AS NULL");
 
+#pragma warning disable CS0618
             StartCoroutine(timeBasedTesting());
+#pragma warning restore CS0618
         }
 
         private GameObject cubeNamed(string name)

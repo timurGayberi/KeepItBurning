@@ -17,8 +17,10 @@ namespace GamePlay.Collectibles
     {
         [Header("Mushroom type")] public MushroomType _mushroomType = MushroomType.Red;
 
+#pragma warning disable CS0414
         [Tooltip("The amount of this resource to give the player.")] [SerializeField]
         private int quantity = 1;
+#pragma warning restore CS0414
 
         [Header("Visual Prefabs")] [SerializeField]
         private GameObject _redMushroomPrefab;

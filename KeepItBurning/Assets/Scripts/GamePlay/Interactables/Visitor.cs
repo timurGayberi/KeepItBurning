@@ -1,18 +1,21 @@
 using UnityEngine;
 using Interfaces;
 using System.Collections;
+using General;
+using Player;
+using Score;
 
 namespace GamePlay.Interactables
 {
     public enum VisitorStatus
     {
         Idle,
-        RequestMarshmallow,
-        RequestHotChocolate,
-        RequestSausage
-        
-        // more to come ?
-        
+        RequestMarshmallowCooked,
+        RequestHotChocolateCooked,
+        RequestSausageCooked
+
+        // Visitors only want cooked food!
+
     }
 
     public class Visitor : MonoBehaviour , IInteractable
@@ -22,78 +25,124 @@ namespace GamePlay.Interactables
         [SerializeField] public GameObject marshmallowIcon;
         [SerializeField] public GameObject hotChocolateIcon;
         [SerializeField] public GameObject sausageIcon;
+        [SerializeField] public GameObject HappyIcon;
+        [SerializeField] public GameObject AngryIcon;
 
         [SerializeField] private VisitorStatus currentVisitorStatus;
         [SerializeField] private float alertDuration = 2f;
+        [SerializeField] private float leaveDelay = 2f;
 
         private Coroutine popupRoutine;
         private Coroutine idleRoutine;
+        private VisitorsManager visitorsManager;
 
         private const string BASE_PROMPT = "Interact with visitor";
         
         public string InteractionPrompt => BASE_PROMPT;
         
-        public void Interact(GameObject interactor)
-        {
-            Debug.Log($"Player ({interactor.name}) is interacting with the {InteractionPrompt}");
-        }
-
         private void Start()
         {
+            visitorsManager = FindObjectOfType<VisitorsManager>();
             SetIdle();
         }
         
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.X))
-                SetIdle();
+            if (Camera.main != null && requestCanva != null && requestCanva.activeSelf)
+            {
+                requestCanva.transform.LookAt(Camera.main.transform);
+                requestCanva.transform.rotation = Quaternion.LookRotation(requestCanva.transform.position - Camera.main.transform.position);
+            }
         }
 
 
         public InteractionData GetInteractionData()
         {
             var prompt = BASE_PROMPT;
-            
+
             if (currentVisitorStatus != VisitorStatus.Idle)
             {
                 var request = currentVisitorStatus.ToString().Replace("Request", "");
                 prompt = $"Serve {request} to visitor";
             }
-            
+
             return new InteractionData
             {
-                actionDuration = 0f, 
+                actionDuration = 0f,
                 promptText = prompt
             };
         }
 
         public void Interact()
         {
-            var heldItem = "Marshmallow"; 
-
             if (currentVisitorStatus == VisitorStatus.Idle)
             {
                 Debug.Log("Visitor is currently idle and not requesting anything. Nothing happens.");
                 return;
             }
 
-            if (IsCorrectItem(heldItem))
+            // Get what the player is currently holding
+            PlayerInventory playerInventory = ServiceLocator.GetService<PlayerInventory>();
+            if (playerInventory == null)
             {
-                Debug.Log($"SUCCESS! Served '{heldItem}' to satisfy request: {currentVisitorStatus}. (+SCORE, +HAPPINESS)");
-                SetIdle();
-                // TODO: Add score/happiness logic here
+                Debug.LogError("Could not find PlayerInventory service!");
+                return;
+            }
+
+            int heldItemID = playerInventory.GetCurrentHeldFoodItemID();
+            string heldItemName = playerInventory.GetCurrentHeldFoodItemName();
+            CollectibleBase.CookState cookState = playerInventory.GetCurrentFoodCookState();
+
+            if (heldItemID == CollectibleIDs.DEFAULT_ITEM)
+            {
+                Debug.Log("Player is not holding any food to serve!");
+                return;
+            }
+
+            playerInventory.ClearHeldFoodItem();
+
+            if (IsCorrectItem(heldItemID, cookState))
+            {
+                HappyIcon.SetActive(true);
+                if (ScoreManager.Instance != null)
+                {
+                    ScoreManager.Instance.AddCorrectlyCookedFoodScore();
+                }
+                //new WaitForSeconds(alertDuration);
+                //HappyIcon.SetActive(false);
+                
             }
             else
             {
-                Debug.Log($"FAILURE. Player attempted to serve '{heldItem}', but visitor requested: {currentVisitorStatus}. (-SCORE, -HAPPINESS)");
-                SetIdle();
-                // TODO: Add less score/remove happiness logic here
+                AngryIcon.SetActive(true);
+                if (ScoreManager.Instance != null)
+                {
+                    ScoreManager.Instance.AddIncorrectlyCookedFoodScore();
+                }
+                //new WaitForSeconds(alertDuration);
+                //AngryIcon.SetActive(false);
             }
+
+            StartCoroutine(LeaveAfterEating());
         }
 
         public void StopInteraction()
         {
-            //TODO: Stop interaction logic 
+        }
+
+        private IEnumerator LeaveAfterEating()
+        {
+            SetIdle();
+            yield return new WaitForSeconds(leaveDelay);
+
+            if (visitorsManager != null)
+            {
+                visitorsManager.RemoveVisitor(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void ChooseRandomRequest()
@@ -123,31 +172,25 @@ namespace GamePlay.Interactables
             }
         }
 
-        private bool IsCorrectItem(string itemName)
+        private bool IsCorrectItem(int itemID, CollectibleBase.CookState cookState)
         {
-            if (string.IsNullOrEmpty(itemName))
-                return false;
-
-            var isCorrect = false;
-            
-            switch (currentVisitorStatus)
+            // Visitors only accept COOKED food!
+            if (cookState != CollectibleBase.CookState.Cooked)
             {
-                case VisitorStatus.RequestMarshmallow:
-                    isCorrect = itemName.Equals("Marshmallow", System.StringComparison.OrdinalIgnoreCase);
-                    break;
-                case VisitorStatus.RequestHotChocolate:
-                    isCorrect = itemName.Equals("HotChocolate", System.StringComparison.OrdinalIgnoreCase);
-                    break;
-                case VisitorStatus.RequestSausage:
-                    isCorrect = itemName.Equals("Sausage", System.StringComparison.OrdinalIgnoreCase);
-                    break;
-                
-                default:
-                    isCorrect = false;
-                    break;
+                return false;
             }
 
-            return isCorrect;
+            switch (currentVisitorStatus)
+            {
+                case VisitorStatus.RequestMarshmallowCooked:
+                    return itemID == CollectibleIDs.MARSHMALLOW;
+                case VisitorStatus.RequestHotChocolateCooked:
+                    return itemID == CollectibleIDs.HOT_CHOCOLATE;
+                case VisitorStatus.RequestSausageCooked:
+                    return itemID == CollectibleIDs.SAUSAGE;
+                default:
+                    return false;
+            }
         }
         
 
@@ -164,7 +207,6 @@ namespace GamePlay.Interactables
             if (newStatus == VisitorStatus.Idle)
             {
                 SetIconsToFalse();
-                requestCanva.SetActive(false);
                 return;
             }
 
@@ -183,13 +225,13 @@ namespace GamePlay.Interactables
 
             switch (status)
             {
-                case VisitorStatus.RequestMarshmallow:
+                case VisitorStatus.RequestMarshmallowCooked:
                     marshmallowIcon.SetActive(true);
                     break;
-                case VisitorStatus.RequestHotChocolate:
+                case VisitorStatus.RequestHotChocolateCooked:
                     hotChocolateIcon.SetActive(true);
                     break;
-                case VisitorStatus.RequestSausage:
+                case VisitorStatus.RequestSausageCooked:
                     sausageIcon.SetActive(true);
                     break;
             }

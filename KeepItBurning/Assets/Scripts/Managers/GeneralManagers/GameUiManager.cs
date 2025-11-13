@@ -110,7 +110,12 @@ namespace Managers.GeneralManagers
                             shouldBeActive = true;
                         }
                         break;
-                    
+
+                    case GameStateManager.GameState.GameOver:
+                        if (isGameplayScene && panelId == UIPanelID.GameOver)
+                            shouldBeActive = true;
+                        break;
+
                     case GameStateManager.GameState.Default:
                         shouldBeActive = false;
                         break;
@@ -120,7 +125,26 @@ namespace Managers.GeneralManagers
                 
                 if (panelObject != null && panelObject.activeSelf != shouldBeActive)
                 {
-                     panelObject.SetActive(shouldBeActive);
+                    // Check if panel has a PanelAnimator component
+                    var panelAnimator = panelObject.GetComponent<General.PanelAnimator>();
+
+                    if (panelAnimator != null)
+                    {
+                        // Use animated transition
+                        if (shouldBeActive)
+                        {
+                            panelAnimator.Show();
+                        }
+                        else
+                        {
+                            panelAnimator.Hide();
+                        }
+                    }
+                    else
+                    {
+                        // Fallback to instant show/hide
+                        panelObject.SetActive(shouldBeActive);
+                    }
                 }
             }
         }

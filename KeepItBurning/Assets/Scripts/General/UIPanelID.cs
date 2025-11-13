@@ -8,5 +8,6 @@ namespace General
         MainMenu = 1,
         GameplayHUD = 2,
         GameplayPause = 3,
+        GameOver = 4,
     }
 }
