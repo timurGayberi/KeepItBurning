@@ -56,6 +56,10 @@ namespace GamePlay.Interactables
         [SerializeField]
         private float interactionDuration = 0.5f;
 
+        [Tooltip("What cook state does this table provide food in?")]
+        [SerializeField]
+        private CollectibleBase.CookState cookState = CollectibleBase.CookState.Raw;
+
         private List<GameObject> spawnedFoodVisuals = new List<GameObject>();
         private int currentFoodCount = 0;
         private Coroutine refillCoroutine;
@@ -118,9 +122,9 @@ namespace GamePlay.Interactables
                 return;
             }
 
-            // Give food to player
+            // Give food to player with cook state
             int foodID = GetFoodCollectibleID();
-            playerInventory.SetHeldFoodItem(foodID);
+            playerInventory.SetHeldFoodItem(foodID, cookState);
 
             // Remove one visual food item from the table
             RemoveFoodVisual();

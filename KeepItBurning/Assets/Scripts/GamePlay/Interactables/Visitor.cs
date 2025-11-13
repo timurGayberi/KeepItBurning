@@ -9,12 +9,12 @@ namespace GamePlay.Interactables
     public enum VisitorStatus
     {
         Idle,
-        RequestMarshmallow,
-        RequestHotChocolate,
-        RequestSausage
-        
-        // more to come ?
-        
+        RequestMarshmallowCooked,
+        RequestHotChocolateCooked,
+        RequestSausageCooked
+
+        // Visitors only want cooked food!
+
     }
 
     public class Visitor : MonoBehaviour , IInteractable
@@ -87,6 +87,7 @@ namespace GamePlay.Interactables
 
             int heldItemID = playerInventory.GetCurrentHeldFoodItemID();
             string heldItemName = playerInventory.GetCurrentHeldFoodItemName();
+            CollectibleBase.CookState cookState = playerInventory.GetCurrentFoodCookState();
 
             if (heldItemID == CollectibleIDs.DEFAULT_ITEM)
             {
@@ -94,16 +95,26 @@ namespace GamePlay.Interactables
                 return;
             }
 
-            if (IsCorrectItem(heldItemID))
+            if (IsCorrectItem(heldItemID, cookState))
             {
-                Debug.Log($"SUCCESS! Served '{heldItemName}' to satisfy request: {currentVisitorStatus}. (+SCORE, +HAPPINESS)");
+                Debug.Log($"SUCCESS! Served COOKED '{heldItemName}' to satisfy request: {currentVisitorStatus}. (+SCORE, +HAPPINESS)");
                 playerInventory.ClearHeldFoodItem(); // Remove the item from player's inventory
                 SetIdle();
                 // TODO: Add score/happiness logic here
             }
             else
             {
-                Debug.Log($"FAILURE. Player attempted to serve '{heldItemName}', but visitor requested: {currentVisitorStatus}. (-SCORE, -HAPPINESS)");
+                string reason = "";
+                if (cookState != CollectibleBase.CookState.Cooked)
+                {
+                    reason = $"Food is {cookState}, but visitor wants COOKED food!";
+                }
+                else
+                {
+                    reason = "Wrong food type!";
+                }
+
+                Debug.Log($"FAILURE. {reason} Visitor requested: {currentVisitorStatus}. (-SCORE, -HAPPINESS)");
                 playerInventory.ClearHeldFoodItem(); // Remove the item even if wrong
                 SetIdle();
                 // TODO: Add less score/remove happiness logic here
@@ -142,15 +153,21 @@ namespace GamePlay.Interactables
             }
         }
 
-        private bool IsCorrectItem(int itemID)
+        private bool IsCorrectItem(int itemID, CollectibleBase.CookState cookState)
         {
+            // Visitors only accept COOKED food!
+            if (cookState != CollectibleBase.CookState.Cooked)
+            {
+                return false;
+            }
+
             switch (currentVisitorStatus)
             {
-                case VisitorStatus.RequestMarshmallow:
+                case VisitorStatus.RequestMarshmallowCooked:
                     return itemID == CollectibleIDs.MARSHMALLOW;
-                case VisitorStatus.RequestHotChocolate:
+                case VisitorStatus.RequestHotChocolateCooked:
                     return itemID == CollectibleIDs.HOT_CHOCOLATE;
-                case VisitorStatus.RequestSausage:
+                case VisitorStatus.RequestSausageCooked:
                     return itemID == CollectibleIDs.SAUSAGE;
                 default:
                     return false;
@@ -190,13 +207,13 @@ namespace GamePlay.Interactables
 
             switch (status)
             {
-                case VisitorStatus.RequestMarshmallow:
+                case VisitorStatus.RequestMarshmallowCooked:
                     marshmallowIcon.SetActive(true);
                     break;
-                case VisitorStatus.RequestHotChocolate:
+                case VisitorStatus.RequestHotChocolateCooked:
                     hotChocolateIcon.SetActive(true);
                     break;
-                case VisitorStatus.RequestSausage:
+                case VisitorStatus.RequestSausageCooked:
                     sausageIcon.SetActive(true);
                     break;
             }

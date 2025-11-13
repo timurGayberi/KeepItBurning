@@ -12,6 +12,7 @@ namespace UI
         [SerializeField] private GameObject logsSingleUI;
         [SerializeField] private GameObject logsDoubleUI;
         [SerializeField] private GameObject logsTripleUI;
+        [SerializeField] private GameObject numberParent; // Parent GameObject containing the number
         [SerializeField] private TextMeshProUGUI woodCountText;
 
         [Header("Marshmallow UI Elements")]
@@ -94,6 +95,12 @@ namespace UI
 
         private void ShowWoodUI(int count)
         {
+            // Show number parent when carrying logs
+            if (numberParent != null)
+            {
+                numberParent.SetActive(true);
+            }
+
             // Show appropriate wood visual based on count
             if (logsSingleUI != null && count == 1)
                 logsSingleUI.SetActive(true);
@@ -176,6 +183,9 @@ namespace UI
 
         private void HideAllUI()
         {
+            // Hide number parent (for logs)
+            if (numberParent != null) numberParent.SetActive(false);
+
             // Hide all wood UI
             if (logsSingleUI != null) logsSingleUI.SetActive(false);
             if (logsDoubleUI != null) logsDoubleUI.SetActive(false);
@@ -195,7 +205,7 @@ namespace UI
             if (sausageCookedUI != null) sausageCookedUI.SetActive(false);
             if (sausageBurnedUI != null) sausageBurnedUI.SetActive(false);
 
-            // Hide wood count text
+            // Clear wood count text
             if (woodCountText != null) woodCountText.text = "";
         }
     }
