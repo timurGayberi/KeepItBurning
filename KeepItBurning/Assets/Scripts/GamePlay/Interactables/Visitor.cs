@@ -103,23 +103,24 @@ namespace GamePlay.Interactables
 
             if (IsCorrectItem(heldItemID, cookState))
             {
+                HappyIcon.SetActive(true);
                 if (ScoreManager.Instance != null)
                 {
-                    HappyIcon.SetActive(true);
                     ScoreManager.Instance.AddCorrectlyCookedFoodScore();
-                    new WaitForSeconds(alertDuration);
-                    HappyIcon.SetActive(false);
                 }
+                //new WaitForSeconds(alertDuration);
+                //HappyIcon.SetActive(false);
+                
             }
             else
             {
+                AngryIcon.SetActive(true);
                 if (ScoreManager.Instance != null)
                 {
-                    AngryIcon.SetActive(true);
                     ScoreManager.Instance.AddIncorrectlyCookedFoodScore();
-                    new WaitForSeconds(alertDuration);
-                    AngryIcon.SetActive(false);
                 }
+                //new WaitForSeconds(alertDuration);
+                //AngryIcon.SetActive(false);
             }
 
             StartCoroutine(LeaveAfterEating());
@@ -206,7 +207,6 @@ namespace GamePlay.Interactables
             if (newStatus == VisitorStatus.Idle)
             {
                 SetIconsToFalse();
-                requestCanva.SetActive(false);
                 return;
             }
 
