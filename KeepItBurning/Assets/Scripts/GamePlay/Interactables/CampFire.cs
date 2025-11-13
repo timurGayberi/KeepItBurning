@@ -1,8 +1,9 @@
-using GamePlay.Collectibles;
 using Interfaces;
 using Player;
 using System;
+using Managers.GamePlayManagers;
 using UnityEngine;
+using GamePlay.Collectibles; // Added missing using statement for completeness
 
 namespace GamePlay.Interactables
 {
@@ -79,21 +80,23 @@ namespace GamePlay.Interactables
                 {
                     Debug.Log("The campfire has gone out. Triggering Game Over.");
 
-                    /*
-                    if (vfxController != null)
-                    {
-                        vfxController.ShutDownFire();
-                    }
-                    */
-
                     OnFireplaceOut?.Invoke();
+                    
+                    // FIX: Must check the static Instance and call the method on the instance.
+                    if (PlayGameManager.Instance != null) 
+                    {
+                        PlayGameManager.Instance.TriggerGameOver(); 
+                    }
+                    else
+                    {
+                        Debug.LogError("PlayGameManager instance not found. Cannot trigger Game Over!");
+                    }
 
                     enabled = false;
                 }
             }
         }
-
-        // The core logic to check inventory, consume wood, and add fuel
+        
         private void AddFuelFromInteractor(GameObject interactor)
         {
             PlayerInventory inventory = interactor.GetComponent<PlayerInventory>();
@@ -119,8 +122,7 @@ namespace GamePlay.Interactables
                     OnFuelChanged?.Invoke(_currentFuel, maxFuel);
 
                     //UpdateVFXController();
-
-                    // Re-enable the Update loop if fuel was added when it was previously zero
+                    
                     if (!enabled)
                     {
                         enabled = true;
@@ -135,13 +137,13 @@ namespace GamePlay.Interactables
             }
             else
             {
-                // This is still useful if the player interacts but isn't carrying wood.
                 Debug.Log("[CAMPFIRE] Interaction attempted, but player is not carrying wood.");
             }
         }
         
         private float GetFuelValueFromInventory(PlayerInventory inventory)
         {
+            // Requires PlayerInventory.GetWoodFuelValue() which is assumed to be correct now.
             return inventory.GetWoodFuelValue();
         }
 
@@ -152,41 +154,12 @@ namespace GamePlay.Interactables
                 //ScoreManager.Instance.AddScore(baseCampfireScore);
             }
         }
-
-        /*
-        private float GetFuelFromCarriedLog(PlayerInventory inventory)
-        {
-            // ... (GetFuelFromCarriedLog logic remains the same)
-            GameObject carriedLog = inventory.GetCarriedWoodInstance();
-            if (carriedLog == null)
-            {
-                Debug.LogError("[FUEL GET] Carried wood instance is NULL.");
-                return 0f;
-            }
-
-            // Assuming FireWoodLogs component exists on the carried log object
-            FireWoodLogs logComponent = carriedLog.GetComponent<FireWoodLogs>();
-
-            if (logComponent == null)
-            {
-                Debug.LogError("[FUEL GET] Carried log is missing FireWoodLogs component.");
-                return 0f;
-            }
-            return logComponent.FuelValue;
-        }
-        */
-
-        // --- New public method for InteractionHandler to call ---
+        
         public void TryAddFuel(GameObject interactor)
         {
             AddFuelFromInteractor(interactor);
         }
-
-        // --- IInteractable Implementation (Required by the Interface) ---
-
-        // The Interact() required by the interface will now just call the robust logic
-        // if this fireplace is interacted with, relying on InteractionHandler to call TryAddFuel.
-        // If this method is called directly by a non-Player object, it logs an error.
+        
         public void Interact()
         {
             Debug.LogWarning("[FIREPLACE] Standard Interact() called. Ensure the player's InteractionHandler is calling TryAddFuel(GameObject) instead.");

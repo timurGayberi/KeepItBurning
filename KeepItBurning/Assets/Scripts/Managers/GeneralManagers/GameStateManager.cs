@@ -24,7 +24,8 @@ namespace Managers.GeneralManagers
             
             MainMenu,
             GamePlay,
-            Paused
+            Paused,
+            GameOver 
         }
 
         private IInputService inputService;
@@ -114,13 +115,31 @@ namespace Managers.GeneralManagers
                     break;
                 case GameState.MainMenu:
                 case GameState.Default:
-                    Time.timeScale = 1.0f;
+                case GameState.GameOver: 
+                    Time.timeScale = 0.0f; 
                     inputService.DisablePlayerInput();
                     inputService.EnableUIInput();
                     break;
             }
         }
         
+        /// <summary>
+        /// Transitions the game state to Game Over. Called when the player loses.
+        /// </summary>
+        public void TriggerGameOver()
+        {
+            if (currentState != GameState.GameOver)
+            {
+                // We are skipping the UI update (which caused the error)
+                // and going straight to the restart logic for now.
+                Debug.Log("[GAME STATE] Game Over triggered! Restarting level.");
+                
+                // Immediately restart the level
+                RestartLevel(); 
+                
+                // The rest of this method will not execute because the scene is reloading.
+            }
+        }
         
         #region Flow Control (Scene and Game Management)
 
