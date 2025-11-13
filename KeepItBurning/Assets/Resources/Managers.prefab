@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1908637996581347223}
   - component: {fileID: -7948789730676094344}
   - component: {fileID: 6288079932814164164}
+  - component: {fileID: 1795325302037901783}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -222,3 +223,59 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1795325302037901783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939612265886293651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151df69089a6f8848b85ccb897179f2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - action: 0
+    clips:
+    - {fileID: 8300000, guid: af8a541e1d4839142923c90ea6a7029d, type: 3}
+    volume: 0.4
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 0
+    maxDistance: 0
+    rolloffMode: 0
+    output: {fileID: 1749005225410643752, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  - action: 1
+    clips:
+    - {fileID: 8300000, guid: 1914cdc12d21e5f4c9b0dda106ecb7f0, type: 3}
+    volume: 0.2
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 0
+    maxDistance: 0
+    rolloffMode: 0
+    output: {fileID: -8969795903920555817, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  - action: 2
+    clips:
+    - {fileID: 8300000, guid: 209d7f25d5f52764fbe7d00d18057e99, type: 3}
+    volume: 1
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 1
+    maxDistance: 10
+    rolloffMode: 0
+    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  - action: 3
+    clips:
+    - {fileID: 8300000, guid: a108fe035d5e02148b1cff166760eac6, type: 3}
+    volume: 1
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 1
+    maxDistance: 10
+    rolloffMode: 0
+    output: {fileID: -4093017986523000424, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  masterVolume: 0.6
+  initialPoolSize: 10
+  dontDestroyOnLoad: 1
