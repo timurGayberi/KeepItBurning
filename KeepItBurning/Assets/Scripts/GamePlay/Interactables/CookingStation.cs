@@ -147,6 +147,9 @@ namespace GamePlay.Interactables
 
         private void PlaceFoodOnFire(PlayerInventory inventory)
         {
+            if (inventory.GetCurrentFoodCookState() == CollectibleBase.CookState.Cooked) return;
+            if (inventory.GetCurrentFoodCookState() == CollectibleBase.CookState.Burnt) return;
+
             if (!inventory.IsHoldingFoodItem()) return;
 
             currentFoodID = inventory.GetCurrentHeldFoodItemID();

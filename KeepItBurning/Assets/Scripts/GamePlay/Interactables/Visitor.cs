@@ -25,6 +25,8 @@ namespace GamePlay.Interactables
         [SerializeField] public GameObject marshmallowIcon;
         [SerializeField] public GameObject hotChocolateIcon;
         [SerializeField] public GameObject sausageIcon;
+        [SerializeField] public GameObject HappyIcon;
+        [SerializeField] public GameObject AngryIcon;
 
         [SerializeField] private VisitorStatus currentVisitorStatus;
         [SerializeField] private float alertDuration = 2f;

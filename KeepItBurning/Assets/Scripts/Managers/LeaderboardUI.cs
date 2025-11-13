@@ -1,22 +1,30 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LeaderboardUI : MonoBehaviour
 {
     [SerializeField] private SaveManager saveManager;
     [SerializeField] private Transform contentParent;
     [SerializeField] private TMP_Text entryPrefab;
+    [SerializeField] private int maxEntriesToShow = 5;
 
     void Start()
     {
+        if (saveManager == null)
+        {
+            return;
+        }
+
         saveManager.LoadData();
         DisplayScores();
     }
 
     void DisplayScores()
     {
+        for (int i = contentParent.childCount - 1; i >= 0; i--)
+            Destroy(contentParent.GetChild(i).gameObject);
+
         var scores = saveManager.GetScores;
         if (scores == null || scores.Count == 0)
         {
@@ -25,12 +33,11 @@ public class LeaderboardUI : MonoBehaviour
             return;
         }
 
-        int maxDisplay = Mathf.Min(6, scores.Count);
-        for (int i = 0; i < maxDisplay; i++)
+        int count = Mathf.Min(scores.Count, maxEntriesToShow);
+        for (int i = 0; i < count; i++)
         {
             TMP_Text entry = Instantiate(entryPrefab, contentParent);
-            entry.text = $"{i + 1}. {scores[i]} kills";
+            entry.text = $"{i + 1}. {scores[i].ToString("F0")} Points";
         }
     }
-} 
-    
+}
