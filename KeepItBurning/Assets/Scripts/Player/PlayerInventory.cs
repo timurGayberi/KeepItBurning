@@ -38,6 +38,9 @@ namespace Player
         [SerializeField]
         private int currentHeldFoodItemID = CollectibleIDs.DEFAULT_ITEM; // 0 = nothing, 2 = marshmallow, 3 = hot chocolate, 4 = sausage
 
+        [SerializeField]
+        private CollectibleBase.CookState currentFoodCookState = CollectibleBase.CookState.Raw;
+
         [Header("Drop Settings")]
         [SerializeField]
         private GameObject woodLogPrefabForDropping;
@@ -246,10 +249,28 @@ namespace Player
         /// <summary>
         /// Sets what food item the player is currently holding.
         /// </summary>
-        public void SetHeldFoodItem(int foodItemID)
+        public void SetHeldFoodItem(int foodItemID, CollectibleBase.CookState cookState = CollectibleBase.CookState.Raw)
         {
             currentHeldFoodItemID = foodItemID;
-            Debug.Log($"Player is now holding: {GetCurrentHeldFoodItemName() ?? "nothing"}");
+            currentFoodCookState = cookState;
+            Debug.Log($"Player is now holding: {GetCurrentHeldFoodItemName() ?? "nothing"} ({cookState})");
+        }
+
+        /// <summary>
+        /// Gets the cook state of the currently held food item.
+        /// </summary>
+        public CollectibleBase.CookState GetCurrentFoodCookState()
+        {
+            return currentFoodCookState;
+        }
+
+        /// <summary>
+        /// Updates the cook state of the currently held food (for cooking mechanics).
+        /// </summary>
+        public void SetCurrentFoodCookState(CollectibleBase.CookState cookState)
+        {
+            currentFoodCookState = cookState;
+            Debug.Log($"Food cook state changed to: {cookState}");
         }
 
         /// <summary>
@@ -258,6 +279,7 @@ namespace Player
         public void ClearHeldFoodItem()
         {
             currentHeldFoodItemID = CollectibleIDs.DEFAULT_ITEM;
+            currentFoodCookState = CollectibleBase.CookState.Raw;
             Debug.Log("Player is no longer holding a food item.");
         }
 
