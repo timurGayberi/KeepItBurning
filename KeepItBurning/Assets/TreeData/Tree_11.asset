@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9003cc49e343f4880e7d129c7a0a80, type: 3}
   m_Name: Tree_11
   m_EditorClassIdentifier: 
-  regrowthTime: 30
-  chopDuration: 1
-  numberOfLogs: 3
-  scatterRadius: 0.5
+  regrowthTime: 50
+  chopDuration: 2
+  numberOfLogs: 2
+  scatterRadius: 2
   interactionPrompt: Chop Tree
