@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.9999998
+      value: -122.31456
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: 0.483
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0000009536743
+      value: 3.833
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -55,6 +55,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
       propertyPath: m_Name
       value: TempLog
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
       propertyPath: m_TagString
@@ -98,8 +102,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02, y: 0.006, z: 0.01}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.02, y: 0.007843837, z: 0.010000007}
+  m_Center: {x: 0, y: 0.00092191814, z: -0.000000004172325}
 --- !u!114 &7300926668945212592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df250c9c6cf4c0458c6f9198329f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   amplitude: 0.2
   frequency: 1
   rotationSpeed: 60
@@ -140,8 +145,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

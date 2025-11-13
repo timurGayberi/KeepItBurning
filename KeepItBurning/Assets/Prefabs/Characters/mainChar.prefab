@@ -947,7 +947,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _woodCount: 0
   maxWoodCount: 3
-  woodVisual: {fileID: 0}
+  woodVisual: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   chocolateVisual: {fileID: 0}
   hotChocolateVisual: {fileID: 0}
   burnedHotChocolateVisual: {fileID: 0}
