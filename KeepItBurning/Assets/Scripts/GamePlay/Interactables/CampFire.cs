@@ -3,7 +3,7 @@ using Player;
 using System;
 using Managers.GamePlayManagers;
 using UnityEngine;
-using GamePlay.Collectibles; // Added missing using statement for completeness
+using General;
 
 namespace GamePlay.Interactables
 {
@@ -33,12 +33,12 @@ namespace GamePlay.Interactables
         [SerializeField]
         private float _currentFuel;
 
-        /*
+
         [Header("VFX References")]
         [Tooltip("The CampfireVFXController controlling the fire visuals.")]
         [SerializeField]
         private CampfireVFXController vfxController;
-        */
+        
 
         [Space]
         [SerializeField] private float baseCampfireScore;
@@ -55,7 +55,6 @@ namespace GamePlay.Interactables
             OnFuelChanged?.Invoke(_currentFuel, maxFuel);
         }
 
-        /*
         private void UpdateVFXController()
         {
             if (vfxController != null)
@@ -64,7 +63,7 @@ namespace GamePlay.Interactables
                 vfxController.SetFuelNormalized(normalizedFuel);
             }
         }
-        */
+
         private void EnableFireParticles()
         {
             if (fireParticles == null || fireParticles.Length == 0) return;
@@ -93,7 +92,7 @@ namespace GamePlay.Interactables
                 _currentFuel = Mathf.Max(0, _currentFuel);
 
                 OnFuelChanged?.Invoke(_currentFuel, maxFuel);
-                //UpdateVFXController();
+                UpdateVFXController();
                 UpdateScore();
 
                 if (_currentFuel <= 0)
@@ -141,7 +140,7 @@ namespace GamePlay.Interactables
                     EnableFireParticles();
                     OnFuelChanged?.Invoke(_currentFuel, maxFuel);
 
-                    //UpdateVFXController();
+                    UpdateVFXController();
                     
                     if (!enabled)
                     {

@@ -119,7 +119,7 @@ namespace GamePlay.Interactables
 
                 Instantiate(logPrefab, spawnPosition, point.rotation);
             }
-
+            SoundManager.Play(SoundAction.ChopWood);
             SetTreeVisuals(TreeStatus.Cut);
         }
         

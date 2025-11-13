@@ -129,7 +129,7 @@ namespace Player
                     Debug.Log("Cannot add wood, inventory is full.");
                     return false;
                 }
-                
+                SoundManager.Play(SoundAction.PickUpWood);
                 _woodCount++;
                 UpdateWoodState();
                 return true;
@@ -176,6 +176,7 @@ namespace Player
             {
                 _woodCount--;
                 UpdateWoodState();
+                SoundManager.Play(SoundAction.DropWoodOnFire);
                 Debug.Log("Inventory: Wood consumed.");
                 return true;
             }

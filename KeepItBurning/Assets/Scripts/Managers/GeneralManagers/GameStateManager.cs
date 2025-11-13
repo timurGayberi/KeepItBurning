@@ -86,6 +86,7 @@ namespace Managers.GeneralManagers
         {
             if (currentState == GameState.GamePlay)
             {
+                SoundManager.Play(SoundAction.PauseMenu);
                 UpdateState(GameState.Paused);
             }
             else if (currentState == GameState.Paused)
