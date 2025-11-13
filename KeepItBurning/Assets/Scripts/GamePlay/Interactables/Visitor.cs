@@ -28,6 +28,7 @@ namespace GamePlay.Interactables
         [SerializeField] public GameObject HappyIcon;
         [SerializeField] public GameObject AngryIcon;
 
+        public HappinessManager happinessManager;
         [SerializeField] private VisitorStatus currentVisitorStatus;
         [SerializeField] private float alertDuration = 2f;
         [SerializeField] private float leaveDelay = 2f;
@@ -39,7 +40,17 @@ namespace GamePlay.Interactables
         private const string BASE_PROMPT = "Interact with visitor";
         
         public string InteractionPrompt => BASE_PROMPT;
-        
+
+        [System.Obsolete]
+        private void Awake()
+        {
+            if(happinessManager == null)
+            {
+                happinessManager = FindObjectOfType<HappinessManager>();
+            }
+        }
+
+        [System.Obsolete]
         private void Start()
         {
             visitorsManager = FindObjectOfType<VisitorsManager>();
@@ -48,6 +59,15 @@ namespace GamePlay.Interactables
         
         void Update()
         {
+            if (happinessManager != null)
+            {
+                if (currentVisitorStatus != VisitorStatus.Idle)
+                {
+                    happinessManager.UpdateWaitingTime();
+                }
+
+            }
+                
             if (Camera.main != null && requestCanva != null && requestCanva.activeSelf)
             {
                 requestCanva.transform.LookAt(Camera.main.transform);
@@ -107,10 +127,7 @@ namespace GamePlay.Interactables
                 if (ScoreManager.Instance != null)
                 {
                     ScoreManager.Instance.AddCorrectlyCookedFoodScore();
-                }
-                //new WaitForSeconds(alertDuration);
-                //HappyIcon.SetActive(false);
-                
+                }  
             }
             else
             {
@@ -119,8 +136,6 @@ namespace GamePlay.Interactables
                 {
                     ScoreManager.Instance.AddIncorrectlyCookedFoodScore();
                 }
-                //new WaitForSeconds(alertDuration);
-                //AngryIcon.SetActive(false);
             }
 
             StartCoroutine(LeaveAfterEating());

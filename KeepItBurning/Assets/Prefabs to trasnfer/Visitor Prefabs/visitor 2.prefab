@@ -1920,6 +1920,7 @@ MonoBehaviour:
   sausageIcon: {fileID: 2433920518658792145}
   HappyIcon: {fileID: 7085128862484134187}
   AngryIcon: {fileID: 5372875484734695907}
+  happinessManager: {fileID: 1771750873940665465, guid: 1a6188714650aa14fba91bd6beb0a9d1, type: 3}
   currentVisitorStatus: 0
   alertDuration: 2
   leaveDelay: 2

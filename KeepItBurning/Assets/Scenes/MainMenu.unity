@@ -6924,7 +6924,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 823047e2043936f4a983562bbfc05561, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3410230a8a59b644f82d7c7606b6c267, type: 2}
+      objectReference: {fileID: 2100000, guid: 18dd179868082a044bc7a99cb65499ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 823047e2043936f4a983562bbfc05561, type: 3}
       propertyPath: m_Name
       value: menu_controllers

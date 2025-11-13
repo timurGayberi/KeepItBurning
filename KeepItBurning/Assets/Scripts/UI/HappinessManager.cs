@@ -7,23 +7,23 @@ namespace Score
         [SerializeField] public float happiness = 50f;
         [SerializeField] public float increaseAmount = 10f;
         [SerializeField] public float decreaseAmount = 5f;
-        [SerializeField] public float decreaseWileWaiting = 5f;
+        [SerializeField] public float decreaseWileWaiting = 1f;
         [SerializeField] public float happinessMultiplier;
         [SerializeField] public float timeWaitedForDecrease = 5f;
         public float timeSinceLastDelivery;
 
-
-        public void Awake()
+    
+        public void Update()
         {
             happinessMultiplier = Mathf.Clamp(happiness / 50f, 0, 2);
         }       
 
-        public void StartWaitingTime()
+        public void UpdateWaitingTime()
         {
             timeSinceLastDelivery += Time.deltaTime;
             if (timeSinceLastDelivery > timeWaitedForDecrease)
             {
-                timeSinceLastDelivery = 0;
+                timeSinceLastDelivery = 0f;
                 DecreaseWileWaiting();
             }
         }
