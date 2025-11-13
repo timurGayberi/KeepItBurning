@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1917835390845198187}
   - component: {fileID: 1729980857410222754}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Marshmallow_cooked_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8280547513967645125}
   - component: {fileID: 2869020451399966540}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_exclamationmark_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8727743256862000363}
   - component: {fileID: 6977784364093378213}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sausage_cooked_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3986117751246708012}
-  m_LocalRotation: {x: 0.309017, y: -0, z: -0, w: 0.95105654}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.041}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -512,7 +512,7 @@ RectTransform:
   - {fileID: 892179410073694006}
   - {fileID: 2412435121433573594}
   m_Father: {fileID: 3938429413330834408}
-  m_LocalEulerAnglesHint: {x: 36, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 2.2}
@@ -798,7 +798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2412435121433573594}
   - component: {fileID: 5450258397004808857}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HotChocolate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -886,7 +886,7 @@ GameObject:
   m_Component:
   - component: {fileID: 376333944486778690}
   - component: {fileID: 377508587054145407}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Marshmallow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -974,7 +974,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5941032539084833347}
   - component: {fileID: 7604541691579713371}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: hotchocolate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1747,7 +1747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 892179410073694006}
   - component: {fileID: 7765285019000475647}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sausage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

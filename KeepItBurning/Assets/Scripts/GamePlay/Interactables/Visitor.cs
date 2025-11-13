@@ -47,6 +47,11 @@ namespace GamePlay.Interactables
         {
             if (Input.GetKeyDown(KeyCode.X))
                 SetIdle();
+            if (Camera.main != null && requestCanva != null && requestCanva.activeSelf)
+            {
+                requestCanva.transform.LookAt(Camera.main.transform);
+                requestCanva.transform.rotation = Quaternion.LookRotation(requestCanva.transform.position - Camera.main.transform.position);
+            }
         }
 
 
