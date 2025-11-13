@@ -33,6 +33,8 @@ public enum SoundAction
     UiClick,
     UiClickBack,
     Clock25,
+    MainMenuMusic,      // Opening music for main menu
+    GameOverMusic,      // Music when game is over
 }
 public class SoundManager : MonoBehaviour
 {
@@ -64,10 +66,22 @@ public class SoundManager : MonoBehaviour
 
         BuildDefinitionsDictionary();
         WarmPool();
+        InitializeVolumeFromSettings();
+    }
+
+    private void OnEnable()
+    {
+        SubscribeToSettingsEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromSettingsEvents();
     }
 
     private void OnDestroy()
     {
+        UnsubscribeFromSettingsEvents();
         if (Instance == this) Instance = null;
     }
     #endregion
@@ -235,6 +249,66 @@ public class SoundManager : MonoBehaviour
         {
             if (def == null) continue;
             _defs[def.action] = def;
+        }
+    }
+
+    private void InitializeVolumeFromSettings()
+    {
+        if (SettingsManager.Instance != null)
+        {
+            masterVolume = SettingsManager.Instance.MasterVolume;
+        }
+    }
+
+    private void SubscribeToSettingsEvents()
+    {
+        if (SettingsManager.Instance != null)
+        {
+            SettingsManager.Instance.OnMasterVolumeChanged += HandleMasterVolumeChanged;
+        }
+    }
+
+    private void UnsubscribeFromSettingsEvents()
+    {
+        if (SettingsManager.Instance != null)
+        {
+            SettingsManager.Instance.OnMasterVolumeChanged -= HandleMasterVolumeChanged;
+        }
+    }
+
+    private void HandleMasterVolumeChanged(float newVolume)
+    {
+        masterVolume = newVolume;
+        UpdateAllActiveSourcesVolume();
+    }
+
+    private void UpdateAllActiveSourcesVolume()
+    {
+        // Update all currently playing sources
+        foreach (var src in _inUse)
+        {
+            if (src != null && src.clip != null)
+            {
+                // Find the definition to get the base volume
+                foreach (var kvp in _defs)
+                {
+                    if (kvp.Value.clips.Contains(src.clip))
+                    {
+                        src.volume = kvp.Value.volume * masterVolume;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Update looping sources
+        foreach (var kvp in _looping)
+        {
+            var src = kvp.Value;
+            if (src != null && src.clip != null && _defs.TryGetValue(kvp.Key, out var def))
+            {
+                src.volume = def.volume * masterVolume;
+            }
         }
     }
     #endregion
