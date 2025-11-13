@@ -123,22 +123,15 @@ namespace Managers.GeneralManagers
             }
         }
         
-        /// <summary>
-        /// Transitions the game state to Game Over. Called when the player loses.
-        /// </summary>
         public void TriggerGameOver()
         {
             if (currentState != GameState.GameOver)
             {
-                // We are skipping the UI update (which caused the error)
-                // and going straight to the restart logic for now.
                 Debug.Log("[GAME STATE] Game Over triggered! Restarting level.");
-
-                // Immediately restart the level
+                
 
                 UpdateState(GameState.GameOver);
-
-                // The rest of this method will not execute because the scene is reloading.
+                
             }
         }
         
