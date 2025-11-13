@@ -5,10 +5,10 @@ using UnityEngine.Audio;
 
 public enum SoundAction
 {
-    Click,
-    StartGame,
-    back,
-    WinGame,
+    GameMusic,
+    AmbienceMusic,
+    CampfireSFX,
+    Walk,
     GameOver,
     PickItem,
     DropItem,

@@ -19,8 +19,12 @@ namespace Player
         private CharacterController _characterController;
         private Vector3 _currentMoveDirection; 
         private bool _isSprinting;
-        private IInputService _inputService; 
-        
+        private IInputService _inputService;
+
+        // --- WALKING SOUND ---
+        private float _walkSoundTimer = 0f;
+        private float _walkSoundInterval = 0.5f;
+
         // private PlayerInventory _playerInventory; 
 
         #endregion
@@ -140,7 +144,20 @@ namespace Player
                 // --- EXECUTE MOVEMENT ---
                 // This line applies the movement speed to the cached direction vector
                 _characterController.Move(moveDirection * (currentSpeed * Time.deltaTime));
-                
+
+                // --- WALKING SOUND LOGIC ---
+                _walkSoundTimer += Time.deltaTime;
+
+                // Sprint quicker movement
+                float stepInterval = _isSprinting ? _walkSoundInterval * 0.66f : _walkSoundInterval;
+
+                if (_walkSoundTimer >= stepInterval)
+                {
+                    SoundManager.PlayAtPosition(SoundAction.Walk, transform.position);
+                    _walkSoundTimer = 0f;
+                }
+
+
                 // --- HANDLE ROTATION ---
                 var camForward = Camera.main.transform.forward;
                 camForward.y = 0f;
@@ -153,9 +170,10 @@ namespace Player
                 transform.rotation = Quaternion.Slerp(
                     transform.rotation, 
                     targetRotation, 
-                    Time.deltaTime * 10f); 
+                    Time.deltaTime * 10f);
             }
             
+
             // --- IDLE CHECK ---
             else 
             {
@@ -163,6 +181,8 @@ namespace Player
                 if (CurrentState != PlayerState.IsIdle)
                 {
                     SetPlayerState(PlayerState.IsIdle);
+                    // Reset timer to avoid delayed sounds after stopping
+                    _walkSoundTimer = 0f;
                 }
             }
         }
