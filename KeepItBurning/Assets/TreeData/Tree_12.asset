@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tree_12
   m_EditorClassIdentifier: 
   regrowthTime: 40
-  chopDuration: 0.5
+  chopDuration: 1.5
   numberOfLogs: 2
   scatterRadius: 2
   interactionPrompt: Chop Tree
