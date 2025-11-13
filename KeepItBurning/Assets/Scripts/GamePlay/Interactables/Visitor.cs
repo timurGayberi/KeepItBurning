@@ -105,14 +105,20 @@ namespace GamePlay.Interactables
             {
                 if (ScoreManager.Instance != null)
                 {
+                    HappyIcon.SetActive(true);
                     ScoreManager.Instance.AddCorrectlyCookedFoodScore();
+                    new WaitForSeconds(alertDuration);
+                    HappyIcon.SetActive(false);
                 }
             }
             else
             {
                 if (ScoreManager.Instance != null)
                 {
+                    AngryIcon.SetActive(true);
                     ScoreManager.Instance.AddIncorrectlyCookedFoodScore();
+                    new WaitForSeconds(alertDuration);
+                    AngryIcon.SetActive(false);
                 }
             }
 
