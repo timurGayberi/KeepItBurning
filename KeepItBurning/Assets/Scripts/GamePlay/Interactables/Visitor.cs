@@ -3,6 +3,7 @@ using Interfaces;
 using System.Collections;
 using General;
 using Player;
+using Score;
 
 namespace GamePlay.Interactables
 {
@@ -27,9 +28,11 @@ namespace GamePlay.Interactables
 
         [SerializeField] private VisitorStatus currentVisitorStatus;
         [SerializeField] private float alertDuration = 2f;
+        [SerializeField] private float leaveDelay = 2f;
 
         private Coroutine popupRoutine;
         private Coroutine idleRoutine;
+        private VisitorsManager visitorsManager;
 
         private const string BASE_PROMPT = "Interact with visitor";
         
@@ -37,6 +40,7 @@ namespace GamePlay.Interactables
         
         private void Start()
         {
+            visitorsManager = FindObjectOfType<VisitorsManager>();
             SetIdle();
         }
         
@@ -95,35 +99,43 @@ namespace GamePlay.Interactables
                 return;
             }
 
+            playerInventory.ClearHeldFoodItem();
+
             if (IsCorrectItem(heldItemID, cookState))
             {
-                Debug.Log($"SUCCESS! Served COOKED '{heldItemName}' to satisfy request: {currentVisitorStatus}. (+SCORE, +HAPPINESS)");
-                playerInventory.ClearHeldFoodItem(); // Remove the item from player's inventory
-                SetIdle();
-                // TODO: Add score/happiness logic here
+                if (ScoreManager.Instance != null)
+                {
+                    ScoreManager.Instance.AddCorrectlyCookedFoodScore();
+                }
             }
             else
             {
-                string reason = "";
-                if (cookState != CollectibleBase.CookState.Cooked)
+                if (ScoreManager.Instance != null)
                 {
-                    reason = $"Food is {cookState}, but visitor wants COOKED food!";
+                    ScoreManager.Instance.AddIncorrectlyCookedFoodScore();
                 }
-                else
-                {
-                    reason = "Wrong food type!";
-                }
-
-                Debug.Log($"FAILURE. {reason} Visitor requested: {currentVisitorStatus}. (-SCORE, -HAPPINESS)");
-                playerInventory.ClearHeldFoodItem(); // Remove the item even if wrong
-                SetIdle();
-                // TODO: Add less score/remove happiness logic here
             }
+
+            StartCoroutine(LeaveAfterEating());
         }
 
         public void StopInteraction()
         {
-            //TODO: Stop interaction logic 
+        }
+
+        private IEnumerator LeaveAfterEating()
+        {
+            SetIdle();
+            yield return new WaitForSeconds(leaveDelay);
+
+            if (visitorsManager != null)
+            {
+                visitorsManager.RemoveVisitor(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void ChooseRandomRequest()

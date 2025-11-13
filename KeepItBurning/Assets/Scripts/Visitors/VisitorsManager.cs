@@ -1,8 +1,10 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class VisitorsManager : MonoBehaviour
 {
+
     [SerializeField] private List<GameObject> visitorPrefabs = new List<GameObject>();
     [SerializeField] private int maxVisitors;
     [SerializeField] private float CountToSpawVisitors;
@@ -10,10 +12,15 @@ public class VisitorsManager : MonoBehaviour
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
     [SerializeField] public Transform campfire;
+    [SerializeField] private float minRespawnTime = 3f;
+    [SerializeField] private float maxRespawnTime = 8f;
 
     private List<GameObject> activeVisitors = new List<GameObject>();
     private List<Transform> availableSpawnPoints = new List<Transform>();
     private Dictionary<GameObject, Transform> visitorSpawnMap = new Dictionary<GameObject, Transform>();
+
+    public int currentVisitors = 0;
+
 
     void Start()
     {
@@ -62,6 +69,7 @@ public class VisitorsManager : MonoBehaviour
         activeVisitors.Add(newVisitor);
 
         visitorSpawnMap[newVisitor] = chosenPoint;
+        currentVisitors++;
     }
 
     public void RemoveVisitor(GameObject visitor)
@@ -78,6 +86,16 @@ public class VisitorsManager : MonoBehaviour
         }
 
         Destroy(visitor);
+        currentVisitors--;
+
+        StartCoroutine(RespawnVisitorAfterDelay());
+    }
+
+    private IEnumerator RespawnVisitorAfterDelay()
+    {
+        float randomDelay = Random.Range(minRespawnTime, maxRespawnTime);
+        yield return new WaitForSeconds(randomDelay);
+        SpawnVisitor();
     }
 
 }

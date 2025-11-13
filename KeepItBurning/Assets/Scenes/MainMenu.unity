@@ -300,8 +300,8 @@ MonoBehaviour:
     \r\nSelen Lun\r\n\n\r\nGAME DESIGNERS\n\r\nMateusz Figura\r\nWiktor Wystrychowski\r\nKubilay
     Teker\r\n\n\r\nUI & UX DESIGNERS\n\r\nEleanor Lofgren\r\nLinnea Norlen\r\nRamona
     Meurling\r\nNiklas Liman\n\r\n\r\nGAME ARTISTS\n\r\nOak Klein\r\nArtem Shat\r\nTomasz
-    Zegota\r\n\n\r\nGAME PROGRAMMERS\n\r\nTheo Choicoski\r\nRuzgar Mendekli\r\nTimur
-    Gayberi"
+    Zegota\r\n\n\r\nGAME PROGRAMMERS\n\r\nTheo Choicoski\nTimur Gayberi\r\nRuzgar
+    Mendekli\nRamona Meurling\n\n\nMUSIC PRODUCER\n\nLinnea Norlen\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fedbe806772b6a1449aa9042b0104b2e, type: 2}
   m_sharedMaterial: {fileID: -5431762693654264007, guid: fedbe806772b6a1449aa9042b0104b2e, type: 2}
