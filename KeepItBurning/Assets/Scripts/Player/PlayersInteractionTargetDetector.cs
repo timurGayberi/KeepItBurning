@@ -6,8 +6,11 @@ namespace Player
     public class PlayersInteractionTargetDetector : MonoBehaviour
     {
         [Header("Detection Settings")]
-        [SerializeField] private float      detectionRadius ;
-        [SerializeField] private float      detectionDistance ;
+        [Tooltip("The radius of the sphere cast (keep small, around 0.3-0.8)")]
+        [SerializeField] private float detectionRadius = 3f;
+
+        [Tooltip("How far forward to detect (larger = detect items from further away)")]
+        [SerializeField] private float detectionDistance = 1f;
         
         [Tooltip("The tags we consider valid targets (e.g., 'Interactable', 'Collectible').")]
         [SerializeField] private string[] targetTags = { "Interactable", "Collectible" }; 

@@ -1283,9 +1283,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3938429413330834408}
   - component: {fileID: -2593339988436149905}
+  - component: {fileID: 442991831122313843}
   m_Layer: 0
   m_Name: visitor 3
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1326,6 +1327,27 @@ MonoBehaviour:
   sausageIcon: {fileID: 8965358722824661475}
   currentVisitorStatus: 0
   alertDuration: 2
+--- !u!65 &442991831122313843
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8283873788904073685}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &8322573174227021209
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class CookableItems : MonoBehaviour
 {
     [Header("References")]
     public CollectibleBase collectibleBase;
-    public CollectiblesLogic collectiblesLogic;
+    public PlayerInventory playerInventory;
 
     [Header("Cooking Settings")]
     public float cookTime = 5f;
@@ -20,9 +20,9 @@ public class CookableItems : MonoBehaviour
         if (collectibleBase != null)
             collectibleBase.currentState = CollectibleBase.CookState.Raw;
 
-        collectiblesLogic.chocolateVisual.SetActive(false);
-        collectiblesLogic.hotChocolateVisual.SetActive(false);
-        collectiblesLogic.burnedHotChocolateVisual.SetActive(false);
+        playerInventory.chocolateVisual.SetActive(false);
+        playerInventory.hotChocolateVisual.SetActive(false);
+        playerInventory.burnedHotChocolateVisual.SetActive(false);
     }
 
     void Update()
@@ -45,9 +45,9 @@ public class CookableItems : MonoBehaviour
 
         collectibleBase.currentState = newState;
 
-        collectiblesLogic.chocolateVisual.SetActive(newState == CollectibleBase.CookState.Raw);
-        collectiblesLogic.hotChocolateVisual.SetActive(newState == CollectibleBase.CookState.Cooked);
-        collectiblesLogic.burnedHotChocolateVisual.SetActive(newState == CollectibleBase.CookState.Burnt);
+        playerInventory.chocolateVisual.SetActive(newState == CollectibleBase.CookState.Raw);
+        playerInventory.hotChocolateVisual.SetActive(newState == CollectibleBase.CookState.Cooked);
+        playerInventory.burnedHotChocolateVisual.SetActive(newState == CollectibleBase.CookState.Burnt);
     }
 
     public void StartCooking()

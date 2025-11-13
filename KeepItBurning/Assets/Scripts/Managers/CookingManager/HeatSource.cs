@@ -8,7 +8,7 @@ namespace GamePlay.Interactibles
     {
         [Header("References")]
         public CookableItems cookableItem;
-        public CollectiblesLogic collectiblesLogic;
+        public PlayerInventory playerInventory;
 
         public Transform cookPoint;
 
@@ -42,7 +42,7 @@ namespace GamePlay.Interactibles
         {
             if (cookableItem == null) return;
 
-            collectiblesLogic.chocolateVisual.SetActive(hasChocolate);
+            playerInventory.chocolateVisual.SetActive(hasChocolate);
             cookableItem.transform.position = cookPoint.position;
 
             cookableItem.StartCooking();

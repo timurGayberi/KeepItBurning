@@ -27,13 +27,22 @@ namespace Player
 
         [Header("Visual Attachments")]
         [SerializeField]
-        private GameObject woodVisual; 
+        private GameObject woodVisual;
+
+        [Header("Hot Chocolate Visuals")]
+        public GameObject chocolateVisual;
+        public GameObject hotChocolateVisual;
+        public GameObject burnedHotChocolateVisual;
+
+        [Header("Food Items")]
+        [SerializeField]
+        private int currentHeldFoodItemID = CollectibleIDs.DEFAULT_ITEM; // 0 = nothing, 2 = marshmallow, 3 = hot chocolate, 4 = sausage
 
         [Header("Drop Settings")]
         [SerializeField]
         private GameObject woodLogPrefabForDropping;
-        
-        public bool HasWood => _woodCount > 0; 
+
+        public bool HasWood => _woodCount > 0;
         public int WoodCount => _woodCount;
         public int MaxWoodCount => maxWoodCount;
         public bool IsWoodInventoryFull => _woodCount >= maxWoodCount;
@@ -203,7 +212,63 @@ namespace Player
                 Debug.Log("Tried to drop wood, but have none.");
             }
         }
-        
+
+        #endregion
+
+        #region Food Item Logic
+
+        /// <summary>
+        /// Gets the ID of the currently held food item.
+        /// </summary>
+        public int GetCurrentHeldFoodItemID()
+        {
+            return currentHeldFoodItemID;
+        }
+
+        /// <summary>
+        /// Gets the name of the currently held food item, or null if not holding any food.
+        /// </summary>
+        public string GetCurrentHeldFoodItemName()
+        {
+            switch (currentHeldFoodItemID)
+            {
+                case CollectibleIDs.MARSHMALLOW:
+                    return "Marshmallow";
+                case CollectibleIDs.HOT_CHOCOLATE:
+                    return "HotChocolate";
+                case CollectibleIDs.SAUSAGE:
+                    return "Sausage";
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Sets what food item the player is currently holding.
+        /// </summary>
+        public void SetHeldFoodItem(int foodItemID)
+        {
+            currentHeldFoodItemID = foodItemID;
+            Debug.Log($"Player is now holding: {GetCurrentHeldFoodItemName() ?? "nothing"}");
+        }
+
+        /// <summary>
+        /// Clears the currently held food item.
+        /// </summary>
+        public void ClearHeldFoodItem()
+        {
+            currentHeldFoodItemID = CollectibleIDs.DEFAULT_ITEM;
+            Debug.Log("Player is no longer holding a food item.");
+        }
+
+        /// <summary>
+        /// Checks if the player is currently holding any food item.
+        /// </summary>
+        public bool IsHoldingFoodItem()
+        {
+            return currentHeldFoodItemID != CollectibleIDs.DEFAULT_ITEM;
+        }
+
         #endregion
     }
 }

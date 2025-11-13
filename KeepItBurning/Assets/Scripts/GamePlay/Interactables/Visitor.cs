@@ -1,6 +1,8 @@
 using UnityEngine;
 using Interfaces;
 using System.Collections;
+using General;
+using Player;
 
 namespace GamePlay.Interactables
 {
@@ -33,11 +35,6 @@ namespace GamePlay.Interactables
         
         public string InteractionPrompt => BASE_PROMPT;
         
-        public void Interact(GameObject interactor)
-        {
-            Debug.Log($"Player ({interactor.name}) is interacting with the {InteractionPrompt}");
-        }
-
         private void Start()
         {
             SetIdle();
@@ -58,39 +55,56 @@ namespace GamePlay.Interactables
         public InteractionData GetInteractionData()
         {
             var prompt = BASE_PROMPT;
-            
+
             if (currentVisitorStatus != VisitorStatus.Idle)
             {
                 var request = currentVisitorStatus.ToString().Replace("Request", "");
                 prompt = $"Serve {request} to visitor";
             }
-            
+
             return new InteractionData
             {
-                actionDuration = 0f, 
+                actionDuration = 0f,
                 promptText = prompt
             };
         }
 
         public void Interact()
         {
-            var heldItem = "Marshmallow"; 
-
             if (currentVisitorStatus == VisitorStatus.Idle)
             {
                 Debug.Log("Visitor is currently idle and not requesting anything. Nothing happens.");
                 return;
             }
 
-            if (IsCorrectItem(heldItem))
+            // Get what the player is currently holding
+            PlayerInventory playerInventory = ServiceLocator.GetService<PlayerInventory>();
+            if (playerInventory == null)
             {
-                Debug.Log($"SUCCESS! Served '{heldItem}' to satisfy request: {currentVisitorStatus}. (+SCORE, +HAPPINESS)");
+                Debug.LogError("Could not find PlayerInventory service!");
+                return;
+            }
+
+            int heldItemID = playerInventory.GetCurrentHeldFoodItemID();
+            string heldItemName = playerInventory.GetCurrentHeldFoodItemName();
+
+            if (heldItemID == CollectibleIDs.DEFAULT_ITEM)
+            {
+                Debug.Log("Player is not holding any food to serve!");
+                return;
+            }
+
+            if (IsCorrectItem(heldItemID))
+            {
+                Debug.Log($"SUCCESS! Served '{heldItemName}' to satisfy request: {currentVisitorStatus}. (+SCORE, +HAPPINESS)");
+                playerInventory.ClearHeldFoodItem(); // Remove the item from player's inventory
                 SetIdle();
                 // TODO: Add score/happiness logic here
             }
             else
             {
-                Debug.Log($"FAILURE. Player attempted to serve '{heldItem}', but visitor requested: {currentVisitorStatus}. (-SCORE, -HAPPINESS)");
+                Debug.Log($"FAILURE. Player attempted to serve '{heldItemName}', but visitor requested: {currentVisitorStatus}. (-SCORE, -HAPPINESS)");
+                playerInventory.ClearHeldFoodItem(); // Remove the item even if wrong
                 SetIdle();
                 // TODO: Add less score/remove happiness logic here
             }
@@ -128,31 +142,19 @@ namespace GamePlay.Interactables
             }
         }
 
-        private bool IsCorrectItem(string itemName)
+        private bool IsCorrectItem(int itemID)
         {
-            if (string.IsNullOrEmpty(itemName))
-                return false;
-
-            var isCorrect = false;
-            
             switch (currentVisitorStatus)
             {
                 case VisitorStatus.RequestMarshmallow:
-                    isCorrect = itemName.Equals("Marshmallow", System.StringComparison.OrdinalIgnoreCase);
-                    break;
+                    return itemID == CollectibleIDs.MARSHMALLOW;
                 case VisitorStatus.RequestHotChocolate:
-                    isCorrect = itemName.Equals("HotChocolate", System.StringComparison.OrdinalIgnoreCase);
-                    break;
+                    return itemID == CollectibleIDs.HOT_CHOCOLATE;
                 case VisitorStatus.RequestSausage:
-                    isCorrect = itemName.Equals("Sausage", System.StringComparison.OrdinalIgnoreCase);
-                    break;
-                
+                    return itemID == CollectibleIDs.SAUSAGE;
                 default:
-                    isCorrect = false;
-                    break;
+                    return false;
             }
-
-            return isCorrect;
         }
         
 
