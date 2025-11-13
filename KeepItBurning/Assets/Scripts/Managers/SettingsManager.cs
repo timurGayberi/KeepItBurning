@@ -1,0 +1,137 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+/// <summary>
+/// Centralized settings manager that persists across scenes.
+/// Use this singleton to manage all game settings (brightness, volume, fullscreen, etc.)
+/// </summary>
+public class SettingsManager : MonoBehaviour
+{
+    private static SettingsManager instance;
+    public static SettingsManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                GameObject go = new GameObject("SettingsManager");
+                instance = go.AddComponent<SettingsManager>();
+                DontDestroyOnLoad(go);
+            }
+            return instance;
+        }
+    }
+
+    // PlayerPrefs keys
+    private const string BRIGHTNESS_KEY = "BrightnessValue";
+    private const string MASTER_VOLUME_KEY = "MasterVolume";
+    private const string MUSIC_VOLUME_KEY = "MusicVolume";
+    private const string SFX_VOLUME_KEY = "SFXVolume";
+    private const string FULLSCREEN_KEY = "Fullscreen";
+
+    // Current values
+    private float brightness = 1f;
+    private float masterVolume = 1f;
+    private float musicVolume = 1f;
+    private float sfxVolume = 1f;
+    private bool isFullscreen = true;
+
+    // Events that UI can subscribe to
+    public System.Action<float> OnBrightnessChanged;
+    public System.Action<float> OnMasterVolumeChanged;
+    public System.Action<float> OnMusicVolumeChanged;
+    public System.Action<float> OnSFXVolumeChanged;
+    public System.Action<bool> OnFullscreenChanged;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            LoadSettings();
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void LoadSettings()
+    {
+        brightness = PlayerPrefs.GetFloat(BRIGHTNESS_KEY, 1f);
+        masterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, 1f);
+        musicVolume = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, 1f);
+        sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1f);
+        isFullscreen = PlayerPrefs.GetInt(FULLSCREEN_KEY, 1) == 1;
+
+        // Apply fullscreen setting
+        Screen.fullScreen = isFullscreen;
+    }
+
+    // Brightness
+    public float Brightness
+    {
+        get => brightness;
+        set
+        {
+            brightness = Mathf.Clamp01(value);
+            PlayerPrefs.SetFloat(BRIGHTNESS_KEY, brightness);
+            PlayerPrefs.Save();
+            OnBrightnessChanged?.Invoke(brightness);
+        }
+    }
+
+    // Master Volume
+    public float MasterVolume
+    {
+        get => masterVolume;
+        set
+        {
+            masterVolume = Mathf.Clamp01(value);
+            PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, masterVolume);
+            PlayerPrefs.Save();
+            OnMasterVolumeChanged?.Invoke(masterVolume);
+        }
+    }
+
+    // Music Volume
+    public float MusicVolume
+    {
+        get => musicVolume;
+        set
+        {
+            musicVolume = Mathf.Clamp01(value);
+            PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, musicVolume);
+            PlayerPrefs.Save();
+            OnMusicVolumeChanged?.Invoke(musicVolume);
+        }
+    }
+
+    // SFX Volume
+    public float SFXVolume
+    {
+        get => sfxVolume;
+        set
+        {
+            sfxVolume = Mathf.Clamp01(value);
+            PlayerPrefs.SetFloat(SFX_VOLUME_KEY, sfxVolume);
+            PlayerPrefs.Save();
+            OnSFXVolumeChanged?.Invoke(sfxVolume);
+        }
+    }
+
+    // Fullscreen
+    public bool IsFullscreen
+    {
+        get => isFullscreen;
+        set
+        {
+            isFullscreen = value;
+            PlayerPrefs.SetInt(FULLSCREEN_KEY, isFullscreen ? 1 : 0);
+            PlayerPrefs.Save();
+            Screen.fullScreen = isFullscreen;
+            OnFullscreenChanged?.Invoke(isFullscreen);
+        }
+    }
+}
