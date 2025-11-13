@@ -13,6 +13,7 @@ namespace Managers.GamePlayManagers
         public TextMeshProUGUI timeText;
         
         public TextMeshProUGUI carriedLogsNumber;
+        [SerializeField] SaveManager saveManager;
 
         void OnEnable()
         {
@@ -56,7 +57,8 @@ namespace Managers.GamePlayManagers
         {
             if (scoreText != null)
             {
-                scoreText.text = currentScore.ToString("N0"); 
+                scoreText.text = currentScore.ToString("N0");
+                saveManager.AddScoreToLb(currentScore); 
             }
         }
     }
