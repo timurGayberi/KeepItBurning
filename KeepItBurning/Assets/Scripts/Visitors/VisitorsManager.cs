@@ -9,6 +9,8 @@ public class VisitorsManager : MonoBehaviour
     [SerializeField] private float TimeToSpawVisitors;
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
+    [SerializeField] public Transform campfire;
+
     private List<GameObject> activeVisitors = new List<GameObject>();
     private List<Transform> availableSpawnPoints = new List<Transform>();
     private Dictionary<GameObject, Transform> visitorSpawnMap = new Dictionary<GameObject, Transform>();
@@ -52,7 +54,11 @@ public class VisitorsManager : MonoBehaviour
 
         availableSpawnPoints.RemoveAt(randomIndex);
 
-        GameObject newVisitor = Instantiate(chosenPrefab, chosenPoint.position, chosenPoint.rotation);
+        GameObject newVisitor = Instantiate(chosenPrefab, chosenPoint.position, Quaternion.identity);
+        if (campfire != null)
+        {
+            newVisitor.transform.LookAt(campfire);
+        }
         activeVisitors.Add(newVisitor);
 
         visitorSpawnMap[newVisitor] = chosenPoint;
