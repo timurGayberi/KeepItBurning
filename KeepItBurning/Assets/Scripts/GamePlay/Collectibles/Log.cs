@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using General; 
 using Player;
+using Unity.VisualScripting;
 
 namespace GamePlay.Collectibles
 {
@@ -24,7 +25,7 @@ namespace GamePlay.Collectibles
             {
                 Debug.LogError($"Collider not found on {gameObject.name}!");
             }
-            
+            //DontDestroyOnLoad(gameObject);
             collectibleID = CollectibleIDs.FIREWOOD_LOGS;
         }
         

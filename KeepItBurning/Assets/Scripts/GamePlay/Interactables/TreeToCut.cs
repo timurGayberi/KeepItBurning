@@ -21,6 +21,8 @@ namespace GamePlay.Interactables
         [SerializeField] private Transform spawnPoint1;
         [SerializeField] private Transform spawnPoint2;
         [SerializeField] private Transform spawnPoint3;
+        [SerializeField] private Transform spawnPoint4;
+        [SerializeField] private Transform spawnPoint5;
 
 
         [Header("Resource Output")]
@@ -105,7 +107,7 @@ namespace GamePlay.Interactables
             Debug.Log($"[CHOP COMPLETE] Spawning {treeData.numberOfLogs} logs.");
 
             // Spawning logic uses data from Scriptable Object
-            Transform[] points = { spawnPoint1, spawnPoint2, spawnPoint3 };
+            Transform[] points = { spawnPoint1, spawnPoint2, spawnPoint3,spawnPoint4,spawnPoint5 };
 
             foreach (Transform point in points)
             {
