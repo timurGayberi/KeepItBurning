@@ -1,0 +1,36 @@
+﻿using UnityEngine;
+
+public class PlaySoundOnInteract : MonoBehaviour
+{
+    public AudioSource audioSource;   // AudioSource z dźwiękiem
+    private bool playerInside = false;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInside = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInside = false;
+        }
+    }
+
+    private void Update()
+    {
+        // Jeśli gracz jest w triggerze i nacisnął E
+        if (playerInside && Input.GetKeyDown(KeyCode.E))
+        {
+            if (audioSource != null)
+            {
+                audioSource.Play();
+                SoundManager.Play(SoundAction.LostGame);
+            }
+        }
+    }
+}
