@@ -3,65 +3,68 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-[Serializable]
-public struct SaveData
+namespace Managers
 {
-    public List<float> Scores;
-}
-
-public class SaveManager : MonoBehaviour
-{
-    [SerializeField] private SaveData data;
-    [SerializeField] string fileName = "save";
-
-    public List<float> GetScores => data.Scores;
-
-    private string GetPath()
+    [Serializable]
+    public struct SaveData
     {
-        return Application.persistentDataPath + "/" + fileName + ".json";
+        public List<float> Scores;
     }
 
-    void Awake()
+    public class SaveManager : MonoBehaviour
     {
-        LoadData();
-    }
+        [SerializeField] private SaveData data;
+        [SerializeField] string fileName = "save";
 
-    public void LoadData()
-    {
-        if (!File.Exists(GetPath()))
+        public List<float> GetScores => data.Scores;
+
+        private string GetPath()
         {
-            data.Scores = new List<float>();
-            SaveGameFile();
-            return;
+            return Application.persistentDataPath + "/" + fileName + ".json";
         }
 
-        string jsonfile = File.ReadAllText(GetPath());
-        data = JsonUtility.FromJson<SaveData>(jsonfile);
-        if (data.Scores == null)
-            data.Scores = new List<float>();
-    }
+        void Awake()
+        {
+            LoadData();
+        }
 
-    public void SaveGameFile()
-    {
-        string jsonfile = JsonUtility.ToJson(data, true);
-        File.WriteAllText(GetPath(), jsonfile);
-    }
+        public void LoadData()
+        {
+            if (!File.Exists(GetPath()))
+            {
+                data.Scores = new List<float>();
+                SaveGameFile();
+                return;
+            }
 
-    public void AddScoreToLb(float Score)
-    {
-        if (data.Scores == null)
-            data.Scores = new List<float>();
+            string jsonfile = File.ReadAllText(GetPath());
+            data = JsonUtility.FromJson<SaveData>(jsonfile);
+            if (data.Scores == null)
+                data.Scores = new List<float>();
+        }
 
-        data.Scores.Add(Score);
-        data.Scores.Sort((a, b) => b.CompareTo(a));
-        SaveGameFile();
-    }
+        public void SaveGameFile()
+        {
+            string jsonfile = JsonUtility.ToJson(data, true);
+            File.WriteAllText(GetPath(), jsonfile);
+        }
 
-    public float GetHighscore()
-    {
-        if (data.Scores == null || data.Scores.Count == 0)
-            return 0;
+        public void AddScoreToLb(float Score)
+        {
+            if (data.Scores == null)
+                data.Scores = new List<float>();
 
-        return data.Scores[0];
+            data.Scores.Add(Score);
+            data.Scores.Sort((a, b) => b.CompareTo(a));
+            SaveGameFile();
+        }
+
+        public float GetHighscore()
+        {
+            if (data.Scores == null || data.Scores.Count == 0)
+                return 0;
+
+            return data.Scores[0];
+        }
     }
 }
