@@ -237,7 +237,7 @@ MonoBehaviour:
   sounds:
   - action: 0
     clips:
-    - {fileID: 8300000, guid: af8a541e1d4839142923c90ea6a7029d, type: 3}
+    - {fileID: 8300000, guid: 7d8ee629abeab5b46aa85a9975a39849, type: 3}
     volume: 0.4
     pitchRange: {x: 1, y: 1}
     playAs3D: 0

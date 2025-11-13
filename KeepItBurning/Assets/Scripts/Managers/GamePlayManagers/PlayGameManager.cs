@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
-using Managers.GeneralManagers; // CRITICAL: To access GameStateManager
+using Managers.GeneralManagers;
+using Managers;using Score;
 
 namespace Managers.GamePlayManagers
 {
@@ -74,6 +75,7 @@ namespace Managers.GamePlayManagers
         {
             if (GameStateManager.instance != null)
             {
+                //SaveManager.AddScoreToLb(ScoreManager.Instance.Score);
                 GameStateManager.instance.TriggerGameOver();
                 SoundManager.Play(SoundAction.LostGame);
                 SoundManager.Play(SoundAction.GameOver);
