@@ -5,7 +5,6 @@ using UnityEngine;
 using Managers.GamePlayManagers;
 using UnityEngine.UI;
 using Managers.GeneralManagers;
-using Score;
 
 namespace Managers.GeneralManagers
 {
@@ -17,9 +16,7 @@ namespace Managers.GeneralManagers
         public GameState currentState { get; private set;}
         
         public static event Action<GameState> OnGameStateChanged;
-
-        [SerializeField] public SaveManager saveManager;
-
+        
         // Scenes state machine
         public enum GameState
         {
@@ -28,7 +25,7 @@ namespace Managers.GeneralManagers
             MainMenu,
             GamePlay,
             Paused,
-            GameOver
+            GameOver 
         }
 
         private IInputService inputService;
@@ -52,9 +49,9 @@ namespace Managers.GeneralManagers
             try
             {
                 inputService = ServiceLocator.GetService<IInputService>();
-                inputService.OnPauseEvent += HandlePauseInput;
+                inputService.OnPauseEvent += HandlePauseInput; 
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException _)
             {
                 //Debug.LogError("[GameStateManager] FAILED: Could not get IInputService. Check if InputReader (Execution Order -200) ran successfully. " + e.Message);
             }
@@ -118,18 +115,25 @@ namespace Managers.GeneralManagers
                     break;
                 case GameState.MainMenu:
                 case GameState.Default:
-                    Time.timeScale = 1.0f;
-                    inputService.DisablePlayerInput();
-                    inputService.EnableUIInput();
-                    break;
-                case GameState.GameOver:
-                    Time.timeScale = 0.0f;
+                case GameState.GameOver: 
+                    Time.timeScale = 0.0f; 
                     inputService.DisablePlayerInput();
                     inputService.EnableUIInput();
                     break;
             }
         }
         
+        public void TriggerGameOver()
+        {
+            if (currentState != GameState.GameOver)
+            {
+                Debug.Log("[GAME STATE] Game Over triggered! Restarting level.");
+                
+
+                UpdateState(GameState.GameOver);
+                
+            }
+        }
         
         #region Flow Control (Scene and Game Management)
 
@@ -140,7 +144,6 @@ namespace Managers.GeneralManagers
 
         public void QuitToMainMenu()
         {
-            saveManager.AddScoreToLb(ScoreManager.Instance.Score);
             if (PlayGameManager.Instance != null)
             {
                 PlayGameManager.Instance.ResetAllStats();
@@ -188,11 +191,6 @@ namespace Managers.GeneralManagers
             {
                 SceneLoader.Instance.ReloadCurrentScene();
             }
-        }
-
-        public void TriggerGameOver()
-        {
-            UpdateState(GameState.GameOver);
         }
 
         #endregion

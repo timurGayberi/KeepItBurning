@@ -99,18 +99,11 @@ namespace Player
                 
                 if (interactable is FireplaceInteraction fireplace)
                 {
-                    if (_playerActivities.currentState == PlayerState.IsCarrying && _inventory.CurrentCarryingType == CarryingType.Wood)
-                    {
-                        if (_inventory.ConsumeWood())
-                        {
-                            fireplace.AddFuel();
-                            Debug.Log("[INTERACTION: SUCCESS] Added log to fireplace.");
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("[INTERACTION: BLOCKED] Must be carrying wood to add to fireplace.");
-                    }
+                    // FIX: This calls the new TryAddFuel method, passing the player as the interactor.
+                    // The fireplace script now handles checking for wood and consuming it, making the logic clean.
+                    fireplace.TryAddFuel(this.gameObject);
+                    
+                    _playerActivities.SetPlayerState(PlayerState.IsIdle); 
                     return;
                 }
                 
@@ -131,6 +124,7 @@ namespace Player
                     return;
                 }
                 
+                // Fallback for general IInteractable objects that are not long-running
                 _playerActivities.SetPlayerState(PlayerState.IsInteracting); 
                 interactable.Interact();
                 _playerActivities.SetPlayerState(PlayerState.IsIdle); 

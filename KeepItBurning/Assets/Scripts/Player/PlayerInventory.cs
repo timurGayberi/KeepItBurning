@@ -117,13 +117,10 @@ namespace Player
             }
         }
         
+        
+        
         public bool AddCollectible(CollectibleData data)
         {
-            // if (CurrentCarryingType != CarryingType.None && CurrentCarryingType != CarryingType.Wood)
-            // {
-            //    Debug.Log("Cannot carry two different types of items!");
-            //    return false;
-            // }
 
             if (data.ID == CollectibleIDs.FIREWOOD_LOGS)
             {
@@ -187,7 +184,23 @@ namespace Player
             return false;
         }
         
-        // This method is now only called by InteractionHandler
+        public float GetWoodFuelValue()
+        {
+            if (woodLogPrefabForDropping == null)
+            {
+                Debug.LogError("[FUEL GET] woodLogPrefabForDropping is not assigned. Cannot determine fuel value.");
+                return 0f;
+            }
+            
+            if (woodLogPrefabForDropping.TryGetComponent(out FireWoodLogs logScript))
+            {
+                return logScript.FuelValue;
+            }
+            
+            Debug.LogError("[FUEL GET] woodLogPrefabForDropping is missing FireWoodLogs component. Cannot determine fuel value.");
+            return 0f;
+        }
+        
         public void DropWood()
         {
             if (HasWood)

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Managers.GeneralManagers; // CRITICAL: To access GameStateManager
 
 namespace Managers.GamePlayManagers
 {
@@ -69,7 +70,17 @@ namespace Managers.GamePlayManagers
             Debug.Log("[PlayGameManager] All stats reset.");
         }
         
-
+        public void TriggerGameOver()
+        {
+            if (GameStateManager.instance != null)
+            {
+                GameStateManager.instance.TriggerGameOver();
+            }
+            else
+            {
+                Debug.LogError("[PlayGameManager] GameStateManager instance not found. Cannot trigger Game Over!");
+            }
+        }
         private string GetFormatedTime()
         {
             var minutes = Mathf.FloorToInt(timer / 60);

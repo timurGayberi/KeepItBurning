@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f295b327c8a0e16419f82fad191e8fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveManager: {fileID: 0}
+  saveManager: {fileID: 5010537762373745382, guid: 14192fefb8489bb4c972543d48046ac5, type: 3}
 --- !u!114 &3075029736714721470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +256,16 @@ MonoBehaviour:
     maxDistance: 0
     rolloffMode: 0
     output: {fileID: -8969795903920555817, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  - action: 2
+    clips:
+    - {fileID: 8300000, guid: 209d7f25d5f52764fbe7d00d18057e99, type: 3}
+    volume: 1
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 1
+    maxDistance: 10
+    rolloffMode: 0
+    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
   - action: 3
     clips:
     - {fileID: 8300000, guid: a108fe035d5e02148b1cff166760eac6, type: 3}
@@ -266,256 +276,16 @@ MonoBehaviour:
     maxDistance: 10
     rolloffMode: 0
     output: {fileID: -4093017986523000424, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 4
+  - action: 3
     clips:
-    - {fileID: 8300000, guid: 103c1ec675d7a8944ade4107602f9fa2, type: 3}
+    - {fileID: 8300000, guid: a108fe035d5e02148b1cff166760eac6, type: 3}
     volume: 1
     pitchRange: {x: 1, y: 1}
     playAs3D: 0
     minDistance: 1
     maxDistance: 10
     rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 5
-    clips:
-    - {fileID: 8300000, guid: 37384072d26fa384a937a93926911af3, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 6
-    clips:
-    - {fileID: 8300000, guid: dafd234616be9414ca592c9e41df2a1f, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 7
-    clips:
-    - {fileID: 8300000, guid: 59e8d3f7bedb10b4aa74fe5af0d55c81, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 8
-    clips:
-    - {fileID: 8300000, guid: b3195596f6fe41a45981a2953d09af44, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 11
-    clips:
-    - {fileID: 8300000, guid: 6a806f5e154b8c84bba3de0121e81549, type: 3}
-    - {fileID: 8300000, guid: 6b3c92e67bae3c740ac6abc7df0ad3a3, type: 3}
-    - {fileID: 8300000, guid: af94e2443e26fa64897cc609c1b1d1b9, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 12
-    clips:
-    - {fileID: 8300000, guid: 209d7f25d5f52764fbe7d00d18057e99, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 13
-    clips:
-    - {fileID: 8300000, guid: 58594733c551bff4581aafc1639db636, type: 3}
-    - {fileID: 8300000, guid: 274e003ad89ee8646826ef8b380c1eb9, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 9
-    clips:
-    - {fileID: 8300000, guid: bd77b8b8965ed00448d46edd501d7c43, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 15
-    clips:
-    - {fileID: 8300000, guid: 59d5030543c15c54194e936e10024ade, type: 3}
-    - {fileID: 8300000, guid: 6a41c47d1e374374db7337b6041673ef, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 14
-    clips:
-    - {fileID: 8300000, guid: 5f437672e65a5d54e96b0c9b4d1d71f8, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 17
-    clips:
-    - {fileID: 8300000, guid: 0b82b8f347e7e5d4eb985e4d34fa36b0, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 16
-    clips:
-    - {fileID: 8300000, guid: 9b7ab652e5e9b5c4d9cbc241f406c1d1, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 18
-    clips:
-    - {fileID: 8300000, guid: c19583a408dc7ca46b0675a7e2eaa8f9, type: 3}
-    - {fileID: 8300000, guid: 5b0ac3eca7eef3145b003ddd96290510, type: 3}
-    - {fileID: 8300000, guid: b90f4de3847927247b49677c0e6c4428, type: 3}
-    - {fileID: 8300000, guid: 214717db9ae493245b34dc3ca5c21897, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 19
-    clips:
-    - {fileID: 8300000, guid: bc13760dd37dcc242b63b3a8ce95403a, type: 3}
-    - {fileID: 8300000, guid: 617e3f5dbcf20dc46aeb62bf7928cde9, type: 3}
-    - {fileID: 8300000, guid: 1e6325e322705174ab9c6d948115e379, type: 3}
-    - {fileID: 8300000, guid: 5a72f11d5dfcec043a52a8cb3ddfc7d7, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 20
-    clips:
-    - {fileID: 8300000, guid: ff2b88d561c1cfd4ca16f1fc56cd57dc, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 21
-    clips:
-    - {fileID: 8300000, guid: c029aef97c835cc4f9252bc4d49754db, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 22
-    clips:
-    - {fileID: 8300000, guid: b7f6d43310500bb4f8c3f3b92a638145, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 23
-    clips:
-    - {fileID: 8300000, guid: 7b3eef6a96de70b4782f3f5bbb0c1d49, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 10
-    clips:
-    - {fileID: 8300000, guid: cf417dcbcb55b184aa6d9144486dd982, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 24
-    clips:
-    - {fileID: 8300000, guid: 197554e5098b803409a8a05efe8dc1a7, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 25
-    clips:
-    - {fileID: 8300000, guid: 304d87800c941c04f8a2166ef3dfa39f, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 26
-    clips:
-    - {fileID: 8300000, guid: b882f5b48ef8daa4e94501d376c625ca, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  - action: 27
-    clips:
-    - {fileID: 8300000, guid: 62428c2d2a6d31b488ba63bcf988365c, type: 3}
-    volume: 1
-    pitchRange: {x: 1, y: 1}
-    playAs3D: 0
-    minDistance: 1
-    maxDistance: 10
-    rolloffMode: 0
-    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+    output: {fileID: -4093017986523000424, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
   masterVolume: 0.6
   initialPoolSize: 10
   dontDestroyOnLoad: 1

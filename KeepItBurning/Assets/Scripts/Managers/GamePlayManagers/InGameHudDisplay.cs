@@ -1,8 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Player;
 using General; 
 using System;
+using GamePlay.Interactables;
 
 namespace Managers.GamePlayManagers
 {
@@ -16,9 +18,13 @@ namespace Managers.GamePlayManagers
         public TextMeshProUGUI timeText;
         
         public TextMeshProUGUI carriedLogsNumber;
+
+        [Header("Fireplace UI")]
+        [Tooltip("The slider representing the current fireplace fuel level.")]
+        public Slider fireFuelSlider;
         
-        // Player inventory reference
         private PlayerInventory playerInventory;
+        private FireplaceInteraction fireplaceInteraction;
 
         void OnEnable()
         {
@@ -38,6 +44,7 @@ namespace Managers.GamePlayManagers
                     UpdateScoreDisplay(PlayGameManager.Instance.GetCurrentScore());
                 }
 
+                // --- Player Inventory Setup ---
                 try
                 {
                     playerInventory = ServiceLocator.GetService<PlayerInventory>();
@@ -53,6 +60,8 @@ namespace Managers.GamePlayManagers
                 {
                     Debug.LogWarning($"InGameHudDisplayComponent: PlayerInventory not found. Log UI will not update. Error: {e.Message}");
                 }
+                
+                SetupFireplaceListener();
             }
         }
 
@@ -66,6 +75,25 @@ namespace Managers.GamePlayManagers
             if (playerInventory != null)
             {
                 playerInventory.OnWoodCountChanged -= UpdateLogDisplay;
+            }
+            // Fireplace Cleanup (New)
+            if (fireplaceInteraction != null)
+            {
+                fireplaceInteraction.OnFuelChanged -= UpdateFireFuelSlider;
+            }
+        }
+
+        private void SetupFireplaceListener()
+        {
+            fireplaceInteraction = FindObjectOfType<FireplaceInteraction>();
+
+            if (fireplaceInteraction != null)
+            {
+                fireplaceInteraction.OnFuelChanged += UpdateFireFuelSlider;
+            }
+            else
+            {
+                Debug.LogWarning("FireplaceInteraction not found in the scene. Fire fuel slider will not update.");
             }
         }
         
@@ -90,6 +118,22 @@ namespace Managers.GamePlayManagers
             if (carriedLogsNumber != null && playerInventory != null)
             {
                 carriedLogsNumber.text = $"{currentCount}/{playerInventory.MaxWoodCount}";
+            }
+        }
+
+        // New: Update the slider based on the fireplace fuel
+        private void UpdateFireFuelSlider(float currentFuel, float maxFuel)
+        {
+            if (fireFuelSlider != null)
+            {
+                // Set max value once at initialization
+                if (fireFuelSlider.maxValue != maxFuel)
+                {
+                    fireFuelSlider.maxValue = maxFuel;
+                }
+                
+                // Set current value
+                fireFuelSlider.value = currentFuel;
             }
         }
     }
