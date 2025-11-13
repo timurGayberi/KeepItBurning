@@ -18,7 +18,11 @@ namespace GamePlay.Interactables
         [Tooltip("The ScriptableObject containing all the tree's stats and output resources.")]
         [SerializeField]
         private TreeData treeData;
-        
+        [SerializeField] private Transform spawnPoint1;
+        [SerializeField] private Transform spawnPoint2;
+        [SerializeField] private Transform spawnPoint3;
+
+
         [Header("Resource Output")]
         [Tooltip("The Log Prefab to be spawned when the tree is destroyed.")]
         public GameObject logPrefab;
@@ -32,6 +36,7 @@ namespace GamePlay.Interactables
 
         [SerializeField]
         private GameObject _leaves;
+
 
         public TreeStatus currentTreeStatus = TreeStatus.Default;
         
@@ -100,18 +105,19 @@ namespace GamePlay.Interactables
             Debug.Log($"[CHOP COMPLETE] Spawning {treeData.numberOfLogs} logs.");
 
             // Spawning logic uses data from Scriptable Object
-            for (int i = 0; i < treeData.numberOfLogs; i++)
-            {
-                var randomCircle = Random.insideUnitCircle * treeData.scatterRadius;
-                var spawnPosition = new Vector3(
-                    transform.position.x + randomCircle.x,
-                    transform.position.y + 0.1f, 
-                    transform.position.z + randomCircle.y
-                );
+            Transform[] points = { spawnPoint1, spawnPoint2, spawnPoint3 };
 
-                Instantiate(logPrefab, spawnPosition, Quaternion.identity);
+            foreach (Transform point in points)
+            {
+                if (point == null)
+                    continue;
+
+                Vector3 spawnPosition = point.position;
+                spawnPosition.y += 0.1f;
+
+                Instantiate(logPrefab, spawnPosition, point.rotation);
             }
-            
+
             SetTreeVisuals(TreeStatus.Cut);
         }
         
