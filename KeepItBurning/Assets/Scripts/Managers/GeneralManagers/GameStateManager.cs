@@ -133,10 +133,11 @@ namespace Managers.GeneralManagers
                 // We are skipping the UI update (which caused the error)
                 // and going straight to the restart logic for now.
                 Debug.Log("[GAME STATE] Game Over triggered! Restarting level.");
-                
+
                 // Immediately restart the level
-                RestartLevel(); 
-                
+
+                UpdateState(GameState.GameOver);
+
                 // The rest of this method will not execute because the scene is reloading.
             }
         }
@@ -198,7 +199,7 @@ namespace Managers.GeneralManagers
                 SceneLoader.Instance.ReloadCurrentScene();
             }
         }
-        
+
         #endregion
     }
 }
