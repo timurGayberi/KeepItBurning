@@ -110,7 +110,12 @@ namespace Managers.GeneralManagers
                             shouldBeActive = true;
                         }
                         break;
-                    
+
+                    case GameStateManager.GameState.GameOver:
+                        if (isGameplayScene && panelId == UIPanelID.GameOver)
+                            shouldBeActive = true;
+                        break;
+
                     case GameStateManager.GameState.Default:
                         shouldBeActive = false;
                         break;
