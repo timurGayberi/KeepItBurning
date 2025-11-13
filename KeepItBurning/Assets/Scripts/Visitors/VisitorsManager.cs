@@ -50,7 +50,7 @@ public class VisitorsManager : MonoBehaviour
         {
             return;
         }
-
+        
         GameObject chosenPrefab = visitorPrefabs[Random.Range(0, visitorPrefabs.Count)];
         int randomIndex = Random.Range(0, availableSpawnPoints.Count);
         Transform chosenPoint = availableSpawnPoints[randomIndex];
@@ -67,6 +67,7 @@ public class VisitorsManager : MonoBehaviour
 
         visitorSpawnMap[newVisitor] = chosenPoint;
         currentVisitors++;
+        SoundManager.Play(SoundAction.NewVisitor);
     }
 
     public void RemoveVisitor(GameObject visitor)
