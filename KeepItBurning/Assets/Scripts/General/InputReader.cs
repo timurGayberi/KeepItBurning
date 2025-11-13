@@ -13,6 +13,8 @@ namespace General
         public event Action OnSprintStarted;
         public event Action OnSprintCanceled;
         public event Action OnInteractEvent;
+        
+        public event Action OnDropEvent;
         public event Action OnPauseEvent;
         
         public event Action<ControlDevice> OnControlSchemeChange;

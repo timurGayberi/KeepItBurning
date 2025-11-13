@@ -8,7 +8,7 @@ namespace Interfaces
     {
         //public interface GetCollectibleData();
         
-        void Collect(GameObject interactor);
+        bool Collect(GameObject interactor);
         
         void Drop(GameObject interactor);
     }

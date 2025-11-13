@@ -1,5 +1,8 @@
 using TMPro;
 using UnityEngine;
+using Player;
+using General; 
+using System;
 
 namespace Managers.GamePlayManagers
 {
@@ -13,6 +16,9 @@ namespace Managers.GamePlayManagers
         public TextMeshProUGUI timeText;
         
         public TextMeshProUGUI carriedLogsNumber;
+        
+        // Player inventory reference
+        private PlayerInventory playerInventory;
 
         void OnEnable()
         {
@@ -21,8 +27,7 @@ namespace Managers.GamePlayManagers
                 PlayGameManager.Instance.OnTimeUpdated += UpdateTimeDisplay;
                 
                 PlayGameManager.Instance.OnScoreUpdated += UpdateScoreDisplay;
-
-                // 2. Initial synchronization check
+                
                 if (timeText != null)
                 {
                     UpdateTimeDisplay(PlayGameManager.Instance.GetCurrentFormattedTime());
@@ -31,6 +36,22 @@ namespace Managers.GamePlayManagers
                 if (scoreText != null)
                 {
                     UpdateScoreDisplay(PlayGameManager.Instance.GetCurrentScore());
+                }
+
+                try
+                {
+                    playerInventory = ServiceLocator.GetService<PlayerInventory>();
+                    
+                    playerInventory.OnWoodCountChanged += UpdateLogDisplay;
+                    
+                    if (carriedLogsNumber != null)
+                    {
+                        UpdateLogDisplay(playerInventory.WoodCount); 
+                    }
+                }
+                catch (InvalidOperationException e)
+                {
+                    Debug.LogWarning($"InGameHudDisplayComponent: PlayerInventory not found. Log UI will not update. Error: {e.Message}");
                 }
             }
         }
@@ -41,6 +62,10 @@ namespace Managers.GamePlayManagers
             {
                 PlayGameManager.Instance.OnTimeUpdated -= UpdateTimeDisplay;
                 PlayGameManager.Instance.OnScoreUpdated -= UpdateScoreDisplay;
+            }
+            if (playerInventory != null)
+            {
+                playerInventory.OnWoodCountChanged -= UpdateLogDisplay;
             }
         }
         
@@ -57,6 +82,14 @@ namespace Managers.GamePlayManagers
             if (scoreText != null)
             {
                 scoreText.text = currentScore.ToString("N0"); 
+            }
+        }
+
+        private void UpdateLogDisplay(int currentCount)
+        {
+            if (carriedLogsNumber != null && playerInventory != null)
+            {
+                carriedLogsNumber.text = $"{currentCount}/{playerInventory.MaxWoodCount}";
             }
         }
     }

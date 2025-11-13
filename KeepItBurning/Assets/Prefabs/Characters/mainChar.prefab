@@ -906,9 +906,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a592d466a0844e348bf66495d74a51d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasWood: 0
+  _woodCount: 0
+  maxWoodCount: 3
   woodVisual: {fileID: 0}
-  woodForDrop: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
+  woodLogPrefabForDropping: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
 --- !u!1 &4582408565176743465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8572902205080083327, guid: a689f433bd1b372449230b980a6aaf3b, type: 3}

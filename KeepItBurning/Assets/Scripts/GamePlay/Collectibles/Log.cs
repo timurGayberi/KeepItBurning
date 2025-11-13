@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using General;
+using Player;
 
 namespace GamePlay.Collectibles
 {
@@ -21,8 +22,10 @@ namespace GamePlay.Collectibles
             
             if (_collider == null)
             {
-                Debug.LogError("Collider not found!");
+                Debug.LogError($"Collider not found on {gameObject.name}!");
             }
+            
+            collectibleID = CollectibleIDs.FIREWOOD_LOGS;
         }
         
         public void SetDropImmunity()
@@ -37,9 +40,23 @@ namespace GamePlay.Collectibles
             if (_collider != null) _collider.enabled = true;
         }
         
-        protected override void OnCollectedWithInstance(GameObject collectedObject)
+        protected override bool OnCollectedWithInstance(GameObject interactor)
         {
-            //inventory.SetHasWood(true, collectedObject);
+            if (interactor.TryGetComponent(out PlayerInventory inventory))
+            {
+                CollectibleData data = GetCollectibleData();
+                
+                bool wasAdded = inventory.AddCollectible(data);
+                
+                return wasAdded;
+            }
+            
+            return false;
+        }
+
+        public override CollectibleData GetCollectibleData()
+        {
+            return new CollectibleData(collectibleID, FuelValue);
         }
     }
 }
