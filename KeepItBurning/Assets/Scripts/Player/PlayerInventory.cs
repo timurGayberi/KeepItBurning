@@ -221,6 +221,7 @@ namespace Player
                 
                 _woodCount--;
                 UpdateWoodState();
+                SoundManager.Play(SoundAction.DropWood);
                 Debug.Log("Inventory: Wood dropped.");
             }
             else
