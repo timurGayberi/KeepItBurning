@@ -48,9 +48,9 @@ namespace Managers.GeneralManagers
             try
             {
                 inputService = ServiceLocator.GetService<IInputService>();
-                inputService.OnPauseEvent += HandlePauseInput; 
+                inputService.OnPauseEvent += HandlePauseInput;
             }
-            catch (InvalidOperationException _)
+            catch (InvalidOperationException)
             {
                 //Debug.LogError("[GameStateManager] FAILED: Could not get IInputService. Check if InputReader (Execution Order -200) ran successfully. " + e.Message);
             }

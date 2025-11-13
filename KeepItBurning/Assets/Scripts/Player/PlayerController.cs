@@ -22,12 +22,14 @@ namespace Player
         private IInputService _inputService; 
         
         // private PlayerInventory _playerInventory; 
-        
+
         #endregion
-        
+
         //  ------------------Actions-------------------------//
-        
-        public event Action OnInteractionAttempt; 
+
+#pragma warning disable CS0067
+        public event Action OnInteractionAttempt;
+#pragma warning restore CS0067
         public event Action <PlayerState> OnPlayerStateChange;
         
         // --------------------------------------------------//

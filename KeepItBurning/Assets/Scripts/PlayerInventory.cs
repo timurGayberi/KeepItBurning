@@ -86,7 +86,9 @@ namespace PlayerScripts
 
         // Events
         public event Action<bool> OnHasAxeChanged;
+#pragma warning disable CS0067
         public event Action<int> OnWoodCountChanged;
+#pragma warning restore CS0067
         public event Action<CarryingType> OnCarryingTypeChanged;
 
         private void Awake()
