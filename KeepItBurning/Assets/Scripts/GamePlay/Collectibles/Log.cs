@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using General;
+using General; 
 using Player;
 
 namespace GamePlay.Collectibles
@@ -46,6 +46,7 @@ namespace GamePlay.Collectibles
             {
                 CollectibleData data = GetCollectibleData();
                 
+                // Adds the fuel value and ID to the inventory count
                 bool wasAdded = inventory.AddCollectible(data);
                 
                 return wasAdded;
@@ -56,6 +57,7 @@ namespace GamePlay.Collectibles
 
         public override CollectibleData GetCollectibleData()
         {
+            // Returns the unique ID and the fuel value for this log
             return new CollectibleData(collectibleID, FuelValue);
         }
     }

@@ -6,77 +6,151 @@ namespace Player
     public class PlayersInteractionTargetDetector : MonoBehaviour
     {
         [Header("Detection Settings")]
-        [SerializeField] private float      detectionRadius ;
-        [SerializeField] private float      detectionDistance ;
-        
+        [Tooltip("Radius of the detection sphere cast forward.")]
+        [SerializeField] private float detectionRadius = 0.5f; 
+        [Tooltip("Maximum distance the sphere is cast.")]
+        [SerializeField] private float detectionDistance = 3f; 
+
         [Tooltip("The tags we consider valid targets (e.g., 'Interactable', 'Collectible').")]
         [SerializeField] private string[] targetTags = { "Interactable", "Collectible" }; 
+
+        [Header("Physics Filter")]
+        [Tooltip("Layers to IGNORE during raycasting (Should include 'Player').")]
+        [SerializeField] private LayerMask ignoreLayers;
         
-        // Expose both potential interaction types
         public IInteractable currentInteractable { get; private set; }
-        public ICollectible currentCollectible { get; private set; } // New property for collectibles
+        public ICollectible currentCollectible { get; private set; }
         
+        public Component CurrentCandidate
+        {
+            get
+            {
+                if (currentCollectible != null)
+                {
+                    return currentCollectible as Component;
+                }
+                if (currentInteractable != null)
+                {
+                    return currentInteractable as Component;
+                }
+                return null;
+            }
+        }
+
         private void Update()
         {
             DetectTarget();
         }
-        
+
         private void DetectTarget()
         {
-            
             currentInteractable = null;
             currentCollectible = null;
-            
-            var ray = new Ray(transform.position, transform.forward);
-            RaycastHit hit;
-            
-            if (Physics.SphereCast(ray, detectionRadius, out hit, detectionDistance, ~0)) 
-            {
-                var hitTag = hit.collider.gameObject.tag;
-                var isTargetTag = false;
-                
 
-                foreach (string tag in targetTags)
+            var effectiveRadius = detectionDistance; 
+            var layerMask = ~ignoreLayers;
+            
+            Vector3 centerPosition = transform.position;
+            
+            Collider[] colliders = Physics.OverlapSphere(centerPosition, effectiveRadius, layerMask, QueryTriggerInteraction.Collide); 
+
+            float minDistance = float.MaxValue;
+            IInteractable closestInteractable = null;
+            ICollectible closestCollectible = null;
+            Vector3? closestTargetPosition = null; 
+            
+            ICollectible closestCollectibleCandidate = null;
+            
+            foreach (var collider in colliders) 
+            {
+                if (collider.transform.root == transform.root) continue;
+
+                if (collider is MeshCollider meshCollider && !meshCollider.convex) continue;
+                if (collider is TerrainCollider) continue;
+                
+                float distance;
+                try
                 {
-                    if (hitTag.Equals(tag))
-                    {
-                        isTargetTag = true;
-                        break;
-                    }
+                    distance = Vector3.Distance(transform.position, collider.ClosestPoint(transform.position));
+                }
+                catch (System.Exception) 
+                {
+                    continue;
                 }
                 
-                if (isTargetTag)
+                if (distance < effectiveRadius) 
                 {
-                    var collectible = hit.collider.GetComponent<ICollectible>();
-                    if (collectible != null)
+                    var isTargetTag = false;
+                    foreach (var tag in targetTags)
                     {
-                        currentCollectible = collectible;
-                        Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.blue); 
-                        return; 
-
+                        if (collider.CompareTag(tag))
+                        {
+                            isTargetTag = true;
+                            break;
+                        }
                     }
                     
-                    var interactable = hit.collider.GetComponent<IInteractable>();
-                    if (interactable != null)
+                    if (isTargetTag)
                     {
-                        currentInteractable = interactable;
-                        Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
+                        var collectible = collider.GetComponent<ICollectible>();
+                        var interactable = collider.GetComponent<IInteractable>();
+                        
+                        if (distance < minDistance)
+                        {
+                            minDistance = distance;
+                            
+                            if (collectible != null)
+                            {
+                                closestCollectibleCandidate = collectible;
+                                closestInteractable = null; 
+                            }
+                            else if (interactable != null)
+                            {
+                                closestInteractable = interactable;
+                                if (closestCollectibleCandidate == null)
+                                {
+                                    closestTargetPosition = collider.transform.position;
+                                }
+                            }
+                        }
+                        
+                        if (collectible != null && (closestCollectibleCandidate == null || distance < Vector3.Distance(transform.position, (closestCollectibleCandidate as Component).transform.position)))
+                        {
+                            closestCollectibleCandidate = collectible;
+                            closestTargetPosition = collider.transform.position;
+                        }
                     }
                 }
-                else
-                {
-                    Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.yellow);
-                }
+            }
+            
+            if (closestCollectibleCandidate != null)
+            {
+                currentCollectible = closestCollectibleCandidate;
+                currentInteractable = null;
             }
             else
             {
-                Debug.DrawRay(ray.origin, ray.direction * detectionDistance, Color.red);
+                currentCollectible = null;
+                currentInteractable = closestInteractable;
+            }
+
+            
+            if (currentCollectible != null || currentInteractable != null)
+            {
+                var targetPos = (currentCollectible as Component)?.transform.position ?? (currentInteractable as Component)?.transform.position ?? transform.position;
+                var color = (currentCollectible != null) ? Color.blue : Color.green;
+                Debug.DrawLine(transform.position + transform.up * 1.5f, targetPos, color);
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, transform.forward * effectiveRadius, Color.red);
             }
         }
-        private void OnDrawGizmosSelected()
+
+        void OnDrawGizmosSelected()
         {
             Gizmos.color = (currentCollectible != null || currentInteractable != null) ? Color.green : Color.yellow;
-            Gizmos.DrawWireSphere(transform.position + transform.forward * detectionDistance, detectionRadius);
+            Gizmos.DrawWireSphere(transform.position, detectionDistance);
         }
     }
 }
