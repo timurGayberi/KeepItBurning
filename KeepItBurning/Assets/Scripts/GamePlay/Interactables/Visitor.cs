@@ -124,6 +124,7 @@ namespace GamePlay.Interactables
             if (IsCorrectItem(heldItemID, cookState))
             {
                 HappyIcon.SetActive(true);
+                SoundManager.Play(SoundAction.VisitorHappy);
                 if (ScoreManager.Instance != null)
                 {
                     ScoreManager.Instance.AddCorrectlyCookedFoodScore();
@@ -132,6 +133,7 @@ namespace GamePlay.Interactables
             else
             {
                 AngryIcon.SetActive(true);
+                SoundManager.Play(SoundAction.VisitorAngry);
                 if (ScoreManager.Instance != null)
                 {
                     ScoreManager.Instance.AddIncorrectlyCookedFoodScore();
@@ -148,6 +150,7 @@ namespace GamePlay.Interactables
         private IEnumerator LeaveAfterEating()
         {
             SetIdle();
+            SoundManager.Play(SoundAction.VisitorLeave);
             yield return new WaitForSeconds(leaveDelay);
 
             if (visitorsManager != null)
