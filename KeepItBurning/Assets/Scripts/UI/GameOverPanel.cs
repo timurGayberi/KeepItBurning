@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using Managers.GamePlayManagers;
+using Score;
 
 namespace UI
 {
@@ -16,10 +17,30 @@ namespace UI
 
         private void OnEnable()
         {
-            // When the panel is shown, display the current score
-            if (PlayGameManager.Instance != null && finalScoreText != null)
+            UpdateScore();
+        }
+
+        private void Update()
+        {
+            UpdateScore();
+        }
+
+        private void UpdateScore()
+        {
+            // Update the score text - use ScoreManager if available, otherwise PlayGameManager
+            if (finalScoreText != null)
             {
-                int finalScore = PlayGameManager.Instance.GetCurrentScore();
+                float finalScore = 0f;
+
+                if (ScoreManager.Instance != null)
+                {
+                    finalScore = ScoreManager.Instance.Score;
+                }
+                else if (PlayGameManager.Instance != null)
+                {
+                    finalScore = PlayGameManager.Instance.GetCurrentScore();
+                }
+
                 finalScoreText.text = $"{finalScore:N0}";
             }
         }

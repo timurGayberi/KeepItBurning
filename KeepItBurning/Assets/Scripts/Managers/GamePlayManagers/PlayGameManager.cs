@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
 using Managers.GeneralManagers;
-using Managers;using Score;
+using Managers;
+using Score;
 
 namespace Managers.GamePlayManagers
 {

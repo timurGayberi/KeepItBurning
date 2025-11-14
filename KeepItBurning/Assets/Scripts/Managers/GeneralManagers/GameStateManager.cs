@@ -84,9 +84,10 @@ namespace Managers.GeneralManagers
 
         private void HandlePauseInput()
         {
-            // If on settings panel, do nothing (ESC is ignored)
+            // If on settings panel, go back to main pause menu
             if (ClipboardMenuController.Instance != null && ClipboardMenuController.Instance.IsOnSettingsMenu())
             {
+                ClipboardMenuController.Instance.ShowMainMenu();
                 return;
             }
 

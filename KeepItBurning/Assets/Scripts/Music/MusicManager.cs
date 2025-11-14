@@ -12,8 +12,14 @@ public class MusicManager : MonoBehaviour
     [Header("Music Settings")]
     [SerializeField] private float fadeOutDuration = 1.5f;
 
+    [Header("Dynamic Speed Settings")]
+    [SerializeField] private float minPitch = 1.0f;  // Normal pitch at 100% fuel
+    [SerializeField] private float maxPitch = 2.0f;  // 2x speed at 0% fuel
+    [SerializeField] private float speedUpThreshold = 0.3f; // Start speeding up when fuel below 30%
+
     private SoundAction? currentMusicTrack = null;
     private AudioSource currentMusicSource = null;
+    private GamePlay.Interactables.FireplaceInteraction fireplace = null;
 
     private void Awake()
     {
@@ -44,6 +50,34 @@ public class MusicManager : MonoBehaviour
         {
             Debug.LogWarning("[MusicManager] GameStateManager.instance is null! Music will not play.");
         }
+
+        // Find and subscribe to campfire
+        SubscribeToFireplace();
+    }
+
+    private void SubscribeToFireplace()
+    {
+        // Find the fireplace in the scene
+        fireplace = FindObjectOfType<GamePlay.Interactables.FireplaceInteraction>();
+
+        if (fireplace != null)
+        {
+            fireplace.OnFuelChanged += UpdateMusicSpeed;
+            Debug.Log("[MusicManager] Subscribed to fireplace fuel changes.");
+        }
+        else
+        {
+            Debug.LogWarning("[MusicManager] Fireplace not found. Music speed won't change dynamically.");
+        }
+    }
+
+    private void Update()
+    {
+        // Keep music speed updated dynamically during gameplay
+        if (currentMusicTrack == SoundAction.GameMusic && currentMusicSource != null)
+        {
+            // This ensures the pitch stays correct even if fuel changes rapidly
+        }
     }
 
     private void OnDestroy()
@@ -51,6 +85,39 @@ public class MusicManager : MonoBehaviour
         if (GameStateManager.instance != null)
         {
             GameStateManager.OnGameStateChanged -= OnGameStateChanged;
+        }
+
+        if (fireplace != null)
+        {
+            fireplace.OnFuelChanged -= UpdateMusicSpeed;
+        }
+    }
+
+    /// <summary>
+    /// Updates music pitch based on campfire fuel level
+    /// </summary>
+    private void UpdateMusicSpeed(float currentFuel, float maxFuel)
+    {
+        // Only affect game music during gameplay
+        if (currentMusicTrack != SoundAction.GameMusic || currentMusicSource == null)
+            return;
+
+        float fuelPercentage = currentFuel / maxFuel;
+
+        // Only speed up when fuel is below threshold
+        if (fuelPercentage <= speedUpThreshold)
+        {
+            // Map fuel percentage (0-threshold) to pitch (maxPitch-minPitch)
+            // When fuel = threshold, pitch = minPitch (1.0)
+            // When fuel = 0, pitch = maxPitch (1.5)
+            float normalizedFuel = fuelPercentage / speedUpThreshold; // 0 to 1
+            float pitch = Mathf.Lerp(maxPitch, minPitch, normalizedFuel);
+            currentMusicSource.pitch = pitch;
+        }
+        else
+        {
+            // Above threshold, keep normal speed
+            currentMusicSource.pitch = minPitch;
         }
     }
 

@@ -1,9 +1,36 @@
 using UnityEngine;
+using Interfaces;
+using General;
 
 public class PlaySoundOnInteract : MonoBehaviour
 {
-    public AudioSource audioSource;   // AudioSource z dźwiękiem
+    public AudioSource audioSource;
     private bool playerInside = false;
+    private IInputService inputService;
+
+    private void OnEnable()
+    {
+        try
+        {
+            inputService = ServiceLocator.GetService<IInputService>();
+            if (inputService != null)
+            {
+                inputService.OnInteractEvent += OnInteractPressed;
+            }
+        }
+        catch (System.InvalidOperationException e)
+        {
+            Debug.LogWarning("[PlaySoundOnInteract] Could not get IInputService. Error: " + e.Message);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (inputService != null)
+        {
+            inputService.OnInteractEvent -= OnInteractPressed;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,16 +48,13 @@ public class PlaySoundOnInteract : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void OnInteractPressed()
     {
-        // Jeśli gracz jest w triggerze i nacisnął E
-        if (playerInside && Input.GetKeyDown(KeyCode.E))
+        Debug.Log($"[PlaySoundOnInteract] OnInteractPressed called. playerInside: {playerInside}, audioSource: {audioSource != null}");
+        if (playerInside && audioSource != null)
         {
-            if (audioSource != null)
-            {
-                audioSource.Play();
-              
-            }
+            Debug.Log("[PlaySoundOnInteract] Playing sound!");
+            audioSource.Play();
         }
     }
 }
