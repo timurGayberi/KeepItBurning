@@ -76,8 +76,7 @@ namespace Managers.GamePlayManagers
             if (GameStateManager.instance != null)
             {
                 GameStateManager.instance.TriggerGameOver();
-                SoundManager.Play(SoundAction.LostGame);
-                SoundManager.Play(SoundAction.GameOver);
+                // Music is handled by MusicManager when game state changes
 
                 // Save score to leaderboard
                 SaveManager saveManager = FindObjectOfType<SaveManager>();

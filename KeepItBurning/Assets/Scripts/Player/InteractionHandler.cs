@@ -166,19 +166,30 @@ namespace Player
         private IEnumerator PerformLongInteraction(float duration)
         {
             var timer = 0f;
+            float nextChopSoundTime = 0.5f; // Play first chop sound after 0.5 seconds
+            float chopSoundInterval = 0.8f; // Then play every 0.8 seconds
+
             while (timer < duration)
             {
                 timer += Time.deltaTime;
+
+                // Play chop sound at intervals (only for tree chopping)
+                if (_activeInteractable is TreeToCut && timer >= nextChopSoundTime)
+                {
+                    SoundManager.Play(SoundAction.ChopWood);
+                    nextChopSoundTime += chopSoundInterval;
+                }
+
                 yield return null;
             }
-            
+
             Debug.Log("[INTERACTION: SUCCESS] Long interaction timer finished.");
-            
+
             if (_activeInteractable is TreeToCut treeToCut)
             {
-                treeToCut.Interact(); 
+                treeToCut.Interact();
             }
-            
+
             _activeInteractable = null;
             _interactionCoroutine = null;
             _playerActivities.SetPlayerState(PlayerState.IsIdle);

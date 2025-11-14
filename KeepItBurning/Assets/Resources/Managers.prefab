@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6288079932814164164}
   - component: {fileID: 1795325302037901783}
   - component: {fileID: -927655463008743433}
+  - component: {fileID: 507310617990196785}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -528,7 +529,7 @@ MonoBehaviour:
     output: {fileID: 1749005225410643752, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
   - action: 29
     clips:
-    - {fileID: 8300000, guid: 4b29f0ea789ae3546b72a5433c096105, type: 3}
+    - {fileID: 8300000, guid: 1103022a2a6e1e941b66c660383c5b3c, type: 3}
     volume: 1
     pitchRange: {x: 1, y: 1}
     playAs3D: 0
@@ -552,3 +553,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeOutDuration: 1.5
+--- !u!114 &507310617990196785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939612265886293651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21554887d7194cc4f992bff5c006c4ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

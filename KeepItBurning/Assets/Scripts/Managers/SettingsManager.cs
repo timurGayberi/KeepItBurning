@@ -98,6 +98,9 @@ public class SettingsManager : MonoBehaviour
         ApplyMasterVolumeToMixer(masterVolume);
         ApplyMusicVolumeToMixer(musicVolume);
         ApplySFXVolumeToMixer(sfxVolume);
+
+        // Trigger brightness event so UI can update
+        OnBrightnessChanged?.Invoke(brightness);
     }
 
     // Brightness

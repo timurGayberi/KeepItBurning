@@ -119,7 +119,10 @@ namespace GamePlay.Interactables
 
                 Instantiate(logPrefab, spawnPosition, point.rotation);
             }
-            SoundManager.Play(SoundAction.ChopWood);
+
+            // Play drop wood sound when tree is fully chopped
+            SoundManager.Play(SoundAction.DropWood);
+
             SetTreeVisuals(TreeStatus.Cut);
         }
         

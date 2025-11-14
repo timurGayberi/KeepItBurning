@@ -83,11 +83,64 @@ public class ClipboardMenuController : MonoBehaviour
 
     private IEnumerator TransitionToMainMenu()
     {
-        // Instantly hide settings and show main menu
-        HideMenuInstant(clipboardSettings);
-        ShowMenuInstant(clipboardMainMenu);
         isOnSettingsMenu = false;
-        yield break;
+
+        // Fade transition: fade out settings while fading in main menu
+        float elapsed = 0f;
+        float startAlpha = clipboardSettings.alpha;
+
+        // Prepare main menu for fade in
+        if (clipboardMainMenu != null)
+        {
+            clipboardMainMenu.gameObject.SetActive(true);
+            clipboardMainMenu.alpha = 0f;
+        }
+
+        // Simultaneously fade out settings and fade in main menu
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = elapsed / fadeDuration;
+
+            if (clipboardSettings != null)
+            {
+                clipboardSettings.alpha = Mathf.Lerp(startAlpha, 0f, t);
+                if (t >= 1f)
+                {
+                    clipboardSettings.interactable = false;
+                    clipboardSettings.blocksRaycasts = false;
+                    clipboardSettings.gameObject.SetActive(false);
+                }
+            }
+
+            if (clipboardMainMenu != null)
+            {
+                clipboardMainMenu.alpha = Mathf.Lerp(0f, 1f, t);
+                if (t >= 1f)
+                {
+                    clipboardMainMenu.interactable = true;
+                    clipboardMainMenu.blocksRaycasts = true;
+                }
+            }
+
+            yield return null;
+        }
+
+        // Ensure final state
+        if (clipboardSettings != null)
+        {
+            clipboardSettings.alpha = 0f;
+            clipboardSettings.interactable = false;
+            clipboardSettings.blocksRaycasts = false;
+            clipboardSettings.gameObject.SetActive(false);
+        }
+
+        if (clipboardMainMenu != null)
+        {
+            clipboardMainMenu.alpha = 1f;
+            clipboardMainMenu.interactable = true;
+            clipboardMainMenu.blocksRaycasts = true;
+        }
     }
 
     /// <summary>

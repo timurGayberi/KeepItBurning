@@ -40,7 +40,12 @@ public class SettingsUI : MonoBehaviour
         if (brightnessSlider != null)
         {
             brightnessSlider.value = SettingsManager.Instance.Brightness;
-            UpdateBrightnessOverlay(SettingsManager.Instance.Brightness);
+
+            // Only update local overlay if it exists (optional, global overlay handles it)
+            if (brightnessOverlay != null)
+            {
+                UpdateBrightnessOverlay(SettingsManager.Instance.Brightness);
+            }
         }
 
         if (masterVolumeSlider != null)
@@ -116,7 +121,12 @@ public class SettingsUI : MonoBehaviour
     {
         if (isInitializing) return;
         SettingsManager.Instance.Brightness = value;
-        UpdateBrightnessOverlay(value);
+
+        // Update local overlay if it exists (global overlay updates automatically via event)
+        if (brightnessOverlay != null)
+        {
+            UpdateBrightnessOverlay(value);
+        }
     }
 
     private void OnMasterVolumeSliderChanged(float value)
@@ -149,7 +159,12 @@ public class SettingsUI : MonoBehaviour
         if (brightnessSlider != null && Mathf.Abs(brightnessSlider.value - value) > 0.01f)
         {
             brightnessSlider.value = value;
-            UpdateBrightnessOverlay(value);
+
+            // Update local overlay if it exists
+            if (brightnessOverlay != null)
+            {
+                UpdateBrightnessOverlay(value);
+            }
         }
     }
 
@@ -179,9 +194,17 @@ public class SettingsUI : MonoBehaviour
 
     private void UpdateBrightnessOverlay(float brightness)
     {
-        if (brightnessOverlay != null)
+        // Use the global overlay if available, otherwise use local one
+        var overlayToUpdate = brightnessOverlay;
+
+        if (overlayToUpdate == null && UI.GlobalBrightnessOverlay.Instance != null)
         {
-            brightnessOverlay.alpha = 1f - brightness;
+            overlayToUpdate = UI.GlobalBrightnessOverlay.Instance.OverlayPanel;
+        }
+
+        if (overlayToUpdate != null)
+        {
+            overlayToUpdate.alpha = 1f - brightness;
         }
     }
 }

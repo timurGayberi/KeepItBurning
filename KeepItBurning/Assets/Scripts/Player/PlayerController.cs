@@ -17,7 +17,7 @@ namespace Player
         private PlayerStatsSo data;
         
         private CharacterController _characterController;
-        private Vector3 _currentMoveDirection; 
+        private Vector3 _currentMoveDirection;
         private bool _isSprinting;
         private IInputService _inputService;
 
@@ -25,7 +25,10 @@ namespace Player
         private float _walkSoundTimer = 0f;
         private float _walkSoundInterval = 0.5f;
 
-        // private PlayerInventory _playerInventory; 
+        private PlayerInventory _playerInventory;
+
+        [Header("Wood Carry Penalty")]
+        [SerializeField] private float speedPenaltyPerLog = 0.15f; // 15% slower per log 
 
         #endregion
 
@@ -43,7 +46,8 @@ namespace Player
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            
+            _playerInventory = GetComponent<PlayerInventory>();
+
             if (_characterController == null)
             {
                 Debug.LogError("PlayerMovement requires a CharacterController component.");
@@ -51,6 +55,10 @@ namespace Player
             if (data == null)
             {
                 Debug.LogError("MovementData (PlayerStatsSo) is not assigned to PlayerMovement. Movement will fail.");
+            }
+            if (_playerInventory == null)
+            {
+                Debug.LogError("PlayerInventory not found on PlayerMovement. Speed penalty will not work.");
             }
         }
         
@@ -135,12 +143,20 @@ namespace Player
                     if (CurrentState != PlayerState.IsSprinting) SetPlayerState(PlayerState.IsSprinting);
                 }
                 // --- WALKING CHECK ---
-                else 
+                else
                 {
                     currentSpeed = data.movementSpeed;
-                    if (CurrentState != PlayerState.IsWalking) SetPlayerState(PlayerState.IsWalking); 
+                    if (CurrentState != PlayerState.IsWalking) SetPlayerState(PlayerState.IsWalking);
                 }
-                
+
+                // --- APPLY WOOD CARRY PENALTY ---
+                if (_playerInventory != null && _playerInventory.HasWood)
+                {
+                    int woodCount = _playerInventory.WoodCount;
+                    float penaltyMultiplier = 1f - (speedPenaltyPerLog * woodCount);
+                    currentSpeed *= penaltyMultiplier;
+                }
+
                 // --- EXECUTE MOVEMENT ---
                 // This line applies the movement speed to the cached direction vector
                 _characterController.Move(moveDirection * (currentSpeed * Time.deltaTime));

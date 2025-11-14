@@ -12,8 +12,6 @@ public class VisitorsManager : MonoBehaviour
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
     [SerializeField] public Transform campfire;
-    [SerializeField] private float minRespawnTime = 15f;
-    [SerializeField] private float maxRespawnTime = 30f;
 
     private List<GameObject> activeVisitors = new List<GameObject>();
     private List<Transform> availableSpawnPoints = new List<Transform>();
@@ -85,16 +83,7 @@ public class VisitorsManager : MonoBehaviour
 
         Destroy(visitor);
         currentVisitors--;
-        TimeToSpawVisitors--;
+        TimeToSpawVisitors-=0.5f;
 
-        StartCoroutine(RespawnVisitorAfterDelay());
     }
-
-    private IEnumerator RespawnVisitorAfterDelay()
-    {
-        float randomDelay = Random.Range(minRespawnTime, maxRespawnTime);
-        yield return new WaitForSeconds(randomDelay);
-        SpawnVisitor();
-    }
-
 }
