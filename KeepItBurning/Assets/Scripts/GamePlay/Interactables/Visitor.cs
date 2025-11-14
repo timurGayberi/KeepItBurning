@@ -150,8 +150,9 @@ namespace GamePlay.Interactables
         private IEnumerator LeaveAfterEating()
         {
             SetIdle();
-            SoundManager.Play(SoundAction.VisitorLeave);
             yield return new WaitForSeconds(leaveDelay);
+
+            SoundManager.Play(SoundAction.VisitorLeave);
 
             if (visitorsManager != null)
             {

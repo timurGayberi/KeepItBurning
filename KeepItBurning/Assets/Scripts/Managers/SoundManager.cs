@@ -34,7 +34,8 @@ public enum SoundAction
     UiClickBack,
     Clock25,
     MainMenuMusic,      // Opening music for main menu
-    GameOverMusic,      // Music when game is over
+    GameOverMusic,    
+    UiHover,  // Music when game is over
 }
 public class SoundManager : MonoBehaviour
 {
@@ -43,13 +44,10 @@ public class SoundManager : MonoBehaviour
     [Header("SoundList")]
     [SerializeField] private List<SoundDefinition> sounds = new();
 
-    [Header("Settings")]
+    [Header("Master Setings")]
+    [SerializeField, Range(0f, 1f)] private float masterVolume = 1f;
     [SerializeField] private int initialPoolSize = 10;
     [SerializeField] private bool dontDestroyOnLoad = true;
-
-    [Header("Info")]
-    [Tooltip("Master volume is now controlled by SettingsManager and MixerManager. This field is for internal use only.")]
-    [SerializeField, Range(0f, 1f)] private float masterVolume = 1f;
 
     private readonly Dictionary<SoundAction, SoundDefinition> _defs = new();
     private readonly Queue<AudioSource> _pool = new();
@@ -282,37 +280,6 @@ public class SoundManager : MonoBehaviour
     private void HandleMasterVolumeChanged(float newVolume)
     {
         masterVolume = newVolume;
-        UpdateAllActiveSourcesVolume();
-    }
-
-    private void UpdateAllActiveSourcesVolume()
-    {
-        // Update all currently playing sources
-        foreach (var src in _inUse)
-        {
-            if (src != null && src.clip != null)
-            {
-                // Find the definition to get the base volume
-                foreach (var kvp in _defs)
-                {
-                    if (kvp.Value.clips.Contains(src.clip))
-                    {
-                        src.volume = kvp.Value.volume * masterVolume;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Update looping sources
-        foreach (var kvp in _looping)
-        {
-            var src = kvp.Value;
-            if (src != null && src.clip != null && _defs.TryGetValue(kvp.Key, out var def))
-            {
-                src.volume = def.volume * masterVolume;
-            }
-        }
     }
     #endregion
 }

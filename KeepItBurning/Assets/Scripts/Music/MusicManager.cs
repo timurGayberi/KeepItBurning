@@ -135,6 +135,11 @@ public class MusicManager : MonoBehaviour
             case GameStateManager.GameState.GamePlay:
                 Debug.Log("[MusicManager] Playing GameMusic");
                 PlayMusic(SoundAction.GameMusic);
+                // Try to find and subscribe to fireplace when entering gameplay
+                if (fireplace == null)
+                {
+                    SubscribeToFireplace();
+                }
                 break;
 
             case GameStateManager.GameState.GameOver:

@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1795325302037901783}
   - component: {fileID: -927655463008743433}
   - component: {fileID: 507310617990196785}
+  - component: {fileID: 9029312893840309907}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -489,7 +490,7 @@ MonoBehaviour:
     output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
   - action: 25
     clips:
-    - {fileID: 8300000, guid: 304d87800c941c04f8a2166ef3dfa39f, type: 3}
+    - {fileID: 8300000, guid: cd6e812a39477a04ca3b7ca7d1df7b41, type: 3}
     volume: 1
     pitchRange: {x: 1, y: 1}
     playAs3D: 0
@@ -499,8 +500,8 @@ MonoBehaviour:
     output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
   - action: 26
     clips:
-    - {fileID: 8300000, guid: b882f5b48ef8daa4e94501d376c625ca, type: 3}
-    volume: 1
+    - {fileID: 8300000, guid: e81c82402914c344fbced72fc0ce6dd8, type: 3}
+    volume: 0.5
     pitchRange: {x: 1, y: 1}
     playAs3D: 0
     minDistance: 1
@@ -509,7 +510,7 @@ MonoBehaviour:
     output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
   - action: 27
     clips:
-    - {fileID: 8300000, guid: 62428c2d2a6d31b488ba63bcf988365c, type: 3}
+    - {fileID: 8300000, guid: b3195596f6fe41a45981a2953d09af44, type: 3}
     volume: 1
     pitchRange: {x: 1, y: 1}
     playAs3D: 0
@@ -537,9 +538,19 @@ MonoBehaviour:
     maxDistance: 10
     rolloffMode: 0
     output: {fileID: 1749005225410643752, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  - action: 30
+    clips:
+    - {fileID: 8300000, guid: b882f5b48ef8daa4e94501d376c625ca, type: 3}
+    volume: 1
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 1
+    maxDistance: 10
+    rolloffMode: 0
+    output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  masterVolume: 0.6
   initialPoolSize: 10
   dontDestroyOnLoad: 1
-  masterVolume: 0.6
 --- !u!114 &-927655463008743433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,6 +564,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeOutDuration: 1.5
+  minPitch: 1
+  maxPitch: 1.5
+  speedUpThreshold: 0.5
 --- !u!114 &507310617990196785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,5 +577,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21554887d7194cc4f992bff5c006c4ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9029312893840309907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939612265886293651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb974a455fafe7c4b905b4de4210f428, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
