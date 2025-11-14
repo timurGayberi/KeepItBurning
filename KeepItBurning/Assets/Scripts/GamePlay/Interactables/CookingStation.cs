@@ -43,6 +43,7 @@ namespace GamePlay.Interactables
         private float cookingTimer = 0f;
         private float cookTime = 0f;
         private float burnTime = 0f;
+        private bool isCookingSoundPlaying = false;
 
         private void Start()
         {
@@ -61,6 +62,12 @@ namespace GamePlay.Interactables
             HideAllFoodVisuals();
         }
 
+        private void OnDestroy()
+        {
+            // Ensure cooking sound is stopped when the object is destroyed
+            StopCookingSound();
+        }
+
         private void Update()
         {
             if (Camera.main != null && cookingCanvas != null && cookingCanvas.enabled)
@@ -71,22 +78,33 @@ namespace GamePlay.Interactables
 
             if (isCooking)
             {
+                // Start cooking sound if not already playing
+                if (!isCookingSoundPlaying)
+                {
+                    SoundManager.PlayLoop(SoundAction.FoodDuringCookingOnCampfire);
+                    isCookingSoundPlaying = true;
+                }
+
                 cookingTimer += Time.deltaTime;
                 UpdateProgressBar();
 
                 if (currentCookState == CollectibleBase.CookState.Raw && cookingTimer >= cookTime)
                 {
                     currentCookState = CollectibleBase.CookState.Cooked;
+                    SoundManager.Play(SoundAction.FoodCoockedGood);
                 }
                 else if (currentCookState == CollectibleBase.CookState.Cooked && cookingTimer >= burnTime)
                 {
                     if (currentFoodID == CollectibleIDs.HOT_CHOCOLATE)
                     {
+                        StopCookingSound();
                         isCooking = false;
                     }
                     else
                     {
                         currentCookState = CollectibleBase.CookState.Burnt;
+                        SoundManager.Play(SoundAction.BurnedFood);
+                        StopCookingSound();
                         UpdateFoodVisual();
                         UpdateProgressBar();
                         isCooking = false;
@@ -147,15 +165,18 @@ namespace GamePlay.Interactables
 
         private void PlaceFoodOnFire(PlayerInventory inventory)
         {
-            SoundManager.Play(SoundAction.FoodDuringCookingOnCampfire);
+            // Don't place if player has no food or has wood
+            if (!inventory.IsHoldingFoodItem() || inventory.HasWood) return;
+
             if (inventory.GetCurrentFoodCookState() == CollectibleBase.CookState.Cooked) return;
             if (inventory.GetCurrentFoodCookState() == CollectibleBase.CookState.Burnt) return;
-
-            if (!inventory.IsHoldingFoodItem()) return;
 
             currentFoodID = inventory.GetCurrentHeldFoodItemID();
             currentCookState = inventory.GetCurrentFoodCookState();
             inventory.ClearHeldFoodItem();
+
+            // Play placing food sound
+            SoundManager.Play(SoundAction.PutingFoodInCampFire);
 
             switch (currentFoodID)
             {
@@ -194,6 +215,9 @@ namespace GamePlay.Interactables
             if (inventory.IsHoldingFoodItem()) return;
 
             inventory.SetHeldFoodItem(currentFoodID, currentCookState);
+
+            // Stop cooking sound when food is removed
+            StopCookingSound();
 
             currentFoodID = CollectibleIDs.DEFAULT_ITEM;
             currentCookState = CollectibleBase.CookState.Raw;
@@ -319,6 +343,15 @@ namespace GamePlay.Interactables
             if (sliderFillImage != null)
             {
                 sliderFillImage.color = barColor;
+            }
+        }
+
+        private void StopCookingSound()
+        {
+            if (isCookingSoundPlaying)
+            {
+                SoundManager.StopLoop(SoundAction.FoodDuringCookingOnCampfire, fadeOutSeconds: 0.5f);
+                isCookingSoundPlaying = false;
             }
         }
 

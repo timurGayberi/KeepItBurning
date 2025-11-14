@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -7948789730676094344}
   - component: {fileID: 6288079932814164164}
   - component: {fileID: 1795325302037901783}
+  - component: {fileID: -927655463008743433}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -515,6 +516,39 @@ MonoBehaviour:
     maxDistance: 10
     rolloffMode: 0
     output: {fileID: -6045538917590425597, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
-  masterVolume: 0.6
+  - action: 28
+    clips:
+    - {fileID: 8300000, guid: 58f0689193d50e54c8fcaef91be358d2, type: 3}
+    volume: 1
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 1
+    maxDistance: 10
+    rolloffMode: 0
+    output: {fileID: 1749005225410643752, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
+  - action: 29
+    clips:
+    - {fileID: 8300000, guid: 4b29f0ea789ae3546b72a5433c096105, type: 3}
+    volume: 1
+    pitchRange: {x: 1, y: 1}
+    playAs3D: 0
+    minDistance: 1
+    maxDistance: 10
+    rolloffMode: 0
+    output: {fileID: 1749005225410643752, guid: 0eaa9dade726c334dbe877a10a7bdce8, type: 2}
   initialPoolSize: 10
   dontDestroyOnLoad: 1
+  masterVolume: 0.6
+--- !u!114 &-927655463008743433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939612265886293651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41b1eaccec902504284cba837f3cf3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeOutDuration: 1.5

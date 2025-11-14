@@ -43,10 +43,13 @@ public class SoundManager : MonoBehaviour
     [Header("SoundList")]
     [SerializeField] private List<SoundDefinition> sounds = new();
 
-    [Header("Master Setings")]
-    [SerializeField, Range(0f, 1f)] private float masterVolume = 1f;
+    [Header("Settings")]
     [SerializeField] private int initialPoolSize = 10;
     [SerializeField] private bool dontDestroyOnLoad = true;
+
+    [Header("Info")]
+    [Tooltip("Master volume is now controlled by SettingsManager and MixerManager. This field is for internal use only.")]
+    [SerializeField, Range(0f, 1f)] private float masterVolume = 1f;
 
     private readonly Dictionary<SoundAction, SoundDefinition> _defs = new();
     private readonly Queue<AudioSource> _pool = new();

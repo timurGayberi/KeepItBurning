@@ -104,7 +104,7 @@ namespace Managers.GeneralManagers
 
         private void ApplyInputSettings(GameState state)
         {
-            if (inputService == null) 
+            if (inputService == null)
             {
                 return;
             }
@@ -117,14 +117,18 @@ namespace Managers.GeneralManagers
                     inputService.EnableUIInput();
                     break;
                 case GameState.Paused:
-                    Time.timeScale = 0.0f; 
+                    Time.timeScale = 0.0f;
                     inputService.DisablePlayerInput();
                     inputService.EnableUIInput();
                     break;
                 case GameState.MainMenu:
+                    Time.timeScale = 1.0f; // Unfreeze for main menu
+                    inputService.DisablePlayerInput();
+                    inputService.EnableUIInput();
+                    break;
                 case GameState.Default:
-                case GameState.GameOver: 
-                    Time.timeScale = 0.0f; 
+                case GameState.GameOver:
+                    Time.timeScale = 0.0f;
                     inputService.DisablePlayerInput();
                     inputService.EnableUIInput();
                     break;

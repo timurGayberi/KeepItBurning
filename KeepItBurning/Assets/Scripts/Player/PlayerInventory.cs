@@ -124,9 +124,14 @@ namespace Player
 
             if (data.ID == CollectibleIDs.FIREWOOD_LOGS)
             {
+                // Cannot pick up wood while holding food
+                if (IsHoldingFoodItem())
+                {
+                    return false;
+                }
+
                 if (IsWoodInventoryFull)
                 {
-                    Debug.Log("Cannot add wood, inventory is full.");
                     return false;
                 }
                 SoundManager.Play(SoundAction.PickUpWood);
@@ -155,8 +160,7 @@ namespace Player
                 woodVisual.SetActive(HasWood);
             }
             OnWoodCountChanged?.Invoke(_woodCount);
-            Debug.Log($"Inventory: Wood count set to {_woodCount}.");
-            
+
             if (HasWood)
             {
                 CurrentCarryingType = CarryingType.Wood;
@@ -177,11 +181,9 @@ namespace Player
                 _woodCount--;
                 UpdateWoodState();
                 SoundManager.Play(SoundAction.DropWoodOnFire);
-                Debug.Log("Inventory: Wood consumed.");
                 return true;
             }
-            
-            Debug.Log("Tried to consume wood, but have none.");
+
             return false;
         }
         
@@ -223,11 +225,6 @@ namespace Player
                 _woodCount--;
                 UpdateWoodState();
                 SoundManager.Play(SoundAction.DropWood);
-                Debug.Log("Inventory: Wood dropped.");
-            }
-            else
-            {
-                Debug.Log("Tried to drop wood, but have none.");
             }
         }
 
@@ -268,7 +265,6 @@ namespace Player
         {
             currentHeldFoodItemID = foodItemID;
             currentFoodCookState = cookState;
-            Debug.Log($"Player is now holding: {GetCurrentHeldFoodItemName() ?? "nothing"} ({cookState})");
         }
 
         /// <summary>
@@ -285,7 +281,6 @@ namespace Player
         public void SetCurrentFoodCookState(CollectibleBase.CookState cookState)
         {
             currentFoodCookState = cookState;
-            Debug.Log($"Food cook state changed to: {cookState}");
         }
 
         /// <summary>
@@ -295,7 +290,6 @@ namespace Player
         {
             currentHeldFoodItemID = CollectibleIDs.DEFAULT_ITEM;
             currentFoodCookState = CollectibleBase.CookState.Raw;
-            Debug.Log("Player is no longer holding a food item.");
         }
 
         /// <summary>

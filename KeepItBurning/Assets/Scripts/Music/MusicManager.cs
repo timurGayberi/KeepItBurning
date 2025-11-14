@@ -31,23 +31,18 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("[MusicManager] Starting...");
         // Subscribe to game state changes
         if (GameStateManager.instance != null)
         {
+            Debug.Log($"[MusicManager] Found GameStateManager, subscribing. Current state: {GameStateManager.instance.currentState}");
             GameStateManager.OnGameStateChanged += OnGameStateChanged;
             // Play music based on initial state
             OnGameStateChanged(GameStateManager.instance.currentState);
-            Debug.Log($"[MusicManager] Started. Current game state: {GameStateManager.instance.currentState}");
         }
         else
         {
-            Debug.LogWarning("[MusicManager] GameStateManager not found. Music won't change automatically based on game state.");
-        }
-
-        // Check if SoundManager is available
-        if (SoundManager.Instance == null)
-        {
-            Debug.LogError("[MusicManager] SoundManager not found! Make sure SoundManager exists in the scene.");
+            Debug.LogWarning("[MusicManager] GameStateManager.instance is null! Music will not play.");
         }
     }
 
@@ -61,21 +56,27 @@ public class MusicManager : MonoBehaviour
 
     private void OnGameStateChanged(GameStateManager.GameState newState)
     {
+        Debug.Log($"[MusicManager] Game state changed to: {newState}");
+
         switch (newState)
         {
             case GameStateManager.GameState.MainMenu:
+                Debug.Log("[MusicManager] Playing MainMenuMusic");
                 PlayMusic(SoundAction.MainMenuMusic);
                 break;
 
             case GameStateManager.GameState.GamePlay:
+                Debug.Log("[MusicManager] Playing GameMusic");
                 PlayMusic(SoundAction.GameMusic);
                 break;
 
             case GameStateManager.GameState.GameOver:
+                Debug.Log("[MusicManager] Playing GameOverMusic");
                 PlayMusic(SoundAction.GameOverMusic);
                 break;
 
             case GameStateManager.GameState.Paused:
+                Debug.Log("[MusicManager] Paused - keeping current music");
                 // Don't change music when paused, keep current track playing
                 break;
         }
@@ -86,26 +87,31 @@ public class MusicManager : MonoBehaviour
     /// </summary>
     public void PlayMusic(SoundAction musicAction)
     {
+        Debug.Log($"[MusicManager] PlayMusic called with: {musicAction}");
+
         // If already playing this track, don't restart
         if (currentMusicTrack == musicAction && currentMusicSource != null && currentMusicSource.isPlaying)
         {
+            Debug.Log($"[MusicManager] Already playing {musicAction}, skipping");
             return;
         }
 
+        Debug.Log($"[MusicManager] Stopping current music: {currentMusicTrack}");
         // Stop current music
         StopCurrentMusic();
 
+        Debug.Log($"[MusicManager] Starting new music loop: {musicAction}");
         // Play new music as a loop
         currentMusicSource = SoundManager.PlayLoop(musicAction);
         currentMusicTrack = musicAction;
 
         if (currentMusicSource != null)
         {
-            Debug.Log($"[MusicManager] Now playing: {musicAction}");
+            Debug.Log($"[MusicManager] Successfully started {musicAction}. AudioSource playing: {currentMusicSource.isPlaying}");
         }
         else
         {
-            Debug.LogWarning($"[MusicManager] Failed to play music: {musicAction}. Make sure it's configured in SoundManager!");
+            Debug.LogError($"[MusicManager] Failed to start {musicAction} - SoundManager.PlayLoop returned null!");
         }
     }
 

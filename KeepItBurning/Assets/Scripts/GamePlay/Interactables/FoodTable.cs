@@ -93,6 +93,24 @@ namespace GamePlay.Interactables
                 prompt = $"No {foodName} available";
                 duration = -1f;
             }
+            else
+            {
+                // Check if player can pick up food
+                PlayerInventory playerInventory = ServiceLocator.GetService<PlayerInventory>();
+                if (playerInventory != null)
+                {
+                    if (playerInventory.IsHoldingFoodItem())
+                    {
+                        prompt = "Already holding food";
+                        duration = -1f;
+                    }
+                    else if (playerInventory.HasWood)
+                    {
+                        prompt = "Can't take food while holding wood";
+                        duration = -1f;
+                    }
+                }
+            }
 
             return new InteractionData
             {
@@ -116,8 +134,14 @@ namespace GamePlay.Interactables
                 return;
             }
 
-            // Check if player is already holding something
+            // Check if player is already holding food
             if (playerInventory.IsHoldingFoodItem())
+            {
+                return;
+            }
+
+            // Check if player is holding wood
+            if (playerInventory.HasWood)
             {
                 return;
             }

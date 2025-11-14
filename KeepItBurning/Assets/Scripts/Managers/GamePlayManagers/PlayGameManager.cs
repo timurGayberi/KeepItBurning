@@ -91,11 +91,6 @@ namespace Managers.GamePlayManagers
                     }
 
                     saveManager.AddScoreToLb(finalScore);
-                    Debug.Log($"[PlayGameManager] Score {finalScore} saved to leaderboard.");
-                }
-                else
-                {
-                    Debug.LogWarning("[PlayGameManager] SaveManager not found. Score not saved to leaderboard.");
                 }
             }
             else

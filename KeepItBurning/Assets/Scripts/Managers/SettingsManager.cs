@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 /// <summary>
 /// Centralized settings manager that persists across scenes.
 /// Use this singleton to manage all game settings (brightness, volume, fullscreen, etc.)
+/// Also controls the AudioMixer directly to ensure volume works across all scenes.
 /// </summary>
 public class SettingsManager : MonoBehaviour
 {
@@ -22,12 +24,21 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+    [Header("AudioMixer")]
+    [Tooltip("Optional: Assign the GlobalMixer here. If not assigned, it will try to load from Resources/Sounds/GlobalMixer")]
+    [SerializeField] private AudioMixer audioMixer;
+
     // PlayerPrefs keys
     private const string BRIGHTNESS_KEY = "BrightnessValue";
     private const string MASTER_VOLUME_KEY = "MasterVolume";
     private const string MUSIC_VOLUME_KEY = "MusicVolume";
     private const string SFX_VOLUME_KEY = "SFXVolume";
     private const string FULLSCREEN_KEY = "Fullscreen";
+
+    // AudioMixer parameter names
+    private const string MASTER_PARAM = "MasterVolume";
+    private const string MUSIC_PARAM = "MusicVolume";
+    private const string SFX_PARAM = "SoundFXVolume";
 
     // Current values
     private float brightness = 1f;
@@ -49,6 +60,21 @@ public class SettingsManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // Try to load AudioMixer from Resources if not assigned
+            if (audioMixer == null)
+            {
+                audioMixer = Resources.Load<AudioMixer>("Sounds/GlobalMixer");
+                if (audioMixer == null)
+                {
+                    Debug.LogWarning("[SettingsManager] AudioMixer not assigned and could not be loaded from Resources/Sounds/GlobalMixer. Volume controls will not work!");
+                }
+                else
+                {
+                    Debug.Log("[SettingsManager] AudioMixer loaded from Resources/Sounds/GlobalMixer");
+                }
+            }
+
             LoadSettings();
         }
         else if (instance != this)
@@ -67,6 +93,11 @@ public class SettingsManager : MonoBehaviour
 
         // Apply fullscreen setting
         Screen.fullScreen = isFullscreen;
+
+        // Apply audio settings to mixer
+        ApplyMasterVolumeToMixer(masterVolume);
+        ApplyMusicVolumeToMixer(musicVolume);
+        ApplySFXVolumeToMixer(sfxVolume);
     }
 
     // Brightness
@@ -91,6 +122,7 @@ public class SettingsManager : MonoBehaviour
             masterVolume = Mathf.Clamp01(value);
             PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, masterVolume);
             PlayerPrefs.Save();
+            ApplyMasterVolumeToMixer(masterVolume);
             OnMasterVolumeChanged?.Invoke(masterVolume);
         }
     }
@@ -104,6 +136,7 @@ public class SettingsManager : MonoBehaviour
             musicVolume = Mathf.Clamp01(value);
             PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, musicVolume);
             PlayerPrefs.Save();
+            ApplyMusicVolumeToMixer(musicVolume);
             OnMusicVolumeChanged?.Invoke(musicVolume);
         }
     }
@@ -117,6 +150,7 @@ public class SettingsManager : MonoBehaviour
             sfxVolume = Mathf.Clamp01(value);
             PlayerPrefs.SetFloat(SFX_VOLUME_KEY, sfxVolume);
             PlayerPrefs.Save();
+            ApplySFXVolumeToMixer(sfxVolume);
             OnSFXVolumeChanged?.Invoke(sfxVolume);
         }
     }
@@ -133,5 +167,27 @@ public class SettingsManager : MonoBehaviour
             Screen.fullScreen = isFullscreen;
             OnFullscreenChanged?.Invoke(isFullscreen);
         }
+    }
+
+    // AudioMixer control methods
+    private void ApplyMasterVolumeToMixer(float level)
+    {
+        if (audioMixer == null) return;
+        float dbValue = (level <= 0.0001f) ? -80f : Mathf.Log10(level) * 20f;
+        audioMixer.SetFloat(MASTER_PARAM, dbValue);
+    }
+
+    private void ApplyMusicVolumeToMixer(float level)
+    {
+        if (audioMixer == null) return;
+        float dbValue = (level <= 0.0001f) ? -80f : Mathf.Log10(level) * 20f;
+        audioMixer.SetFloat(MUSIC_PARAM, dbValue);
+    }
+
+    private void ApplySFXVolumeToMixer(float level)
+    {
+        if (audioMixer == null) return;
+        float dbValue = (level <= 0.0001f) ? -80f : Mathf.Log10(level) * 20f;
+        audioMixer.SetFloat(SFX_PARAM, dbValue);
     }
 }
