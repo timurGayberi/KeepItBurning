@@ -93,42 +93,64 @@ namespace Player
                 return;
             }
             
-            var interactable = _detector.currentInteractable;
-            if (interactable != null)
-            {
-                
-                if (interactable is FireplaceInteraction fireplace)
-                {
-                    // FIX: This calls the new TryAddFuel method, passing the player as the interactor.
-                    // The fireplace script now handles checking for wood and consuming it, making the logic clean.
-                    fireplace.TryAddFuel(this.gameObject);
-                    
-                    _playerActivities.SetPlayerState(PlayerState.IsIdle); 
-                    return;
-                }
-                
-                else if (interactable is TreeToCut treeToCut)
-                {
-                    var data = treeToCut.GetInteractionData();
+            // Get all nearby interactables (for overlapping interactions like fireplace + cooking)
+            var allInteractables = _detector.GetAllNearbyInteractables();
 
-                    if (data.actionDuration > 0f)
+            if (allInteractables != null && allInteractables.Count > 0)
+            {
+                // Check for tree cutting first (requires long interaction, can't multi-task)
+                foreach (var interactable in allInteractables)
+                {
+                    if (interactable is TreeToCut treeToCut)
                     {
-                        _activeInteractable = treeToCut;
-                        _interactionCoroutine = StartCoroutine(PerformLongInteraction(data.actionDuration));
-                        _playerActivities.SetPlayerState(PlayerState.IsChopping);
-                        Debug.Log($"[INTERACTION: LONG START] Starting {data.promptText}. Will take {data.actionDuration} seconds.");
+                        var data = treeToCut.GetInteractionData();
+
+                        if (data.actionDuration > 0f)
+                        {
+                            _activeInteractable = treeToCut;
+                            _interactionCoroutine = StartCoroutine(PerformLongInteraction(data.actionDuration));
+                            _playerActivities.SetPlayerState(PlayerState.IsChopping);
+                            Debug.Log($"[INTERACTION: LONG START] Starting {data.promptText}. Will take {data.actionDuration} seconds.");
+                            return;
+                        }
+
+                        Debug.Log($"[INTERACTION: BLOCKED] {data.promptText}. Cannot start action.");
                         return;
                     }
-                    
-                    Debug.Log($"[INTERACTION: BLOCKED] {data.promptText}. Cannot start action.");
+                }
+
+                // Handle all instant interactions (fireplace, cooking, etc.)
+                // But prevent picking up food while holding wood - check for each action
+                bool didInteract = false;
+                bool hasWoodAtStart = _inventory.HasWood;
+
+                foreach (var interactable in allInteractables)
+                {
+                    if (interactable is FireplaceInteraction fireplace)
+                    {
+                        fireplace.TryAddFuel(this.gameObject);
+                        didInteract = true;
+                    }
+                    else if (!(interactable is TreeToCut)) // Skip trees (already handled above)
+                    {
+                        // If we had wood at the start, don't interact with food tables
+                        if (hasWoodAtStart && interactable is FoodTable)
+                        {
+                            Debug.Log("[INTERACTION] Can't take food while holding wood");
+                            continue; // Skip this interaction
+                        }
+
+                        _playerActivities.SetPlayerState(PlayerState.IsInteracting);
+                        interactable.Interact();
+                        didInteract = true;
+                    }
+                }
+
+                if (didInteract)
+                {
+                    _playerActivities.SetPlayerState(PlayerState.IsIdle);
                     return;
                 }
-                
-                // Fallback for general IInteractable objects that are not long-running
-                _playerActivities.SetPlayerState(PlayerState.IsInteracting); 
-                interactable.Interact();
-                _playerActivities.SetPlayerState(PlayerState.IsIdle); 
-                return;
             }
             
             if (_inventory.HasWood)

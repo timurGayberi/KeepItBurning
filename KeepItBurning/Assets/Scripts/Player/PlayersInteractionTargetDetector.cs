@@ -20,7 +20,9 @@ namespace Player
         
         public IInteractable currentInteractable { get; private set; }
         public ICollectible currentCollectible { get; private set; }
-        
+
+        private System.Collections.Generic.List<IInteractable> allNearbyInteractables = new System.Collections.Generic.List<IInteractable>();
+
         public Component CurrentCandidate
         {
             get
@@ -37,6 +39,11 @@ namespace Player
             }
         }
 
+        public System.Collections.Generic.List<IInteractable> GetAllNearbyInteractables()
+        {
+            return allNearbyInteractables;
+        }
+
         private void Update()
         {
             DetectTarget();
@@ -46,19 +53,20 @@ namespace Player
         {
             currentInteractable = null;
             currentCollectible = null;
+            allNearbyInteractables.Clear();
 
-            var effectiveRadius = detectionDistance; 
+            var effectiveRadius = detectionDistance;
             var layerMask = ~ignoreLayers;
-            
+
             Vector3 centerPosition = transform.position;
-            
-            Collider[] colliders = Physics.OverlapSphere(centerPosition, effectiveRadius, layerMask, QueryTriggerInteraction.Collide); 
+
+            Collider[] colliders = Physics.OverlapSphere(centerPosition, effectiveRadius, layerMask, QueryTriggerInteraction.Collide);
 
             float minDistance = float.MaxValue;
             IInteractable closestInteractable = null;
             ICollectible closestCollectible = null;
-            Vector3? closestTargetPosition = null; 
-            
+            Vector3? closestTargetPosition = null;
+
             ICollectible closestCollectibleCandidate = null;
             
             foreach (var collider in colliders) 
@@ -94,15 +102,21 @@ namespace Player
                     {
                         var collectible = collider.GetComponent<ICollectible>();
                         var interactable = collider.GetComponent<IInteractable>();
-                        
+
+                        // Collect ALL interactables in range for multi-interaction
+                        if (interactable != null)
+                        {
+                            allNearbyInteractables.Add(interactable);
+                        }
+
                         if (distance < minDistance)
                         {
                             minDistance = distance;
-                            
+
                             if (collectible != null)
                             {
                                 closestCollectibleCandidate = collectible;
-                                closestInteractable = null; 
+                                closestInteractable = null;
                             }
                             else if (interactable != null)
                             {
@@ -113,7 +127,7 @@ namespace Player
                                 }
                             }
                         }
-                        
+
                         if (collectible != null && (closestCollectibleCandidate == null || distance < Vector3.Distance(transform.position, (closestCollectibleCandidate as Component).transform.position)))
                         {
                             closestCollectibleCandidate = collectible;

@@ -24,9 +24,17 @@ namespace GamePlay.Interactables
         [Tooltip("The maximum amount of fuel the campfire can hold.")]
         [SerializeField]
         private float maxFuel = 100f;
-        [Tooltip("The rate at which fuel decays per second.")]
+        [Tooltip("The base rate at which fuel decays per second.")]
         [SerializeField]
-        private float decayRate = 1f;
+        private float baseDecayRate = 1f;
+        [Tooltip("How much the decay rate increases over time (per second). Set to reach 2x after 3 minutes.")]
+        [SerializeField]
+        private float decayRateIncrease = 0.00556f;
+        [Tooltip("Maximum decay rate multiplier. Reaches 2x after 3 minutes.")]
+        [SerializeField]
+        private float maxDecayMultiplier = 2f;
+
+        private float currentDecayMultiplier = 1f;
 
         [Header("Current Status")]
         [Tooltip("The current fuel level (displayed at runtime).")]
@@ -52,6 +60,7 @@ namespace GamePlay.Interactables
         private void Awake()
         {
             _currentFuel = maxFuel;
+            currentDecayMultiplier = 1f;
             OnFuelChanged?.Invoke(_currentFuel, maxFuel);
         }
 
@@ -88,7 +97,13 @@ namespace GamePlay.Interactables
         {
             if (_currentFuel > 0)
             {
-                _currentFuel -= decayRate * Time.deltaTime;
+                // Increase decay rate over time (gets harder and harder)
+                currentDecayMultiplier += decayRateIncrease * Time.deltaTime;
+                currentDecayMultiplier = Mathf.Min(currentDecayMultiplier, maxDecayMultiplier);
+
+                // Apply the accelerating decay
+                float currentDecayRate = baseDecayRate * currentDecayMultiplier;
+                _currentFuel -= currentDecayRate * Time.deltaTime;
                 _currentFuel = Mathf.Max(0, _currentFuel);
 
                 OnFuelChanged?.Invoke(_currentFuel, maxFuel);
@@ -100,11 +115,11 @@ namespace GamePlay.Interactables
                     Debug.Log("The campfire has gone out. Triggering Game Over.");
 
                     OnFireplaceOut?.Invoke();
-                    
+
                     // FIX: Must check the static Instance and call the method on the instance.
-                    if (PlayGameManager.Instance != null) 
+                    if (PlayGameManager.Instance != null)
                     {
-                        PlayGameManager.Instance.TriggerGameOver(); 
+                        PlayGameManager.Instance.TriggerGameOver();
                     }
                     else
                     {
