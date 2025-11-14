@@ -216,6 +216,9 @@ namespace GamePlay.Interactables
 
             inventory.SetHeldFoodItem(currentFoodID, currentCookState);
 
+            // Play pickup sound
+            SoundManager.Play(SoundAction.PickItem);
+
             // Stop cooking sound when food is removed
             StopCookingSound();
 
