@@ -63,7 +63,7 @@ namespace UI
 
             // Add Image component (black overlay)
             Image image = panelObj.AddComponent<Image>();
-            image.color = Color.black;
+            image.color = new Color(0f, 0f, 0f, 1f); // Pure black with full alpha
 
             // Add CanvasGroup for alpha control
             overlayPanel = panelObj.AddComponent<CanvasGroup>();
@@ -104,8 +104,9 @@ namespace UI
             {
                 // Higher brightness = less dark overlay
                 // brightness 1.0 = alpha 0 (no overlay, full brightness)
-                // brightness 0.0 = alpha 1 (full dark overlay, minimum brightness)
-                overlayPanel.alpha = 1f - brightness;
+                // brightness 0.0 = alpha 0.5 (half dark overlay, still visible)
+                // Map brightness 0-1 to overlay alpha 0.5-0
+                overlayPanel.alpha = (1f - brightness) * 0.5f;
             }
         }
     }

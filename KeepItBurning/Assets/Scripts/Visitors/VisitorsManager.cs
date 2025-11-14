@@ -83,7 +83,7 @@ public class VisitorsManager : MonoBehaviour
 
         Destroy(visitor);
         currentVisitors--;
-        TimeToSpawVisitors-=0.5f;
+        TimeToSpawVisitors-=0.75f;
 
     }
 }

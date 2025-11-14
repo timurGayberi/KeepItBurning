@@ -150,6 +150,9 @@ namespace GamePlay.Interactables
             int foodID = GetFoodCollectibleID();
             playerInventory.SetHeldFoodItem(foodID, cookState);
 
+            // Play pickup sound
+            SoundManager.Play(SoundAction.PickItem);
+
             // Remove one visual food item from the table
             RemoveFoodVisual();
         }

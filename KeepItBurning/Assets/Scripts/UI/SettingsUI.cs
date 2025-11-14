@@ -204,7 +204,8 @@ public class SettingsUI : MonoBehaviour
 
         if (overlayToUpdate != null)
         {
-            overlayToUpdate.alpha = 1f - brightness;
+            // Map brightness 0-1 to overlay alpha 0.5-0
+            overlayToUpdate.alpha = (1f - brightness) * 0.5f;
         }
     }
 }

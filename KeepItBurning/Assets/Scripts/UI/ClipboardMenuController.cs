@@ -83,6 +83,7 @@ public class ClipboardMenuController : MonoBehaviour
 
     private IEnumerator TransitionToMainMenu()
     {
+        Debug.Log("[ClipboardMenuController] TransitionToMainMenu started");
         isOnSettingsMenu = false;
 
         // Fade transition: fade out settings while fading in main menu
@@ -94,6 +95,10 @@ public class ClipboardMenuController : MonoBehaviour
         {
             clipboardMainMenu.gameObject.SetActive(true);
             clipboardMainMenu.alpha = 0f;
+        }
+        else
+        {
+            Debug.LogWarning("[ClipboardMenuController] clipboardMainMenu is null!");
         }
 
         // Simultaneously fade out settings and fade in main menu
@@ -141,6 +146,8 @@ public class ClipboardMenuController : MonoBehaviour
             clipboardMainMenu.interactable = true;
             clipboardMainMenu.blocksRaycasts = true;
         }
+
+        Debug.Log("[ClipboardMenuController] TransitionToMainMenu completed");
     }
 
     /// <summary>
