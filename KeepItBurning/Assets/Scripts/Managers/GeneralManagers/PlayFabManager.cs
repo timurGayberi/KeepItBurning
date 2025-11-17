@@ -7,7 +7,6 @@ using Interfaces;
 
 namespace Managers.GeneralManagers
 {
-    // 1. MUST implement the interface to fulfill the service contract
     public class PlayFabManager : MonoBehaviour, IPlayFabService 
     {
         

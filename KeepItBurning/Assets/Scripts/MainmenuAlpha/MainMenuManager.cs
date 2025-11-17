@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Interfaces;   
+using General;
+using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -22,9 +26,56 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Light BoardLight;
     [SerializeField] private float lightFadeDuration = 1f;
     [SerializeField] private float maxLightIntensity = 1f;
-
+    
+    [Space]
+    
+    //  --- Added for players NickName Submit Function ---
+    [Header("Nickname UI")]
+    [SerializeField] private GameObject nicknamePanel;
+    [SerializeField] private TMP_InputField nicknameInputField;
+    
+    [SerializeField] private Button nicknameSubmitButton;
+    [SerializeField] private Button skipButton;
+    
+    [SerializeField] private TextMeshProUGUI nicknameStatusText;
+    
+    public bool NickNameSubmitted {get; private set;}
+    
+    // --- Service Subscribe ---
+    private IPlayFabService _playFabService;
+    
+    
+    private void Start()
+    {
+        try
+        {
+            _playFabService = ServiceLocator.GetService<IPlayFabService>();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"PlayFab Service Not Found: {e.Message}");
+        }
+        
+        if (nicknamePanel != null)
+        {
+            nicknamePanel.SetActive(false);
+        }
+        
+        if (nicknameSubmitButton != null)
+        {
+            nicknameSubmitButton.onClick.RemoveAllListeners();
+            nicknameSubmitButton.onClick.AddListener(SubmitNicknameAndStartGame);
+        }
+        
+        if (skipButton != null)
+        {
+            skipButton.onClick.RemoveAllListeners();
+            skipButton.onClick.AddListener(SkipNicknameAndStartGame);
+        }
+    }
+    
     private Coroutine lightFadeCoroutine;
-
+    
     public void ClickAnywhereToStart()
     {
         StartCoroutine(FadeOutAndDisable());
@@ -105,8 +156,80 @@ public class MainMenuManager : MonoBehaviour
 
     public void Play()
     {
+        // --- This Function changed by Timur to make player write their nickname before game ---
+        
+        DisableAllCameras();
+        DisableAllButtons();
+        
+        if (nicknamePanel != null)
+        {
+            nicknamePanel.SetActive(true);
+            nicknameStatusText.text = "Enter your nickname.";
+        }
+        
+        // --- Previous version ---
+        //SceneManager.LoadScene("GameScene");
+    }
+    
+    // --- This methods added by Timur for players nickname submit functions 
+    
+    private void SubmitNicknameAndStartGame()
+    {
+        if (_playFabService == null)
+        {
+            nicknameStatusText.text = "Error: PlayFab Service not initialized!";
+            return;
+        }
+
+        string nickname = nicknameInputField.text.Trim();
+
+        if (string.IsNullOrEmpty(nickname) || nickname.Length < 3)
+        {
+            nicknameStatusText.text = "Nickname must be at least 3 characters.";
+            return;
+        }
+        
+        StartCoroutine(HandleNicknameSubmissionRoutine(nickname));
+    }
+    
+    private void SkipNicknameAndStartGame()
+    {
+        Debug.Log("Skipping nickname submission. Starting game...");
+        
+        NickNameSubmitted = false;
+        
+        if (nicknamePanel != null)
+        {
+            nicknamePanel.SetActive(false);
+        }
+        
         SceneManager.LoadScene("GameScene");
     }
+    
+    private IEnumerator HandleNicknameSubmissionRoutine(string nickname)
+    {
+        nicknameSubmitButton.interactable = false;
+        nicknameStatusText.text = "Submitting...";
+        
+        _playFabService.SaveNickname(nickname); 
+        
+        yield return new WaitForSeconds(1.5f); 
+        
+        NickNameSubmitted = true;
+        
+        nicknameStatusText.text = "Submission successful! Starting game...";
+        
+        if (nicknamePanel != null)
+        {
+            nicknamePanel.SetActive(false);
+        }
+        
+        SceneManager.LoadScene("GameScene");
+    }
+    
+    // --- End of Changes ---
+    
+    
     private void FadeLight(bool turnOn)
     {
         if (BoardLight == null) return;
