@@ -106,6 +106,13 @@ namespace Managers.GeneralManagers
 
         public void OnLeaderboardGet(GetLeaderboardResult result)
         {
+            var uiController = FindObjectOfType<LeaderboardUI>();
+
+            if (uiController != null)
+            {
+                uiController.ReceivePlayFabScores(result.Leaderboard);
+            }
+            
             foreach (var item in result.Leaderboard)
             {
                 var nickname = item.Profile.DisplayName; 

@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="77d39179-a0bd-4433-b0bd-e3b946c1d673" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.KeepItBurning/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KeepItBurning/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MainmenuAlpha/MainMenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MainmenuAlpha/MainMenuManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GeneralManagers/PlayFabManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/GeneralManagers/PlayFabManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/InteractionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/InteractionHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/LeaderboardUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/LeaderboardUI.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
