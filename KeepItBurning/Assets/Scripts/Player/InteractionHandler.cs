@@ -118,11 +118,9 @@ namespace Player
                         return;
                     }
                 }
-
-                // Handle all instant interactions (fireplace, cooking, etc.)
-                // But prevent picking up food while holding wood - check for each action
-                bool didInteract = false;
-                bool hasWoodAtStart = _inventory.HasWood;
+                
+                var didInteract = false;
+                var hasWoodAtStart = _inventory.HasWood;
 
                 foreach (var interactable in allInteractables)
                 {
@@ -131,9 +129,8 @@ namespace Player
                         fireplace.TryAddFuel(this.gameObject);
                         didInteract = true;
                     }
-                    else if (!(interactable is TreeToCut)) // Skip trees (already handled above)
+                    else if (!(interactable is TreeToCut))
                     {
-                        // If we had wood at the start, don't interact with food tables
                         if (hasWoodAtStart && interactable is FoodTable)
                         {
                             Debug.Log("[INTERACTION] Can't take food while holding wood");

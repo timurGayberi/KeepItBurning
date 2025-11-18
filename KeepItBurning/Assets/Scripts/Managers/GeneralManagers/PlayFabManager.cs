@@ -38,7 +38,7 @@ namespace Managers.GeneralManagers
             Login();
         }
         
-        #region Public Service Methods
+        #region Score setup
         
         public void SaveNickname(string nickname)
         {
@@ -48,13 +48,17 @@ namespace Managers.GeneralManagers
                 return;
             }
 
-            var request = new UpdateUserDataRequest()
+            var displayRequest = new UpdateUserTitleDisplayNameRequest
             {
-                Data = new Dictionary<string, string> { {PlayerNickName , nickname} },
-                Permission = UserDataPermission.Public
+                DisplayName = nickname 
             };
             
-            PlayFabClientAPI.UpdateUserData(request, OnNicknameSaveSuccess, OnError);
+            PlayFabClientAPI.UpdateUserTitleDisplayName(displayRequest, OnDisplayNameUpdateSuccess, OnError);
+        }
+        
+        private static void OnDisplayNameUpdateSuccess(UpdateUserTitleDisplayNameResult result)
+        {
+            Debug.Log($"Player Display Name updated to: {result.DisplayName}");
         }
         
         public void SubmitScore(int score)
@@ -83,15 +87,36 @@ namespace Managers.GeneralManagers
                 Debug.LogWarning("Leaderboard retrieval blocked: Not logged into PlayFab.");
                 return; 
             }
-            
+    
             var request = new GetLeaderboardRequest
             {
                 StatisticName = PlayerPlatformScore,
                 StartPosition = 0,
-                MaxResultsCount = 10
+                MaxResultsCount = 10,
+                
+                ProfileConstraints = new PlayerProfileViewConstraints 
+                {
+                    ShowDisplayName = true 
+                }
+                
             };
-            
+    
             PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardGet, OnError);
+        }
+
+        public void OnLeaderboardGet(GetLeaderboardResult result)
+        {
+            foreach (var item in result.Leaderboard)
+            {
+                var nickname = item.Profile.DisplayName; 
+                
+                if (string.IsNullOrEmpty(nickname))
+                {
+                    nickname = $"[Player {item.PlayFabId}]";
+                }
+                
+                Debug.Log($"Rank {item.Position + 1}: {nickname} - Score: {item.StatValue}");
+            }
         }
         
         #endregion
@@ -113,6 +138,7 @@ namespace Managers.GeneralManagers
         {
             Debug.Log("Login Success");
             _loginSuccess = true;
+            GetPlayerData();
         }
 
         private void OnError(PlayFabError error)
@@ -133,9 +159,36 @@ namespace Managers.GeneralManagers
             Debug.Log("Score submitted successfully!");
         }
         
-        private static void OnLeaderboardGet(GetLeaderboardResult result)
+        #region Data handling
+        
+        public void GetPlayerData()
         {
-            Debug.Log($"Retrieved {result.Leaderboard.Count} leaderboard entries.");
+            if (!_loginSuccess)
+            {
+                Debug.LogWarning("Player data retrieval blocked: Not logged into PlayFab.");
+                return;
+            }
+            
+            PlayFabClientAPI.GetUserData(new GetUserDataRequest { Keys = null }, OnDataReceive, OnError);
         }
+
+        private static void OnDataReceive(GetUserDataResult result)
+        {
+            const string NicknameKey = "Nickname"; 
+
+            if (result.Data != null && result.Data.ContainsKey(NicknameKey))
+            {
+                var savedNickname = result.Data[NicknameKey].Value;
+                
+                Debug.Log($"Retrieved Player Data Nickname: {savedNickname}");
+                
+            }
+            else
+            {
+                Debug.LogWarning($"Player Data Key '{NicknameKey}' not found.");
+            }
+        }
+        
+        #endregion
     }
 }

@@ -123,9 +123,33 @@ public class MainMenuManager : MonoBehaviour
     }
     public void GoToLeaderboard()
     {
+        // --- Commented out due test ----
+        
+        /*
         DisableAllCameras();
         DisableAllButtons();
         LeaderboardCamera.SetActive(true);
+        */
+        
+        // --- test
+        
+        
+        DisableAllCameras();
+        DisableAllButtons();
+        
+        if (_playFabService != null)
+        {
+            _playFabService.RetrieveLeaderboard(); 
+            
+            Debug.Log("Leaderboard data request sent. Waiting for PlayFab response...");
+        }
+        else
+        {
+            Debug.LogError("Cannot retrieve leaderboard: PlayFab Service not found.");
+        }
+        
+        LeaderboardCamera.SetActive(true);
+        
     }
 
     public void GoToSettings()
