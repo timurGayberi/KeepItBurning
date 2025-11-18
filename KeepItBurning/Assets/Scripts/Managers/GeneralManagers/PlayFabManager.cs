@@ -14,7 +14,7 @@ namespace Managers.GeneralManagers
 
         private const string    PlayFabTitleID =        "1ECE61",
                                 PlayerScore =           "Score",
-                                PlayerPlatformScore =   "Game Score",
+                                PlayerPlatformScore =   "Score",
                                 PlayerNickName =        "Nickname";
 
         #endregion
@@ -72,6 +72,7 @@ namespace Managers.GeneralManagers
                     new StatisticUpdate { StatisticName = PlayerScore, Value = score }
                 }
             };
+            
             PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, OnError);
         }
         
