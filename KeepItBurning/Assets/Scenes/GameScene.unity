@@ -1375,11 +1375,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2a0a370c03f36964f915967bc10d5c21, type: 3}
   m_PrefabInstance: {fileID: 305955185}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &11238026 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7099982109493928447, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
-  m_PrefabInstance: {fileID: 478172639}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &11803022
 GameObject:
   m_ObjectHideFlags: 0
@@ -22889,11 +22884,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14872b2dbfe73244b99c27b1992f117d, type: 3}
---- !u!1 &189154411 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7099982109493928447, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
-  m_PrefabInstance: {fileID: 396760426}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &189182733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62715,14 +62705,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeData: {fileID: 11400000, guid: 26c43d4533ca94946ae6d3f9a0882a7c, type: 2}
-  spawnPoint1: {fileID: 1820532687}
-  spawnPoint2: {fileID: 1875861153}
-  spawnPoint3: {fileID: 0}
-  spawnPoint4: {fileID: 0}
-  spawnPoint5: {fileID: 0}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 955512510}
-  _log: {fileID: 1144397254}
   _leaves: {fileID: 324894573}
   currentTreeStatus: 0
 --- !u!114 &515796740
@@ -72740,14 +72724,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeData: {fileID: 11400000, guid: c7ba6f0b108f4584d9eb6b5ba5df83c2, type: 2}
-  spawnPoint1: {fileID: 2104411251}
-  spawnPoint2: {fileID: 1374843744}
-  spawnPoint3: {fileID: 0}
-  spawnPoint4: {fileID: 0}
-  spawnPoint5: {fileID: 0}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 642836075}
-  _log: {fileID: 2113185537}
   _leaves: {fileID: 22712848}
   currentTreeStatus: 2
 --- !u!114 &595748854
@@ -80068,14 +80046,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeData: {fileID: 11400000, guid: 698610d826e54ad418c8ae529b74ad88, type: 2}
-  spawnPoint1: {fileID: 1485608970}
-  spawnPoint2: {fileID: 202205946}
-  spawnPoint3: {fileID: 1800994079}
-  spawnPoint4: {fileID: 1640826689}
-  spawnPoint5: {fileID: 1822887496}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 972494019}
-  _log: {fileID: 11238026}
   _leaves: {fileID: 2052116551}
   currentTreeStatus: 0
 --- !u!114 &654356298
@@ -136184,14 +136156,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeData: {fileID: 11400000, guid: 1ffbb7c8df7ed664098b474ccee1a0b9, type: 2}
-  spawnPoint1: {fileID: 1686723352}
-  spawnPoint2: {fileID: 639876104}
-  spawnPoint3: {fileID: 450048901}
-  spawnPoint4: {fileID: 0}
-  spawnPoint5: {fileID: 0}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 46181973}
-  _log: {fileID: 1523899811}
   _leaves: {fileID: 264965883}
   currentTreeStatus: 2
 --- !u!136 &1069958426
@@ -144491,11 +144457,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7393775699910910187, guid: f1a1e28c075f4914d81a048d7ec41cf1, type: 3}
   m_PrefabInstance: {fileID: 873017226}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1144397254 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7099982109493928447, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
-  m_PrefabInstance: {fileID: 621855596}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1144544298
 PrefabInstance:
@@ -164431,11 +164392,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6d25a0c0fd60cf245b5b834e33283c4e, type: 3}
   m_PrefabInstance: {fileID: 1307488293}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1307828033 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7099982109493928447, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
-  m_PrefabInstance: {fileID: 1000363196}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1308069866 stripped
 Transform:
@@ -188986,14 +188942,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeData: {fileID: 11400000, guid: 53d0a8714d266ab48942c7a307036714, type: 2}
-  spawnPoint1: {fileID: 1814791689}
-  spawnPoint2: {fileID: 2038754759}
-  spawnPoint3: {fileID: 1467696606}
-  spawnPoint4: {fileID: 0}
-  spawnPoint5: {fileID: 0}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 970931601}
-  _log: {fileID: 1307828033}
   _leaves: {fileID: 892168069}
   currentTreeStatus: 2
 --- !u!114 &1485387334
@@ -193316,11 +193266,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19c537d96e68168429ff1f231a158d5d, type: 3}
---- !u!1 &1523899811 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7099982109493928447, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
-  m_PrefabInstance: {fileID: 45779732}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1524230328 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7393775699910910187, guid: f1a1e28c075f4914d81a048d7ec41cf1, type: 3}
@@ -222069,6 +222014,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: mainChar
       objectReference: {fileID: 0}
+    - target: {fileID: 6312617090539774216, guid: a4a63a1b54dba2948ac8ca4ef8629027, type: 3}
+      propertyPath: _chopConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 967c5d222c9e37349a1403f69641966b, type: 2}
+    - target: {fileID: 6312617090539774216, guid: a4a63a1b54dba2948ac8ca4ef8629027, type: 3}
+      propertyPath: _playerStats
+      value: 
+      objectReference: {fileID: 11400000, guid: d1b98779bf154414c8221dd66ce905d1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -244984,7 +244937,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 128
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -270943,11 +270896,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bec00501a270634493253842bf14356, type: 3}
---- !u!1 &2113185537 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7099982109493928447, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
-  m_PrefabInstance: {fileID: 1320100670}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2113493463
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -274440,14 +274388,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeData: {fileID: 11400000, guid: 1f0577ec8a659ba4fbc9ca439f94f24b, type: 2}
-  spawnPoint1: {fileID: 2146637877}
-  spawnPoint2: {fileID: 920095007}
-  spawnPoint3: {fileID: 0}
-  spawnPoint4: {fileID: 0}
-  spawnPoint5: {fileID: 0}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 743260936}
-  _log: {fileID: 189154411}
   _leaves: {fileID: 194913251}
   currentTreeStatus: 0
 --- !u!114 &2137279786
