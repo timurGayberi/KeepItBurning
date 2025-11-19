@@ -1,5 +1,6 @@
 using UnityEngine;
 using Interfaces;
+using GamePlay.Interactables; // 1. Added namespace to access TreeToCut
 
 namespace Player
 {
@@ -27,14 +28,8 @@ namespace Player
         {
             get
             {
-                if (currentCollectible != null)
-                {
-                    return currentCollectible as Component;
-                }
-                if (currentInteractable != null)
-                {
-                    return currentInteractable as Component;
-                }
+                if (currentCollectible != null) return currentCollectible as Component;
+                if (currentInteractable != null) return currentInteractable as Component;
                 return null;
             }
         }
@@ -57,22 +52,18 @@ namespace Player
 
             var effectiveRadius = detectionDistance;
             var layerMask = ~ignoreLayers;
+            var centerPosition = transform.position;
 
-            Vector3 centerPosition = transform.position;
+            var colliders = Physics.OverlapSphere(centerPosition, effectiveRadius, layerMask, QueryTriggerInteraction.Collide);
 
-            Collider[] colliders = Physics.OverlapSphere(centerPosition, effectiveRadius, layerMask, QueryTriggerInteraction.Collide);
-
-            float minDistance = float.MaxValue;
+            var minDistance = float.MaxValue;
             IInteractable closestInteractable = null;
-            ICollectible closestCollectible = null;
+            ICollectible closestCollectibleCandidate = null;
             Vector3? closestTargetPosition = null;
 
-            ICollectible closestCollectibleCandidate = null;
-            
             foreach (var collider in colliders) 
             {
                 if (collider.transform.root == transform.root) continue;
-
                 if (collider is MeshCollider meshCollider && !meshCollider.convex) continue;
                 if (collider is TerrainCollider) continue;
                 
@@ -102,6 +93,17 @@ namespace Player
                     {
                         var collectible = collider.GetComponent<ICollectible>();
                         var interactable = collider.GetComponent<IInteractable>();
+
+                        // --- 2. NEW LOGIC: Ignore Cut Trees ---
+                        if (interactable is TreeToCut tree)
+                        {
+                            if (tree.currentTreeStatus == TreeStatus.Cut)
+                            {
+                                // If tree is cut, skip it entirely (don't add to list, don't select it)
+                                continue; 
+                            }
+                        }
+                        // ---------------------------------------
 
                         // Collect ALL interactables in range for multi-interaction
                         if (interactable != null)
@@ -148,7 +150,6 @@ namespace Player
                 currentInteractable = closestInteractable;
             }
 
-            
             if (currentCollectible != null || currentInteractable != null)
             {
                 var targetPos = (currentCollectible as Component)?.transform.position ?? (currentInteractable as Component)?.transform.position ?? transform.position;
