@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using General;
 using Interfaces;
@@ -10,12 +10,12 @@ namespace Player
 {
     public class InteractionHandler : MonoBehaviour
     {
-        [Header("Stats")]
+        [Header("Data Sources")]
         [SerializeField] private PlayerStatsSo _playerStats;
-
-        [Header("Settings")]
-        [SerializeField] private float _chopCooldown = 0.6f; 
-
+        [SerializeField] private ActionConfigSo _chopConfig;
+        
+        [Header("Components")]
+        private PlayerAnimatorController _animatorController; 
         private PlayersInteractionTargetDetector _detector;
         private PlayerInventory _inventory;
         private PlayersActivities _playerActivities;
@@ -29,6 +29,10 @@ namespace Player
             _playerActivities = GetComponent<PlayersActivities>();
             _detector = GetComponent<PlayersInteractionTargetDetector>();
             _inventory = GetComponent<PlayerInventory>();
+            _animatorController = GetComponent<PlayerAnimatorController>();
+            
+            // Safety Check
+            if (_chopConfig == null) Debug.LogError("Chop Config SO is missing on InteractionHandler!");
         }
 
         private void OnEnable()
@@ -52,17 +56,15 @@ namespace Player
             
             if (_activeInteractable != null && _detector.currentInteractable != _activeInteractable)
             {
-                if(_playerActivities.currentState == PlayerState.IsInteracting)
-                {
-                    ResetInteractionState();
-                }
+                if(_playerActivities.currentState == PlayerState.IsInteracting) ResetInteractionState();
             }
         }
 
-        // --- FIXED LOGIC HERE ---
         private void HandleSinglePressInteraction()
         {
-            // 1. Check Collectibles (Highest Priority)
+            // USE DATA: Check Cooldown using the SO
+            if (Time.time < _lastChopTime + _chopConfig.Cooldown) return;
+
             if (_detector.currentCollectible != null)
             {
                 _detector.currentCollectible.Collect(this.gameObject);
@@ -70,60 +72,23 @@ namespace Player
             }
 
             var nearby = _detector.GetAllNearbyInteractables();
-            bool interactionSuccessful = false;
-
-            // 2. Check Nearby Objects
             if (nearby != null && nearby.Count > 0)
             {
-                // A. Check Trees first
                 foreach (var item in nearby)
                 {
                     if (item is TreeToCut tree)
                     {
-                        PerformChop(tree);
-                        return; // Stop here, we chopped
+                        StartChopSequence(tree); // New simplified method
+                        return; 
                     }
                 }
-
-                // B. Check Standard Interactables
-                bool hasWood = _inventory.HasWood;
                 
-                foreach (var interactable in nearby)
-                {
-                    // Logic: If we have wood, we skip FoodTables so we can drop the wood instead
-                    if (hasWood && interactable is FoodTable) continue;
-                    
-                    // Standard Interaction
-                    if (interactable is FireplaceInteraction fireplace)
-                    {
-                        fireplace.TryAddFuel(this.gameObject);
-                        interactionSuccessful = true;
-                        break; 
-                    }
-                    
-                    // Generic Interaction
-                    _playerActivities.SetPlayerState(PlayerState.IsInteracting);
-                    _activeInteractable = interactable;
-                    interactable.Interact();
-                    ResetInteractionState();
-                    
-                    interactionSuccessful = true;
-                    break;
-                }
+                // ... (Your existing standard interaction logic here) ...
+                HandleStandardInteractions(nearby);
             }
-
-            // 3. FALLBACK: Drop Wood
-            // If we didn't collect anything, and we didn't successfully interact with anything...
-            if (!interactionSuccessful)
+            else
             {
-                if (_inventory.HasWood)
-                {
-                    _inventory.DropWood();
-                }
-                else
-                {
-                    Debug.Log("[INTERACTION] Nothing to interact with, and nothing to drop.");
-                }
+                 if (_inventory.HasWood) _inventory.DropWood();
             }
         }
 
@@ -133,15 +98,17 @@ namespace Player
 
             if (_inputService.IsInteractPressed)
             {
-                if (Time.time >= _lastChopTime + _chopCooldown)
+                // USE DATA: Check Cooldown
+                if (Time.time >= _lastChopTime + _chopConfig.Cooldown)
                 {
-                    PerformChop(tree);
+                    StartChopSequence(tree);
                 }
             }
             else
             {
+                // USE DATA: Wait for animation to finish
                 if (_playerActivities.currentState == PlayerState.IsChopping && 
-                    Time.time > _lastChopTime + _chopCooldown)
+                    Time.time > _lastChopTime + _chopConfig.Cooldown)
                 {
                     _playerActivities.SetPlayerState(PlayerState.IsIdle);
                     _activeInteractable = null;
@@ -149,17 +116,53 @@ namespace Player
             }
         }
 
-        private void PerformChop(TreeToCut tree)
+        private void StartChopSequence(TreeToCut tree)
         {
             _activeInteractable = tree;
             _playerActivities.SetPlayerState(PlayerState.IsChopping);
             _lastChopTime = Time.time;
 
-            SoundManager.Play(SoundAction.ChopWood);
+            // 1. Trigger Animation
+            if (_animatorController != null) _animatorController.TriggerChopAnimation();
+
+            // 2. Start the Timer based on Data
+            StartCoroutine(ExecuteChopImpact(tree));
+        }
+
+        private IEnumerator ExecuteChopImpact(TreeToCut tree)
+        {
+            // USE DATA: Wait exactly as long as the SO says
+            yield return new WaitForSeconds(_chopConfig.impactDelay);
+
+            // USE DATA: Play the specific sound defined in the SO
+            SoundManager.Play(_chopConfig.impactSound);
 
             var damage = _playerStats != null ? _playerStats.damageRate : 25f;
             
-            tree.ApplyDamage(damage, transform.position);
+            if (tree != null)
+            {
+                tree.ApplyDamage(damage, this.transform.position);
+            }
+        }
+
+        private void HandleStandardInteractions(System.Collections.Generic.List<IInteractable> nearby)
+        {
+            // (Paste your logic for fireplace/tables here to keep file clean)
+            bool hasWood = _inventory.HasWood;
+                foreach (var interactable in nearby)
+                {
+                    if (hasWood && interactable is FoodTable) continue;
+                    if (interactable is FireplaceInteraction fireplace)
+                    {
+                        fireplace.TryAddFuel(this.gameObject);
+                        break; 
+                    }
+                    _playerActivities.SetPlayerState(PlayerState.IsInteracting);
+                    _activeInteractable = interactable;
+                    interactable.Interact();
+                    ResetInteractionState();
+                    break;
+                }
         }
 
         private void ResetInteractionState()
@@ -170,10 +173,7 @@ namespace Player
         
         public void HandleMovementInterruption()
         {
-            if (_playerActivities.currentState == PlayerState.IsChopping)
-            {
-                ResetInteractionState();
-            }
+            if (_playerActivities.currentState == PlayerState.IsChopping) ResetInteractionState();
         }
     }
 }
