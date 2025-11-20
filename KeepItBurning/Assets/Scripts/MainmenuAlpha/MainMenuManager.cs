@@ -38,7 +38,10 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button skipButton;
     
     [SerializeField] private TextMeshProUGUI nicknameStatusText;
-    
+    [SerializeField] private TextMeshProUGUI welcomeText;
+
+    [SerializeField] private Image clipboardImage;
+
     public bool NickNameSubmitted {get; private set;}
     
     // --- Service Subscribe ---
@@ -188,7 +191,8 @@ public class MainMenuManager : MonoBehaviour
         if (nicknamePanel != null)
         {
             nicknamePanel.SetActive(true);
-            nicknameStatusText.text = "Enter your nickname.";
+            clipboardImage.gameObject.SetActive(true);
+            nicknameStatusText.text = "Sign your name";
         }
         
         // --- Previous version ---
@@ -226,7 +230,8 @@ public class MainMenuManager : MonoBehaviour
         {
             nicknamePanel.SetActive(false);
         }
-        
+
+        clipboardImage.gameObject.SetActive(false);
         SceneManager.LoadScene("GameScene");
     }
     
@@ -247,7 +252,8 @@ public class MainMenuManager : MonoBehaviour
         {
             nicknamePanel.SetActive(false);
         }
-        
+
+        clipboardImage.gameObject.SetActive(false);
         SceneManager.LoadScene("GameScene");
     }
     
