@@ -256,10 +256,28 @@ public class MainMenuManager : MonoBehaviour
         clipboardImage.gameObject.SetActive(false);
         SceneManager.LoadScene("GameScene");
     }
-    
+
+    private void Update() // Escape function to exit the "Nickname panel"
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // If nickname panel is open, close it and return to main menu
+            if (nicknamePanel != null && nicknamePanel.activeSelf)
+            {
+                nicknamePanel.SetActive(false);
+
+                if (clipboardImage != null)
+                    clipboardImage.gameObject.SetActive(false);
+
+                // Re-enable buttons + board camera
+                GoToMainMenu();
+            }
+        }
+    }
+
     // --- End of Changes ---
-    
-    
+
+
     private void FadeLight(bool turnOn)
     {
         if (BoardLight == null) return;
