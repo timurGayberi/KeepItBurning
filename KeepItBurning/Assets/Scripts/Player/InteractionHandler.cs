@@ -3,8 +3,8 @@ using System.Collections;
 using UnityEngine;
 using General;
 using Interfaces;
-using GamePlay.Interactables; 
-using ScriptableObjects; 
+using GamePlay.Interactables;
+using ScriptableObjects;
 
 namespace Player
 {
@@ -13,14 +13,14 @@ namespace Player
         [Header("Data Sources")]
         [SerializeField] private PlayerStatsSo _playerStats;
         [SerializeField] private ActionConfigSo _chopConfig;
-        
+
         [Header("Components")]
-        private PlayerAnimatorController _animatorController; 
+        private PlayerAnimatorController _animatorController;
         private PlayersInteractionTargetDetector _detector;
         private PlayerInventory _inventory;
         private PlayersActivities _playerActivities;
-        private IInputService _inputService; 
-        
+        private IInputService _inputService;
+
         private IInteractable _activeInteractable = null;
         private float _lastChopTime;
 
@@ -30,7 +30,7 @@ namespace Player
             _detector = GetComponent<PlayersInteractionTargetDetector>();
             _inventory = GetComponent<PlayerInventory>();
             _animatorController = GetComponent<PlayerAnimatorController>();
-            
+
             // Safety Check
             if (_chopConfig == null) Debug.LogError("Chop Config SO is missing on InteractionHandler!");
         }
@@ -53,10 +53,10 @@ namespace Player
         private void Update()
         {
             HandleAutoChop();
-            
+
             if (_activeInteractable != null && _detector.currentInteractable != _activeInteractable)
             {
-                if(_playerActivities.currentState == PlayerState.IsInteracting) ResetInteractionState();
+                if (_playerActivities.currentState == PlayerState.IsInteracting) ResetInteractionState();
             }
         }
 
@@ -68,7 +68,7 @@ namespace Player
             if (_detector.currentCollectible != null)
             {
                 _detector.currentCollectible.Collect(this.gameObject);
-                return; 
+                return;
             }
 
             var nearby = _detector.GetAllNearbyInteractables();
@@ -77,16 +77,19 @@ namespace Player
                 // Prioritize the closest interactable for chopping
                 if (_detector.currentInteractable is TreeToCut tree)
                 {
-                    StartChopSequence(tree); // New simplified method
-                    return; 
+                    if (tree.currentTreeStatus == TreeStatus.Uncut)
+                    {
+                        StartChopSequence(tree); // New simplified method
+                        return;
+                    }
                 }
-                
+
                 // ... (Your existing standard interaction logic here) ...
                 HandleStandardInteractions(nearby);
             }
             else
             {
-                 if (_inventory.HasWood) _inventory.DropWood();
+                if (_inventory.HasWood) _inventory.DropWood();
             }
         }
 
@@ -99,13 +102,17 @@ namespace Player
                 // USE DATA: Check Cooldown
                 if (Time.time >= _lastChopTime + _chopConfig.Cooldown)
                 {
-                    StartChopSequence(tree);
+                    // Add check to prevent chopping cut trees
+                    if (tree.currentTreeStatus == TreeStatus.Uncut)
+                    {
+                        StartChopSequence(tree);
+                    }
                 }
             }
             else
             {
                 // USE DATA: Wait for animation to finish
-                if (_playerActivities.currentState == PlayerState.IsChopping && 
+                if (_playerActivities.currentState == PlayerState.IsChopping &&
                     Time.time > _lastChopTime + _chopConfig.Cooldown)
                 {
                     _playerActivities.SetPlayerState(PlayerState.IsIdle);
@@ -116,6 +123,9 @@ namespace Player
 
         private void StartChopSequence(TreeToCut tree)
         {
+            // Double check to prevent chopping cut trees
+            if (tree.currentTreeStatus != TreeStatus.Uncut) return;
+
             _activeInteractable = tree;
             _playerActivities.SetPlayerState(PlayerState.IsChopping);
             _lastChopTime = Time.time;
@@ -136,7 +146,7 @@ namespace Player
             SoundManager.Play(_chopConfig.impactSound);
 
             var damage = _playerStats != null ? _playerStats.damageRate : 25f;
-            
+
             if (tree != null)
             {
                 tree.ApplyDamage(damage, this.transform.position);
@@ -161,7 +171,7 @@ namespace Player
                 {
                     fireplace.TryAddFuel(this.gameObject);
                     // Continue to allow other interactions (like user's script)
-                    continue; 
+                    continue;
                 }
 
                 _playerActivities.SetPlayerState(PlayerState.IsInteracting);
@@ -177,7 +187,7 @@ namespace Player
             _activeInteractable = null;
             _playerActivities.SetPlayerState(PlayerState.IsIdle);
         }
-        
+
         public void HandleMovementInterruption()
         {
             if (_playerActivities.currentState == PlayerState.IsChopping) ResetInteractionState();
