@@ -5,10 +5,6 @@ using Score;
 
 namespace UI
 {
-    /// <summary>
-    /// Displays the final score on the Game Over panel.
-    /// Attach this to your Game Over panel GameObject.
-    /// </summary>
     public class GameOverPanel : MonoBehaviour
     {
         [Header("UI References")]

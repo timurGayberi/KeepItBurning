@@ -77,13 +77,14 @@ namespace Managers.GamePlayManagers
             if (GameStateManager.instance != null)
             {
                 GameStateManager.instance.TriggerGameOver();
-                // Music is handled by MusicManager when game state changes
-
-                // Save score to leaderboard
+                
+                // --- this Save manager thingy need to be modified -----//
+                
                 SaveManager saveManager = FindObjectOfType<SaveManager>();
+                
+                
                 if (saveManager != null)
                 {
-                    // Try to use ScoreManager score first, fall back to PlayGameManager score
                     float finalScore = score;
                     if (ScoreManager.Instance != null)
                     {
@@ -92,6 +93,19 @@ namespace Managers.GamePlayManagers
 
                     saveManager.AddScoreToLb(finalScore);
                 }
+                
+                // ------------------------------------------------------//
+                
+                if (ScoreManager.Instance != null)
+                {
+                    ScoreManager.Instance.SubmitFinalScore();
+                }
+                else
+                {
+                    Debug.LogError("[PlayGameManager] ScoreManager not found. Score cannot be submitted.");
+                }
+                
+                GameStateManager.instance.TriggerGameOver();
             }
             else
             {

@@ -30,7 +30,7 @@ namespace Interfaces
         // Control Scheme Management
         event Action<ControlDevice> OnControlSchemeChange;
         ControlDevice currentControlDevice { get; }
-        
+        bool IsInteractPressed { get; }
         void DisablePlayerInput(); 
         void EnablePlayerInput();
         void EnableUIInput();

@@ -3,28 +3,36 @@ using System.Collections;
 using UnityEngine;
 using General;
 using Interfaces;
-using GamePlay.Interactables; 
+using GamePlay.Interactables;
+using ScriptableObjects;
 
 namespace Player
 {
     public class InteractionHandler : MonoBehaviour
     {
+        [Header("Data Sources")]
+        [SerializeField] private PlayerStatsSo _playerStats;
+        [SerializeField] private ActionConfigSo _chopConfig;
+
+        [Header("Components")]
+        private PlayerAnimatorController _animatorController;
         private PlayersInteractionTargetDetector _detector;
         private PlayerInventory _inventory;
         private PlayersActivities _playerActivities;
-        private IInputService _inputService; 
+        private IInputService _inputService;
+
         private IInteractable _activeInteractable = null;
-        private Coroutine _interactionCoroutine = null;
+        private float _lastChopTime;
 
         private void Awake()
         {
             _playerActivities = GetComponent<PlayersActivities>();
             _detector = GetComponent<PlayersInteractionTargetDetector>();
             _inventory = GetComponent<PlayerInventory>();
+            _animatorController = GetComponent<PlayerAnimatorController>();
 
-            if (_detector == null) Debug.LogError("PlayersInteractionTargetDetector missing on InteractionHandler.");
-            if (_playerActivities == null) Debug.LogError("PlayersActivities missing on InteractionHandler.");
-            if (_inventory == null) Debug.LogError("PlayerInventory missing on InteractionHandler.");
+            // Safety Check
+            if (_chopConfig == null) Debug.LogError("Chop Config SO is missing on InteractionHandler!");
         }
 
         private void OnEnable()
@@ -32,194 +40,157 @@ namespace Player
             try
             {
                 _inputService = ServiceLocator.GetService<IInputService>();
-                _inputService.OnInteractEvent += HandleInteractionInput;
+                _inputService.OnInteractEvent += HandleSinglePressInteraction;
             }
-            catch (InvalidOperationException e)
-            {
-                Debug.LogError("IInputService not found. Error: " + e.Message);
-            }
+            catch (Exception e) { Debug.LogError(e); }
         }
 
         private void OnDisable()
         {
-            if (_inputService != null)
-            {
-                _inputService.OnInteractEvent -= HandleInteractionInput;
-            }
-            if (_interactionCoroutine != null)
-            {
-                CancelInteraction(false);
-            }
+            if (_inputService != null) _inputService.OnInteractEvent -= HandleSinglePressInteraction;
         }
 
         private void Update()
         {
-            if (_interactionCoroutine != null)
+            HandleAutoChop();
+
+            if (_activeInteractable != null && _detector.currentInteractable != _activeInteractable)
             {
-                if (_activeInteractable == null)
-                {
-                    Debug.Log("[INTERACTION: OBJECT DESTROYED] Target was destroyed mid-interaction.");
-                    CancelInteraction(false); 
-                    return;
-                }
-                if (_detector.currentInteractable != _activeInteractable || _detector.currentCollectible != null)
-                {
-                    HandleMovementInterruption(); 
-                }
+                if (_playerActivities.currentState == PlayerState.IsInteracting) ResetInteractionState();
             }
         }
-        
-        private void HandleInteractionInput()
+
+        private void HandleSinglePressInteraction()
         {
-            if (_playerActivities.currentState == PlayerState.IsInteracting || _playerActivities.currentState == PlayerState.IsChopping)
+            // USE DATA: Check Cooldown using the SO
+            if (Time.time < _lastChopTime + _chopConfig.Cooldown) return;
+
+            if (_detector.currentCollectible != null)
             {
-                CancelInteraction(true); 
-                return; 
-            }
-            
-            ICollectible collectible = _detector.currentCollectible;
-            if (collectible != null)
-            {
-                bool success = collectible.Collect(this.gameObject);
-                
-                if (success)
-                {
-                    Debug.Log($"[INTERACTION: COLLECTED] Picked up ");
-                }
-                else
-                {
-                    Debug.Log($"[INTERACTION: FAILED COLLECT] Could not pick up (Inventory full?)");
-                }
+                _detector.currentCollectible.Collect(this.gameObject);
                 return;
             }
-            
-            // Get all nearby interactables (for overlapping interactions like fireplace + cooking)
-            var allInteractables = _detector.GetAllNearbyInteractables();
 
-            if (allInteractables != null && allInteractables.Count > 0)
+            var nearby = _detector.GetAllNearbyInteractables();
+            if (nearby != null && nearby.Count > 0)
             {
-                // Check for tree cutting first (requires long interaction, can't multi-task)
-                foreach (var interactable in allInteractables)
+                // Prioritize the closest interactable for chopping
+                if (_detector.currentInteractable is TreeToCut tree)
                 {
-                    if (interactable is TreeToCut treeToCut)
+                    if (tree.currentTreeStatus == TreeStatus.Uncut)
                     {
-                        var data = treeToCut.GetInteractionData();
-
-                        if (data.actionDuration > 0f)
-                        {
-                            _activeInteractable = treeToCut;
-                            _interactionCoroutine = StartCoroutine(PerformLongInteraction(data.actionDuration));
-                            _playerActivities.SetPlayerState(PlayerState.IsChopping);
-                            Debug.Log($"[INTERACTION: LONG START] Starting {data.promptText}. Will take {data.actionDuration} seconds.");
-                            return;
-                        }
-
-                        Debug.Log($"[INTERACTION: BLOCKED] {data.promptText}. Cannot start action.");
+                        StartChopSequence(tree); // New simplified method
                         return;
                     }
                 }
 
-                // Handle all instant interactions (fireplace, cooking, etc.)
-                // But prevent picking up food while holding wood - check for each action
-                bool didInteract = false;
-                bool hasWoodAtStart = _inventory.HasWood;
-
-                foreach (var interactable in allInteractables)
-                {
-                    if (interactable is FireplaceInteraction fireplace)
-                    {
-                        fireplace.TryAddFuel(this.gameObject);
-                        didInteract = true;
-                    }
-                    else if (!(interactable is TreeToCut)) // Skip trees (already handled above)
-                    {
-                        // If we had wood at the start, don't interact with food tables
-                        if (hasWoodAtStart && interactable is FoodTable)
-                        {
-                            Debug.Log("[INTERACTION] Can't take food while holding wood");
-                            continue; // Skip this interaction
-                        }
-
-                        _playerActivities.SetPlayerState(PlayerState.IsInteracting);
-                        interactable.Interact();
-                        didInteract = true;
-                    }
-                }
-
-                if (didInteract)
-                {
-                    _playerActivities.SetPlayerState(PlayerState.IsIdle);
-                    return;
-                }
-            }
-            
-            if (_inventory.HasWood)
-            {
-                _inventory.DropWood();
+                // ... (Your existing standard interaction logic here) ...
+                HandleStandardInteractions(nearby);
             }
             else
             {
-                Debug.Log("[INTERACTION: NO TARGET] No interactable or collectible target found.");
+                if (_inventory.HasWood) _inventory.DropWood();
             }
         }
-        
-        private IEnumerator PerformLongInteraction(float duration)
+
+        private void HandleAutoChop()
         {
-            var timer = 0f;
-            float nextChopSoundTime = 0.5f; // Play first chop sound after 0.5 seconds
-            float chopSoundInterval = 0.8f; // Then play every 0.8 seconds
+            if (!(_detector.currentInteractable is TreeToCut tree)) return;
 
-            while (timer < duration)
+            if (_inputService.IsInteractPressed)
             {
-                timer += Time.deltaTime;
-
-                // Play chop sound at intervals (only for tree chopping)
-                if (_activeInteractable is TreeToCut && timer >= nextChopSoundTime)
+                // USE DATA: Check Cooldown
+                if (Time.time >= _lastChopTime + _chopConfig.Cooldown)
                 {
-                    SoundManager.Play(SoundAction.ChopWood);
-                    nextChopSoundTime += chopSoundInterval;
+                    // Add check to prevent chopping cut trees
+                    if (tree.currentTreeStatus == TreeStatus.Uncut)
+                    {
+                        StartChopSequence(tree);
+                    }
+                }
+            }
+            else
+            {
+                // USE DATA: Wait for animation to finish
+                if (_playerActivities.currentState == PlayerState.IsChopping &&
+                    Time.time > _lastChopTime + _chopConfig.Cooldown)
+                {
+                    _playerActivities.SetPlayerState(PlayerState.IsIdle);
+                    _activeInteractable = null;
+                }
+            }
+        }
+
+        private void StartChopSequence(TreeToCut tree)
+        {
+            // Double check to prevent chopping cut trees
+            if (tree.currentTreeStatus != TreeStatus.Uncut) return;
+
+            _activeInteractable = tree;
+            _playerActivities.SetPlayerState(PlayerState.IsChopping);
+            _lastChopTime = Time.time;
+
+            // 1. Trigger Animation
+            if (_animatorController != null) _animatorController.TriggerChopAnimation();
+
+            // 2. Start the Timer based on Data
+            StartCoroutine(ExecuteChopImpact(tree));
+        }
+
+        private IEnumerator ExecuteChopImpact(TreeToCut tree)
+        {
+            // USE DATA: Wait exactly as long as the SO says
+            yield return new WaitForSeconds(_chopConfig.impactDelay);
+
+            // USE DATA: Play the specific sound defined in the SO
+            SoundManager.Play(_chopConfig.impactSound);
+
+            var damage = _playerStats != null ? _playerStats.damageRate : 25f;
+
+            if (tree != null)
+            {
+                tree.ApplyDamage(damage, this.transform.position);
+            }
+        }
+
+        private void HandleStandardInteractions(System.Collections.Generic.List<IInteractable> nearby)
+        {
+            // (Paste your logic for fireplace/tables here to keep file clean)
+            bool hasWood = _inventory.HasWood;
+            foreach (var interactable in nearby)
+            {
+                if (interactable is TreeToCut) continue; // Skip trees (handled separately)
+
+                if (hasWood && interactable is FoodTable)
+                {
+                    Debug.Log("[INTERACTION] Can't take food while holding wood");
+                    continue;
                 }
 
-                yield return null;
+                if (interactable is FireplaceInteraction fireplace)
+                {
+                    fireplace.TryAddFuel(this.gameObject);
+                    // Continue to allow other interactions (like user's script)
+                    continue;
+                }
+
+                _playerActivities.SetPlayerState(PlayerState.IsInteracting);
+                _activeInteractable = interactable;
+                interactable.Interact();
+                ResetInteractionState();
+                // Continue to allow other interactions
             }
-
-            Debug.Log("[INTERACTION: SUCCESS] Long interaction timer finished.");
-
-            if (_activeInteractable is TreeToCut treeToCut)
-            {
-                treeToCut.Interact();
-            }
-
-            _activeInteractable = null;
-            _interactionCoroutine = null;
-            _playerActivities.SetPlayerState(PlayerState.IsIdle);
         }
-        
-        private void CancelInteraction(bool notifyTarget)
+
+        private void ResetInteractionState()
         {
-            if (_interactionCoroutine != null)
-            {
-                StopCoroutine(_interactionCoroutine);
-                _interactionCoroutine = null;
-                Debug.Log($"[INTERACTION: CANCELLATION] Interaction timer stopped. State reset from {_playerActivities.currentState}.");
-            }
-            
-            if (notifyTarget && _activeInteractable != null)
-            {
-                _activeInteractable.StopInteraction(); 
-            }
-
             _activeInteractable = null;
             _playerActivities.SetPlayerState(PlayerState.IsIdle);
         }
-        
+
         public void HandleMovementInterruption()
         {
-            if (_interactionCoroutine != null)
-            {
-                Debug.Log("[INTERACTION: MOVEMENT CANCEL] Interaction interrupted due to movement.");
-                CancelInteraction(true);
-            }
+            if (_playerActivities.currentState == PlayerState.IsChopping) ResetInteractionState();
         }
     }
 }

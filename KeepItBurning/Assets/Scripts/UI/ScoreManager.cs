@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
-using General;
+using General; 
+using Interfaces;
+using PlayFab;
 
 namespace Score
 {
@@ -17,6 +19,9 @@ namespace Score
         [SerializeField] public float baseTrash = 50f;
 
         public float Score;
+        
+        
+        private IPlayFabService _playFabService;
 
         private void Awake()
         {
@@ -36,6 +41,19 @@ namespace Score
                 Debug.LogError($"Failed to register ScoreManager: {e.Message}");
             }
         }
+        
+        private void Start()
+        {
+            try
+            {
+                _playFabService = ServiceLocator.GetService<IPlayFabService>();
+            }
+            catch (System.InvalidOperationException e)
+            {
+                Debug.LogError($"PlayFab Service Not Found: {e.Message}");
+            }
+            
+        }
 
         private void OnDestroy()
         {
@@ -53,12 +71,14 @@ namespace Score
         {
             timeManager.Timer();
         }
+        
 
         public void AddScore(float AddScore)
         {
             Score += AddScore * timeManager.TimeMultiplier * happinessManager.happinessMultiplier;
             scoreText.text=Score.ToString("F0");
         }
+        
 
         public void AddCorrectlyCookedFoodScore()
         {
@@ -76,6 +96,23 @@ namespace Score
         {
             happinessManager.Increase();
             AddScore(baseTrash);
+        }
+        
+        
+        // --- Added by timur  ---
+        public void SubmitFinalScore()
+        {
+            if (_playFabService == null)
+            {
+                Debug.LogError("Cannot submit score: PlayFab service is not available.");
+                return;
+            }
+            
+            var finalIntScore = Mathf.RoundToInt(Score);
+            
+            Debug.Log($"[PlayFab Submission] Sending score: {finalIntScore} (from float {Score:F2}) to PlayFab.");
+            
+            _playFabService.SubmitScore(finalIntScore);
         }
 
     }

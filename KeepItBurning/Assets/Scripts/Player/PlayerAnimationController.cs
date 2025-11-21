@@ -9,6 +9,7 @@ namespace Player
         private PlayerMovement playerMovement;
         
         private readonly int stateHash = Animator.StringToHash("State"); 
+        private readonly int _chopTriggerHash = Animator.StringToHash("Chop");
 
         private void Awake()
         {
@@ -50,6 +51,14 @@ namespace Player
         {
             animator.SetInteger(stateHash, (int)newState);
             Debug.Log($"[Animator] Setting state to: {(int)newState} ({newState})");
+        }
+        
+        public void TriggerChopAnimation()
+        {
+            if (animator != null)
+            {
+                animator.SetTrigger(_chopTriggerHash);
+            }
         }
     }
 }

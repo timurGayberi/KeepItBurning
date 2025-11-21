@@ -16,14 +16,24 @@ namespace General
         
         public event Action OnDropEvent;
         public event Action OnPauseEvent;
-        
         public event Action<ControlDevice> OnControlSchemeChange;
-        
+        public ControlDevice currentControlDevice => CurrentControlDevice;
         public ControlDevice CurrentControlDevice { get; private set; } = ControlDevice.Unknown;
+        
+        public bool IsInteractPressed 
+        {
+            get
+            {
+                if (_inputsInstance != null && _inputsInstance != null)
+                {
+                    return _inputsInstance.Player.Interact.IsPressed();
+                }
+                return false;
+            }
+        }
 
         private InputSystem_Actions _inputsInstance;
         
-
         private void Awake()
         {
             _inputsInstance = new InputSystem_Actions();
@@ -110,22 +120,19 @@ namespace General
         {
             if (context.started) OnSprintStarted?.Invoke();
             if (context.canceled) OnSprintCanceled?.Invoke();
-            
             CheckAndReportDevice(context); 
         }
 
         public void OnInteract(InputAction.CallbackContext context)
         {
             if (context.started) OnInteractEvent?.Invoke();
-            
             CheckAndReportDevice(context); 
         }
-
-        public void OnCrouch(InputAction.CallbackContext context)
+        public void OnDrop(InputAction.CallbackContext context)
         {
-            throw new NotImplementedException();
+            if (context.performed) OnDropEvent?.Invoke();
         }
-
+        
         public void OnLook(InputAction.CallbackContext context) { }
         public void OnJump(InputAction.CallbackContext context) { }
         public void OnAttack(InputAction.CallbackContext context) { }
@@ -157,11 +164,7 @@ namespace General
         {
            // throw new NotImplementedException();
         }
-
-        // --- IInputService Implementation (Control Flow) ---
-
-        public ControlDevice currentControlDevice { get; }
-
+        
         public void DisablePlayerInput()
         {
             _inputsInstance.Player.Disable();
