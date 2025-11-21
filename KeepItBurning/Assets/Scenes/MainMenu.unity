@@ -33118,6 +33118,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: mainCharOnMainmenu
       objectReference: {fileID: 0}
+    - target: {fileID: 2537541556179664420, guid: 9297c3308077c9d46a91b551ac190f52, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9b9db262415109247b5fff5bb852715e, type: 2}
+    - target: {fileID: 3169527654640421558, guid: 9297c3308077c9d46a91b551ac190f52, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9b9db262415109247b5fff5bb852715e, type: 2}
     - target: {fileID: 8162528277476656833, guid: 9297c3308077c9d46a91b551ac190f52, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.81
