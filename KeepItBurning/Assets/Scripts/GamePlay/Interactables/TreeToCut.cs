@@ -23,6 +23,10 @@ namespace GamePlay.Interactables
         [SerializeField] private GameObject _trunk;
         [SerializeField] private GameObject _leaves;
 
+        [Header("Log Spawn Settings")]
+        [Tooltip("Optional: Drag the spawn point child object here. If set, logs will spawn at this position instead of being calculated.")]
+        [SerializeField] private Transform logSpawnPoint;
+
         public TreeStatus currentTreeStatus = TreeStatus.Default;
 
         private float _currentHealth;
@@ -90,12 +94,20 @@ namespace GamePlay.Interactables
 
             if (logPrefab != null)
             {
-                Vector3 rawDirection = _lastHitterPosition - transform.position;
+                Vector3 dropZoneCenter;
 
-                rawDirection.y = 0;
-                Vector3 directionToPlayer = rawDirection.normalized;
-
-                Vector3 dropZoneCenter = transform.position + (directionToPlayer * 2.0f);
+                // Use spawn point if assigned, otherwise calculate from player position
+                if (logSpawnPoint != null)
+                {
+                    dropZoneCenter = logSpawnPoint.position;
+                }
+                else
+                {
+                    Vector3 rawDirection = _lastHitterPosition - transform.position;
+                    rawDirection.y = 0;
+                    Vector3 directionToPlayer = rawDirection.normalized;
+                    dropZoneCenter = transform.position + (directionToPlayer * 2.0f);
+                }
 
                 for (int i = 0; i < treeData.numberOfLogs; i++)
                 {
@@ -103,7 +115,7 @@ namespace GamePlay.Interactables
 
                     Vector3 finalPos = new Vector3(
                         dropZoneCenter.x + randomScatter.x,
-                        transform.position.y + 0.5f,
+                        dropZoneCenter.y + 0.5f,
                         dropZoneCenter.z + randomScatter.y
                     );
 
