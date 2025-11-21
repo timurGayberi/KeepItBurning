@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   sprintSpeed: 10
+  damageRate: 25
   maxNumberOfLogsCarry: 8

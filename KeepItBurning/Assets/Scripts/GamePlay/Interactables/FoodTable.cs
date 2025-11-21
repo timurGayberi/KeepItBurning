@@ -20,7 +20,7 @@ namespace GamePlay.Interactables
         Empty       // No food available, waiting to refill
     }
 
-    public class FoodTable : MonoBehaviour, IInteractable
+    public class FoodTable : InteractableBase
     {
         [Header("Food Configuration")]
         [Tooltip("What type of food does this table provide?")]
@@ -52,10 +52,6 @@ namespace GamePlay.Interactables
         [SerializeField]
         private float refillTime = 10f;
 
-        [Header("Interaction Settings")]
-        [SerializeField]
-        private float interactionDuration = 0.5f;
-
         [Tooltip("What cook state does this table provide food in?")]
         [SerializeField]
         private CollectibleBase.CookState cookState = CollectibleBase.CookState.Raw;
@@ -82,7 +78,7 @@ namespace GamePlay.Interactables
             refillCoroutine = StartCoroutine(RefillCoroutine());
         }
 
-        public InteractionData GetInteractionData()
+        public override InteractionData GetInteractionData()
         {
             string foodName = GetFoodName();
             string prompt = $"Take {foodName} ({currentFoodCount}/{maxFoodOnTable})";
@@ -119,7 +115,7 @@ namespace GamePlay.Interactables
             };
         }
 
-        public void Interact()
+        public override void Interact()
         {
             if (currentFoodCount <= 0)
             {

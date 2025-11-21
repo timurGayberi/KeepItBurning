@@ -6,16 +6,16 @@ using ScriptableObjects;
 
 namespace Player
 {
-    
+
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour
     {
         #region References & Data
-        
-        [Header("Players Stats")] 
+
+        [Header("Players Stats")]
         [SerializeField]
         private PlayerStatsSo data;
-        
+
         private CharacterController _characterController;
         private Vector3 _currentMoveDirection;
         private bool _isSprinting;
@@ -37,12 +37,12 @@ namespace Player
 #pragma warning disable CS0067
         public event Action OnInteractionAttempt;
 #pragma warning restore CS0067
-        public event Action <PlayerState> OnPlayerStateChange;
-        
+        public event Action<PlayerState> OnPlayerStateChange;
+
         // --------------------------------------------------//
-        
+
         public PlayerState CurrentState { get; private set; } = PlayerState.IsIdle;
-        
+
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
@@ -61,17 +61,17 @@ namespace Player
                 Debug.LogError("PlayerInventory not found on PlayerMovement. Speed penalty will not work.");
             }
         }
-        
+
         private void OnEnable()
         {
             try
             {
                 _inputService = ServiceLocator.GetService<IInputService>();
-                _inputService.OnMoveEvent += HandleMoveInput; 
+                _inputService.OnMoveEvent += HandleMoveInput;
                 _inputService.OnSprintStarted += HandleSprintStarted;
                 _inputService.OnSprintCanceled += HandleSprintCanceled;
-                
-                OnPlayerStateChange?.Invoke(CurrentState); 
+
+                OnPlayerStateChange?.Invoke(CurrentState);
             }
             catch (InvalidOperationException e)
             {
@@ -94,13 +94,13 @@ namespace Player
             if (CurrentState != newState)
             {
                 CurrentState = newState;
-                OnPlayerStateChange?.Invoke(CurrentState); 
+                OnPlayerStateChange?.Invoke(CurrentState);
             }
         }
 
         private void HandleMoveInput(Vector2 inputVector)
         {
-            if (CurrentState != PlayerState.IsInteracting) 
+            if (CurrentState != PlayerState.IsInteracting)
             {
                 _currentMoveDirection = new Vector3(inputVector.x, 0f, inputVector.y).normalized;
             }
@@ -118,20 +118,20 @@ namespace Player
         {
             _isSprinting = false;
         }
-        
+
         private void Update()
         {
             if (_characterController == null || data == null) return;
-            
+
             var moveDirection = _currentMoveDirection;
             float currentSpeed;
-            
+
             if (CurrentState == PlayerState.IsInteracting)
             {
-                _characterController.Move(Vector3.zero); 
-                return; 
+                _characterController.Move(Vector3.zero);
+                return;
             }
-            
+
             // --- MOVEMENT AND STATE LOGIC ---
 
             if (moveDirection.sqrMagnitude > 0.01f) // Player is moving
@@ -178,28 +178,34 @@ namespace Player
                 var camForward = Camera.main.transform.forward;
                 camForward.y = 0f;
                 camForward.Normalize();
-                
+
                 var camRotation = Quaternion.LookRotation(camForward);
                 var finalMoveDirection = camRotation * moveDirection;
                 var targetRotation = Quaternion.LookRotation(finalMoveDirection);
-                
+
                 transform.rotation = Quaternion.Slerp(
-                    transform.rotation, 
-                    targetRotation, 
+                    transform.rotation,
+                    targetRotation,
                     Time.deltaTime * 10f);
             }
-            
+
 
             // --- IDLE CHECK ---
-            else 
+            else
             {
-                _isSprinting = false; 
+                _isSprinting = false;
                 if (CurrentState != PlayerState.IsIdle)
                 {
                     SetPlayerState(PlayerState.IsIdle);
                     // Reset timer to avoid delayed sounds after stopping
                     _walkSoundTimer = 0f;
                 }
+            }
+
+            // Force Y position to 0 to prevent drifting
+            if (Mathf.Abs(transform.position.y) > 0.001f)
+            {
+                transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
             }
         }
     }

@@ -45,6 +45,7 @@ namespace Managers.GamePlayManagers
                 }
 
                 // --- Player Inventory Setup ---
+                
                 try
                 {
                     playerInventory = ServiceLocator.GetService<PlayerInventory>();

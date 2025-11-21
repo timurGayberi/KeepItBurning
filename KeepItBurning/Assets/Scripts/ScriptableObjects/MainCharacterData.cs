@@ -10,6 +10,8 @@ namespace ScriptableObjects
         public float movementSpeed;
         public float sprintSpeed;
         
+        public float damageRate;
+        
         [Header("Number of logs player  can carry")]
         [Tooltip("The number of logs player can carry at once")]
         public int maxNumberOfLogsCarry;

@@ -11,21 +11,21 @@ namespace Managers.GeneralManagers
 
     public class GameStateManager : MonoBehaviour
     {
-        public static GameStateManager instance {get; private set;}
-        
-        public GameState currentState { get; private set;}
-        
+        public static GameStateManager instance { get; private set; }
+
+        public GameState currentState { get; private set; }
+
         public static event Action<GameState> OnGameStateChanged;
-        
+
         // Scenes state machine
         public enum GameState
         {
             Default,
-            
+
             MainMenu,
             GamePlay,
             Paused,
-            GameOver 
+            GameOver
         }
 
         private IInputService inputService;
@@ -49,7 +49,7 @@ namespace Managers.GeneralManagers
             try
             {
                 inputService = ServiceLocator.GetService<IInputService>();
-                inputService.OnPauseEvent += HandlePauseInput; 
+                inputService.OnPauseEvent += HandlePauseInput;
             }
             catch (InvalidOperationException _)
             {
@@ -64,17 +64,17 @@ namespace Managers.GeneralManagers
                 inputService.OnPauseEvent -= HandlePauseInput;
             }
         }
-        
+
         public void UpdateState(GameState newState)
         {
             if (currentState == newState) return;
-            
+
             currentState = newState;
-            
+
             OnGameStateChanged?.Invoke(newState);
             ApplyInputSettings(newState);
         }
-        
+
         public void ForceUpdateState(GameState newState)
         {
             currentState = newState;
@@ -115,38 +115,46 @@ namespace Managers.GeneralManagers
                     Time.timeScale = 1.0f;
                     inputService.EnablePlayerInput();
                     inputService.EnableUIInput();
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
                     break;
                 case GameState.Paused:
                     Time.timeScale = 0.0f;
                     inputService.DisablePlayerInput();
                     inputService.EnableUIInput();
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
                     break;
                 case GameState.MainMenu:
                     Time.timeScale = 1.0f; // Unfreeze for main menu
                     inputService.DisablePlayerInput();
                     inputService.EnableUIInput();
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
                     break;
                 case GameState.Default:
                 case GameState.GameOver:
                     Time.timeScale = 0.0f;
                     inputService.DisablePlayerInput();
                     inputService.EnableUIInput();
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
                     break;
             }
         }
-        
+
         public void TriggerGameOver()
         {
             if (currentState != GameState.GameOver)
             {
                 Debug.Log("[GAME STATE] Game Over triggered! Restarting level.");
-                
+
 
                 UpdateState(GameState.GameOver);
-                
+
             }
         }
-        
+
         #region Flow Control (Scene and Game Management)
 
         public void StartGame()
@@ -163,10 +171,10 @@ namespace Managers.GeneralManagers
 
             SceneLoader.Instance.LoadMainMenuScene();
         }
-        
+
         public void ResumeGameFromUI()
         {
-            if (currentState == GameState.Paused )
+            if (currentState == GameState.Paused)
             {
                 UpdateState(GameState.GamePlay);
                 Debug.Log("Resume game pressed");
@@ -177,11 +185,11 @@ namespace Managers.GeneralManagers
         {
             Application.Quit();
         }
-        
+
         public void OnPauseAction(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             if (!context.started) return;
-            
+
             if (currentState == GameState.GamePlay)
             {
                 UpdateState(GameState.Paused);
@@ -191,7 +199,7 @@ namespace Managers.GeneralManagers
                 UpdateState(GameState.GamePlay);
             }
         }
-        
+
         public void RestartLevel()
         {
             if (Managers.GamePlayManagers.PlayGameManager.Instance != null)
