@@ -127,6 +127,7 @@ MonoBehaviour:
   collectibleID: 1
   collectionPrompt: Pick up Item
   FuelValue: 25
+  autoDestroyTime: 30
 --- !u!54 &6414706223591839001
 Rigidbody:
   m_ObjectHideFlags: 0
