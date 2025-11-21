@@ -16,5 +16,5 @@ MonoBehaviour:
   regrowthTime: 60
   damageResetTime: 5
   numberOfLogs: 3
-  scatterRadius: 2
+  scatterRadius: 1.5
   interactionPrompt: Chop Tree
