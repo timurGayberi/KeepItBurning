@@ -5347,6 +5347,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 450048901}
+    - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 328906216}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4234851600444537014, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
@@ -25125,6 +25128,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 208049705}
   m_CullTransparentMesh: 1
+--- !u!1 &208212671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 208212672}
+  m_Layer: 0
+  m_Name: SpawnPoint (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &208212672
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208212671}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.33, y: 0, z: 0.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 595748849}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &208219166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6bec00501a270634493253842bf14356, type: 3}
@@ -41347,6 +41381,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1a1e28c075f4914d81a048d7ec41cf1, type: 3}
+--- !u!1 &328906215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 328906216}
+  m_Layer: 0
+  m_Name: GameObject (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &328906216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328906215}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.235, y: 0, z: 0.431}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1069958422}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &329137220 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 610332df94147db4c9e606f642610c77, type: 3}
@@ -48871,6 +48936,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 920095007}
+    - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 558890678}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4234851600444537014, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
@@ -57642,6 +57710,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1822887496}
+    - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 944372256}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4234851600444537014, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
@@ -62698,6 +62769,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4619d7942121d4db9259dce468608e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0
   treeData: {fileID: 11400000, guid: 26c43d4533ca94946ae6d3f9a0882a7c, type: 2}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 955512510}
@@ -68219,6 +68292,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14872b2dbfe73244b99c27b1992f117d, type: 3}
+--- !u!1 &558890677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 558890678}
+  m_Layer: 0
+  m_Name: SpawnPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &558890678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558890677}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.091, y: 0, z: -0.97}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2137279781}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &559576282
 GameObject:
   m_ObjectHideFlags: 0
@@ -72717,6 +72821,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4619d7942121d4db9259dce468608e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0
   treeData: {fileID: 11400000, guid: c7ba6f0b108f4584d9eb6b5ba5df83c2, type: 2}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 642836075}
@@ -75591,6 +75697,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1875861153}
+    - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1603249273}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4234851600444537014, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
@@ -79993,6 +80102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4619d7942121d4db9259dce468608e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0
   treeData: {fileID: 11400000, guid: 698610d826e54ad418c8ae529b74ad88, type: 2}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 972494019}
@@ -83037,12 +83148,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b409bab20141a3d45bbac5f8d1dd9564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Add Wood to Fireplace
+  interactionDuration: 0
   fireParticles:
   - {fileID: 106295070}
   - {fileID: 106295069}
   - {fileID: 106295068}
   - {fileID: 106295067}
-  interactionPrompt: Add Wood to Fireplace
   maxFuel: 100
   baseDecayRate: 0.8
   decayRateIncrease: 0.07
@@ -118825,6 +118937,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1a1e28c075f4914d81a048d7ec41cf1, type: 3}
+--- !u!1 &944372255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 944372256}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &944372256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944372255}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.074, y: 0, z: -1.271}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 654356293}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &945043726 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7393775699910910187, guid: f1a1e28c075f4914d81a048d7ec41cf1, type: 3}
@@ -125694,6 +125837,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1467696606}
+    - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1199624743}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4234851600444537014, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
@@ -136110,6 +136256,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4619d7942121d4db9259dce468608e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0
   treeData: {fileID: 11400000, guid: 1ffbb7c8df7ed664098b474ccee1a0b9, type: 2}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 46181973}
@@ -150366,6 +150514,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198580025}
   m_Mesh: {fileID: 5074941243508514199, guid: fbdab7fc16f97f745a1986a033060c28, type: 3}
+--- !u!1 &1199624742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1199624743}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1199624743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199624742}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.18, y: 0, z: 0.79}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1485387329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1199638956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 130961df4cbdfb949a93da313dc30bcf, type: 3}
@@ -165706,6 +165885,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1374843744}
+    - targetCorrespondingSourceObject: {fileID: 3571046346813989388, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 208212672}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4234851600444537014, guid: 04e713f552a7f5b4a8746d2f7bc9d3f6, type: 3}
       insertIndex: -1
@@ -166187,6 +166369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bcc2d062c19ae646899a343101f739a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0.5
   foodType: 2
   foodVisualPrefab: {fileID: 919132149155446097, guid: 2a0a370c03f36964f915967bc10d5c21, type: 3}
   maxFoodOnTable: 6
@@ -166200,7 +166384,6 @@ MonoBehaviour:
   randomSpawnRadius: 0.5
   spawnHeight: 0.1
   refillTime: 30
-  interactionDuration: 0.5
   cookState: 0
 --- !u!65 &1322510479
 BoxCollider:
@@ -188924,6 +189107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4619d7942121d4db9259dce468608e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0
   treeData: {fileID: 11400000, guid: 53d0a8714d266ab48942c7a307036714, type: 2}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 970931601}
@@ -203181,6 +203366,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6d40685bed71be42a100b75e21f3791, type: 3}
+--- !u!1 &1603249272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1603249273}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1603249273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603249272}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.29, y: 0, z: -0.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 515796735}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1603404310 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5914503443684944383, guid: d6d40685bed71be42a100b75e21f3791, type: 3}
@@ -227589,6 +227805,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bcc2d062c19ae646899a343101f739a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0.5
   foodType: 1
   foodVisualPrefab: {fileID: 919132149155446097, guid: 4085fd1006bc15845b4741ad8e6a42bb, type: 3}
   maxFoodOnTable: 3
@@ -227599,7 +227817,6 @@ MonoBehaviour:
   randomSpawnRadius: 0.5
   spawnHeight: 0.1
   refillTime: 15
-  interactionDuration: 0.5
   cookState: 0
 --- !u!65 &1784362497
 BoxCollider:
@@ -247106,6 +247323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bcc2d062c19ae646899a343101f739a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0.5
   foodType: 0
   foodVisualPrefab: {fileID: 4718255115453610536, guid: 5c03baf5208291a47a3bbe369d5b12e2, type: 3}
   maxFoodOnTable: 2
@@ -247115,7 +247334,6 @@ MonoBehaviour:
   randomSpawnRadius: 0.5
   spawnHeight: 0.5
   refillTime: 10
-  interactionDuration: 0.5
   cookState: 0
 --- !u!65 &1934330201
 BoxCollider:
@@ -274308,10 +274526,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 0.3
   m_Height: 4
   m_Direction: 1
-  m_Center: {x: 0, y: 1.3, z: 0}
+  m_Center: {x: -0.75, y: 1.3, z: -0.22}
 --- !u!136 &2137279783
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -274354,7 +274572,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 0.8
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 1.3, z: 0}
@@ -274370,6 +274588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4619d7942121d4db9259dce468608e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionPrompt: Interact
+  interactionDuration: 0
   treeData: {fileID: 11400000, guid: 1f0577ec8a659ba4fbc9ca439f94f24b, type: 2}
   logPrefab: {fileID: 802603791528543336, guid: d109b1986f6dc854abce354215733a3d, type: 3}
   _trunk: {fileID: 743260936}
