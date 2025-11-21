@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a689f433bd1b372449230b980a6aaf3b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.164
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a689f433bd1b372449230b980a6aaf3b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -855,6 +855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: d1b98779bf154414c8221dd66ce905d1, type: 2}
+  speedPenaltyPerLog: 0.15
 --- !u!114 &1300217532017107536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -933,6 +934,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf23ea6fe7c48d14b92e2fda0aab4a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerStats: {fileID: 11400000, guid: d1b98779bf154414c8221dd66ce905d1, type: 2}
+  _chopConfig: {fileID: 11400000, guid: 967c5d222c9e37349a1403f69641966b, type: 2}
 --- !u!114 &1747612181741818531
 MonoBehaviour:
   m_ObjectHideFlags: 0

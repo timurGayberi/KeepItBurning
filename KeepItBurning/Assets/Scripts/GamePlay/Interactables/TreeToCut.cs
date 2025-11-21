@@ -9,37 +9,37 @@ namespace GamePlay.Interactables
     {
         Default,
         Cut,
-        Uncut 
+        Uncut
     }
 
     public class TreeToCut : MonoBehaviour, IInteractable
     {
         [Header("Configuration")]
         [SerializeField] private TreeData treeData;
-        
+
         [Header("Visual References")]
         [SerializeField] private GameObject logPrefab;
         [SerializeField] private GameObject _trunk;
         [SerializeField] private GameObject _leaves;
-        
+
         public TreeStatus currentTreeStatus = TreeStatus.Default;
-        
+
         private float _currentHealth;
         private float _regrowTimer;
         private Coroutine _resetHealthCoroutine;
-        private Collider _treeCollider; 
-        
+        private Collider _treeCollider;
+
         // Stores where the player was standing during the last hit
         private Vector3 _lastHitterPosition;
 
         private void Awake()
         {
             _treeCollider = GetComponent<Collider>();
-            
+
             if (currentTreeStatus == TreeStatus.Default) currentTreeStatus = TreeStatus.Uncut;
-            
+
             // Safety check to prevent crash if Data is missing
-            if (treeData != null) 
+            if (treeData != null)
             {
                 _currentHealth = treeData.treesHealth;
             }
@@ -47,10 +47,10 @@ namespace GamePlay.Interactables
             {
                 Debug.LogError($"[TreeToCut] TreeData missing on {gameObject.name}!");
             }
-            
+
             SetTreeVisuals(currentTreeStatus);
         }
-        
+
         public InteractionData GetInteractionData()
         {
             if (treeData == null) return new InteractionData { promptText = "Error", actionDuration = -1f };
@@ -60,17 +60,17 @@ namespace GamePlay.Interactables
                 float remaining = treeData.regrowthTime - _regrowTimer;
                 return new InteractionData { promptText = $"Regrowing ({Mathf.CeilToInt(remaining)}s)", actionDuration = -1f };
             }
-            
+
             return new InteractionData { promptText = treeData.interactionPrompt, actionDuration = 0f };
         }
-        
-        public void Interact() { } 
+
+        public void Interact() { }
         public void StopInteraction() { }
 
         public void ApplyDamage(float damageAmount, Vector3 playerPosition)
         {
             if (currentTreeStatus != TreeStatus.Uncut) return;
-            
+
             _lastHitterPosition = playerPosition;
             _currentHealth -= damageAmount;
 
@@ -85,7 +85,7 @@ namespace GamePlay.Interactables
                 _resetHealthCoroutine = StartCoroutine(ResetHealthRoutine());
             }
         }
-        
+
         private void CutDownTree()
         {
             Debug.Log($"[CHOP COMPLETE] Tree Destroyed.");
@@ -94,15 +94,15 @@ namespace GamePlay.Interactables
             {
                 // 1. Get Vector from Tree to Player
                 Vector3 rawDirection = _lastHitterPosition - transform.position;
-                
+
                 // 2. Flatten Y BEFORE normalizing. 
                 // This ensures we get a pure horizontal direction of length 1.
-                rawDirection.y = 0; 
+                rawDirection.y = 0;
                 Vector3 directionToPlayer = rawDirection.normalized;
 
                 // 3. Determine the "Drop Zone Center"
-                // 1.0f is the offset distance towards the player
-                Vector3 dropZoneCenter = transform.position + (directionToPlayer * 1.0f);
+                // 2.0f is the offset distance towards the player (increased from 1.0f)
+                Vector3 dropZoneCenter = transform.position + (directionToPlayer * 2.0f);
 
                 for (int i = 0; i < treeData.numberOfLogs; i++)
                 {
@@ -133,7 +133,7 @@ namespace GamePlay.Interactables
             _currentHealth = treeData.treesHealth;
             _resetHealthCoroutine = null;
         }
-        
+
         private void SetTreeVisuals(TreeStatus newStatus)
         {
             currentTreeStatus = newStatus;
@@ -141,7 +141,7 @@ namespace GamePlay.Interactables
 
             if (_trunk != null) _trunk.SetActive(isActive);
             if (_leaves != null) _leaves.SetActive(isActive);
-            
+
             this.enabled = isActive;
             if (_treeCollider != null) _treeCollider.enabled = isActive;
 
