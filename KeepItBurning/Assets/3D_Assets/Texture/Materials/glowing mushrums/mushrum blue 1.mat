@@ -134,7 +134,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _emision_color: {r: 0.86134964, g: 0.8962264, b: 0.8497241, a: 0}
-    - _neon_color: {r: 0.8155037, g: 0.9245283, b: 0.8347434, a: 0}
+    - _emision_color: {r: 0.7811388, g: 0.8773585, b: 0.7490655, a: 0}
+    - _neon_color: {r: 0.80678177, g: 0.9245283, b: 0.8264062, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

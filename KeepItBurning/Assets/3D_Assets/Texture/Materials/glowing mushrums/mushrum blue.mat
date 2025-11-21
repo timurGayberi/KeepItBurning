@@ -127,14 +127,14 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _glow_strenght: 1
-    - _pulse_speed: 2
+    - _glow_strenght: 0.1
+    - _pulse_speed: 1.2
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _emision_color: {r: 0.9150943, g: 0.3496351, b: 0.4320616, a: 0}
-    - _neon_color: {r: 0.8113208, g: 0.18396695, b: 0.12629052, a: 0}
+    - _emision_color: {r: 0.7372549, g: 0.7137255, b: 0.68235296, a: 0}
+    - _neon_color: {r: 0.8113207, g: 0.8039216, b: 0.76862746, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
