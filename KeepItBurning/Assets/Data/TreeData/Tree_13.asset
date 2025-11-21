@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9003cc49e343f4880e7d129c7a0a80, type: 3}
   m_Name: Tree_13
   m_EditorClassIdentifier: 
-  treesHealth: 100
+  treesHealth: 125
   regrowthTime: 25
   damageResetTime: 5
   numberOfLogs: 2
