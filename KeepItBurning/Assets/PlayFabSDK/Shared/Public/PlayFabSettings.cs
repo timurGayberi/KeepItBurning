@@ -29,27 +29,27 @@ namespace PlayFab
 
     public static class PlayFabSettings
     {
-        static PlayFabSettings() 
+        static PlayFabSettings()
         {
 #if UNITY_GAMECORE || UNITY_GAMECORE_XBOXONE || UNITY_GAMECORE_SCARLETT || MICROSOFT_GAME_CORE
             PlatformString = "GDK";
 #else
-        switch (Application.platform)
-        {
-            case RuntimePlatform.WindowsEditor:
-            case RuntimePlatform.WindowsPlayer:
-            case RuntimePlatform.WindowsServer:
-                PlatformString = "Windows";
-                break;
+            switch (Application.platform)
+            {
+                case RuntimePlatform.WindowsEditor:
+                case RuntimePlatform.WindowsPlayer:
+                case RuntimePlatform.WindowsServer:
+                    PlatformString = "Windows";
+                    break;
 
-            case RuntimePlatform.IPhonePlayer:
-                PlatformString = "iOS";
-                break;
+                case RuntimePlatform.IPhonePlayer:
+                    PlatformString = "iOS";
+                    break;
 
-            default:
-                PlatformString = Application.platform.ToString();
-                break;
-        }
+                default:
+                    PlatformString = Application.platform.ToString();
+                    break;
+            }
 #endif
         }
 
@@ -81,6 +81,14 @@ namespace PlayFab
                 Debug.LogWarning("The number of PlayFabSharedSettings objects should be 1: " + settingsList.Length);
                 Debug.LogWarning("If you are upgrading your SDK, you can ignore this warning as PlayFabSharedSettings will be imported soon. If you are not upgrading your SDK and you see this message, you should re-download the latest PlayFab source code.");
             }
+
+            // Safety check: if no settings found, create a temporary instance
+            if (settingsList.Length == 0)
+            {
+                Debug.LogError("PlayFabSharedSettings resource not found! Creating temporary instance. Please create a PlayFabSharedSettings asset in a Resources folder.");
+                return ScriptableObject.CreateInstance<PlayFabSharedSettings>();
+            }
+
             return settingsList[0];
         }
 
@@ -176,18 +184,18 @@ namespace PlayFab
             if (apiSettings != null)
             {
 
-                    if (!string.IsNullOrEmpty(apiSettings.ProductionEnvironmentUrl))
-                    {
-                        productionEnvironmentUrl = apiSettings.ProductionEnvironmentUrl;
-                    }
-                    if (!string.IsNullOrEmpty(apiSettings.VerticalName))
-                    {
-                        verticalName = apiSettings.VerticalName;
-                    }
-                    if (!string.IsNullOrEmpty(apiSettings.TitleId))
-                    {
-                        titleId = apiSettings.TitleId;
-                    }
+                if (!string.IsNullOrEmpty(apiSettings.ProductionEnvironmentUrl))
+                {
+                    productionEnvironmentUrl = apiSettings.ProductionEnvironmentUrl;
+                }
+                if (!string.IsNullOrEmpty(apiSettings.VerticalName))
+                {
+                    verticalName = apiSettings.VerticalName;
+                }
+                if (!string.IsNullOrEmpty(apiSettings.TitleId))
+                {
+                    titleId = apiSettings.TitleId;
+                }
 
             }
 

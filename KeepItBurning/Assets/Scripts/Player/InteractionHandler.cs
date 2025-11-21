@@ -97,6 +97,14 @@ namespace Player
         {
             if (!(_detector.currentInteractable is TreeToCut tree)) return;
 
+            // Stop chopping immediately if tree becomes cut
+            if (tree.currentTreeStatus != TreeStatus.Uncut && _playerActivities.currentState == PlayerState.IsChopping)
+            {
+                _playerActivities.SetPlayerState(PlayerState.IsIdle);
+                _activeInteractable = null;
+                return;
+            }
+
             if (_inputService.IsInteractPressed)
             {
                 // USE DATA: Check Cooldown
@@ -142,14 +150,26 @@ namespace Player
             // USE DATA: Wait exactly as long as the SO says
             yield return new WaitForSeconds(_chopConfig.impactDelay);
 
+            // Check if tree is still valid and uncut before playing sound and applying damage
+            if (tree == null || tree.currentTreeStatus != TreeStatus.Uncut)
+            {
+                // Tree was cut or destroyed during animation, stop here
+                _playerActivities.SetPlayerState(PlayerState.IsIdle);
+                _activeInteractable = null;
+                yield break;
+            }
+
             // USE DATA: Play the specific sound defined in the SO
             SoundManager.Play(_chopConfig.impactSound);
 
             var damage = _playerStats != null ? _playerStats.damageRate : 25f;
+            tree.ApplyDamage(damage, this.transform.position);
 
-            if (tree != null)
+            // If tree was just cut by this hit, immediately stop chopping state
+            if (tree.currentTreeStatus == TreeStatus.Cut)
             {
-                tree.ApplyDamage(damage, this.transform.position);
+                _playerActivities.SetPlayerState(PlayerState.IsIdle);
+                _activeInteractable = null;
             }
         }
 
