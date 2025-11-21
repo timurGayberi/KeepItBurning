@@ -7,18 +7,12 @@ using General;
 
 namespace GamePlay.Interactables
 {
-    public class FireplaceInteraction : MonoBehaviour, IInteractable
+    public class FireplaceInteraction : InteractableBase
     {
         public static event Action OnFireplaceOut;
 
         #region Variables
-        [Header("Fire Particles")]
         [SerializeField] private ParticleSystem[] fireParticles;
-        [Header("Interaction Settings")]
-        [Tooltip("The text prompt shown to the player when near the fireplace.")]
-        [SerializeField]
-        private string interactionPrompt = "Add Wood to Fireplace";
-        public string InteractionPrompt => interactionPrompt;
 
         [Header("Fire Status")]
         [Tooltip("The maximum amount of fuel the campfire can hold.")]
@@ -46,7 +40,7 @@ namespace GamePlay.Interactables
         [Tooltip("The CampfireVFXController controlling the fire visuals.")]
         [SerializeField]
         private CampfireVFXController vfxController;
-        
+
 
         [Space]
         [SerializeField] private float baseCampfireScore;
@@ -130,7 +124,7 @@ namespace GamePlay.Interactables
                 }
             }
         }
-        
+
         private void AddFuelFromInteractor(GameObject interactor)
         {
             PlayerInventory inventory = interactor.GetComponent<PlayerInventory>();
@@ -156,7 +150,7 @@ namespace GamePlay.Interactables
                     OnFuelChanged?.Invoke(_currentFuel, maxFuel);
 
                     UpdateVFXController();
-                    
+
                     if (!enabled)
                     {
                         enabled = true;
@@ -174,7 +168,7 @@ namespace GamePlay.Interactables
                 Debug.Log("[CAMPFIRE] Interaction attempted, but player is not carrying wood.");
             }
         }
-        
+
         private float GetFuelValueFromInventory(PlayerInventory inventory)
         {
             // Requires PlayerInventory.GetWoodFuelValue() which is assumed to be correct now.
@@ -188,25 +182,20 @@ namespace GamePlay.Interactables
                 //ScoreManager.Instance.AddScore(baseCampfireScore);
             }
         }
-        
+
         public void TryAddFuel(GameObject interactor)
         {
             AddFuelFromInteractor(interactor);
         }
-        
-        public void Interact()
+
+        public override void Interact()
         {
             Debug.LogWarning("[FIREPLACE] Standard Interact() called. Ensure the player's InteractionHandler is calling TryAddFuel(GameObject) instead.");
         }
 
-        public InteractionData GetInteractionData()
+        public override InteractionData GetInteractionData()
         {
             return new InteractionData { promptText = interactionPrompt, actionDuration = 0f };
-        }
-
-        public void StopInteraction()
-        {
-            // Nothing to stop for an immediate fireplace interaction
         }
     }
 }

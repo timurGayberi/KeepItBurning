@@ -2,6 +2,7 @@ using System.Collections;
 using Interfaces;
 using UnityEngine;
 using ScriptableObjects;
+using General;
 
 namespace GamePlay.Interactables
 {
@@ -12,7 +13,7 @@ namespace GamePlay.Interactables
         Uncut
     }
 
-    public class TreeToCut : MonoBehaviour, IInteractable
+    public class TreeToCut : InteractableBase
     {
         [Header("Configuration")]
         [SerializeField] private TreeData treeData;
@@ -29,7 +30,6 @@ namespace GamePlay.Interactables
         private Coroutine _resetHealthCoroutine;
         private Collider _treeCollider;
 
-        // Stores where the player was standing during the last hit
         private Vector3 _lastHitterPosition;
 
         private void Awake()
@@ -38,7 +38,6 @@ namespace GamePlay.Interactables
 
             if (currentTreeStatus == TreeStatus.Default) currentTreeStatus = TreeStatus.Uncut;
 
-            // Safety check to prevent crash if Data is missing
             if (treeData != null)
             {
                 _currentHealth = treeData.treesHealth;
@@ -51,7 +50,7 @@ namespace GamePlay.Interactables
             SetTreeVisuals(currentTreeStatus);
         }
 
-        public InteractionData GetInteractionData()
+        public override InteractionData GetInteractionData()
         {
             if (treeData == null) return new InteractionData { promptText = "Error", actionDuration = -1f };
 
@@ -64,8 +63,7 @@ namespace GamePlay.Interactables
             return new InteractionData { promptText = treeData.interactionPrompt, actionDuration = 0f };
         }
 
-        public void Interact() { }
-        public void StopInteraction() { }
+        public override void Interact() { }
 
         public void ApplyDamage(float damageAmount, Vector3 playerPosition)
         {
@@ -92,26 +90,20 @@ namespace GamePlay.Interactables
 
             if (logPrefab != null)
             {
-                // 1. Get Vector from Tree to Player
                 Vector3 rawDirection = _lastHitterPosition - transform.position;
 
-                // 2. Flatten Y BEFORE normalizing. 
-                // This ensures we get a pure horizontal direction of length 1.
                 rawDirection.y = 0;
                 Vector3 directionToPlayer = rawDirection.normalized;
 
-                // 3. Determine the "Drop Zone Center"
-                // 2.0f is the offset distance towards the player (increased from 1.0f)
                 Vector3 dropZoneCenter = transform.position + (directionToPlayer * 2.0f);
 
                 for (int i = 0; i < treeData.numberOfLogs; i++)
                 {
-                    // 4. Random Scatter
                     Vector2 randomScatter = Random.insideUnitCircle * treeData.scatterRadius;
 
                     Vector3 finalPos = new Vector3(
                         dropZoneCenter.x + randomScatter.x,
-                        transform.position.y + 0.5f, // Lift up slightly so they don't clip ground
+                        transform.position.y + 0.5f,
                         dropZoneCenter.z + randomScatter.y
                     );
 
