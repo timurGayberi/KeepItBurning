@@ -74,13 +74,11 @@ namespace Player
             var nearby = _detector.GetAllNearbyInteractables();
             if (nearby != null && nearby.Count > 0)
             {
-                foreach (var item in nearby)
+                // Prioritize the closest interactable for chopping
+                if (_detector.currentInteractable is TreeToCut tree)
                 {
-                    if (item is TreeToCut tree)
-                    {
-                        StartChopSequence(tree); // New simplified method
-                        return; 
-                    }
+                    StartChopSequence(tree); // New simplified method
+                    return; 
                 }
                 
                 // ... (Your existing standard interaction logic here) ...
@@ -149,20 +147,29 @@ namespace Player
         {
             // (Paste your logic for fireplace/tables here to keep file clean)
             bool hasWood = _inventory.HasWood;
-                foreach (var interactable in nearby)
+            foreach (var interactable in nearby)
+            {
+                if (interactable is TreeToCut) continue; // Skip trees (handled separately)
+
+                if (hasWood && interactable is FoodTable)
                 {
-                    if (hasWood && interactable is FoodTable) continue;
-                    if (interactable is FireplaceInteraction fireplace)
-                    {
-                        fireplace.TryAddFuel(this.gameObject);
-                        break; 
-                    }
-                    _playerActivities.SetPlayerState(PlayerState.IsInteracting);
-                    _activeInteractable = interactable;
-                    interactable.Interact();
-                    ResetInteractionState();
-                    break;
+                    Debug.Log("[INTERACTION] Can't take food while holding wood");
+                    continue;
                 }
+
+                if (interactable is FireplaceInteraction fireplace)
+                {
+                    fireplace.TryAddFuel(this.gameObject);
+                    // Continue to allow other interactions (like user's script)
+                    continue; 
+                }
+
+                _playerActivities.SetPlayerState(PlayerState.IsInteracting);
+                _activeInteractable = interactable;
+                interactable.Interact();
+                ResetInteractionState();
+                // Continue to allow other interactions
+            }
         }
 
         private void ResetInteractionState()
