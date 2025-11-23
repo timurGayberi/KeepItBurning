@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1095787995582718177}
   - component: {fileID: 5846208504883794112}
-  - component: {fileID: 526445804806994123}
   - component: {fileID: 5422713752378859925}
   m_Layer: 0
   m_Name: CameraUI
@@ -43,8 +42,8 @@ Camera:
   m_GameObject: {fileID: 5375411227355849431}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 4
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -67,7 +66,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 66.6
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -85,14 +84,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &526445804806994123
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5375411227355849431}
-  m_Enabled: 1
 --- !u!114 &5422713752378859925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,10 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:

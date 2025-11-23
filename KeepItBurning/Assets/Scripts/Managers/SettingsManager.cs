@@ -67,11 +67,11 @@ public class SettingsManager : MonoBehaviour
                 audioMixer = Resources.Load<AudioMixer>("Sounds/GlobalMixer");
                 if (audioMixer == null)
                 {
-                    Debug.LogWarning("[SettingsManager] AudioMixer not assigned and could not be loaded from Resources/Sounds/GlobalMixer. Volume controls will not work!");
+                    //Debug.LogWarning("[SettingsManager] AudioMixer not assigned and could not be loaded from Resources/Sounds/GlobalMixer. Volume controls will not work!");
                 }
                 else
                 {
-                    Debug.Log("[SettingsManager] AudioMixer loaded from Resources/Sounds/GlobalMixer");
+                    //Debug.Log("[SettingsManager] AudioMixer loaded from Resources/Sounds/GlobalMixer");
                 }
             }
 

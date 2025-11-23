@@ -30,7 +30,7 @@ namespace GamePlay.Collectibles
 
             if (_collider == null)
             {
-                Debug.LogError($"Collider not found on {gameObject.name}!");
+                //Debug.LogError($"Collider not found on {gameObject.name}!");
             }
             collectibleID = CollectibleIDs.FIREWOOD_LOGS;
         }

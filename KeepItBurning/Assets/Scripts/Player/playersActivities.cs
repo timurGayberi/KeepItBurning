@@ -13,7 +13,7 @@ namespace Player
             _animatorController = GetComponent<PlayerAnimatorController>();
             if (_animatorController == null)
             {
-                Debug.LogError("PlayerAnimatorController component not found on PlayersActivities GameObject. Make sure it's attached.");
+                //Debug.LogError("PlayerAnimatorController component not found on PlayersActivities GameObject. Make sure it's attached.");
             }
         }
         
@@ -22,7 +22,7 @@ namespace Player
             if (currentState == newState) return;
             
             currentState = newState;
-            Debug.Log($"[PlayerState] Changed to: {newState}");
+            //Debug.Log($"[PlayerState] Changed to: {newState}");
             
             if (_animatorController != null)
             {

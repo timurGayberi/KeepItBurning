@@ -18,12 +18,12 @@ namespace Player
             
             if (animator == null)
             {
-                Debug.LogError("Animator component not found on PlayerAnimatorController GameObject.");
+                //Debug.LogError("Animator component not found on PlayerAnimatorController GameObject.");
             }
             
             if (playerMovement == null)
             {
-                Debug.LogWarning("PlayerMovement component not found. Disabling PlayerAnimatorController to prevent errors.");
+                //Debug.LogWarning("PlayerMovement component not found. Disabling PlayerAnimatorController to prevent errors.");
                 Destroy(this);
                 return; // Exit Awake early
             }
@@ -50,7 +50,7 @@ namespace Player
         public void SetAnimatorState(PlayerState newState)
         {
             animator.SetInteger(stateHash, (int)newState);
-            Debug.Log($"[Animator] Setting state to: {(int)newState} ({newState})");
+            //Debug.Log($"[Animator] Setting state to: {(int)newState} ({newState})");
         }
         
         public void TriggerChopAnimation()

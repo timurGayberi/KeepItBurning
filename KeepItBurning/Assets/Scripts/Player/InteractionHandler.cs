@@ -24,6 +24,9 @@ namespace Player
         private IInteractable _activeInteractable = null;
         private float _lastChopTime;
 
+        // OPTIMIZATION: Cache WaitForSeconds to avoid GC
+        private WaitForSeconds _chopDelayWait;
+
         private void Awake()
         {
             _playerActivities = GetComponent<PlayersActivities>();
@@ -33,6 +36,14 @@ namespace Player
 
             // Safety Check
             if (_chopConfig == null) Debug.LogError("Chop Config SO is missing on InteractionHandler!");
+        }
+
+        private void Start()
+        {
+            if (_chopConfig != null)
+            {
+                _chopDelayWait = new WaitForSeconds(_chopConfig.impactDelay);
+            }
         }
 
         private void OnEnable()
@@ -148,7 +159,9 @@ namespace Player
         private IEnumerator ExecuteChopImpact(TreeToCut tree)
         {
             // USE DATA: Wait exactly as long as the SO says
-            yield return new WaitForSeconds(_chopConfig.impactDelay);
+            // OPTIMIZATION: Use cached wait to avoid GC
+            if (_chopDelayWait == null) _chopDelayWait = new WaitForSeconds(_chopConfig.impactDelay);
+            yield return _chopDelayWait;
 
             // Check if tree is still valid and uncut before playing sound and applying damage
             if (tree == null || tree.currentTreeStatus != TreeStatus.Uncut)

@@ -23,8 +23,9 @@ namespace Player
 
         private System.Collections.Generic.List<IInteractable> allNearbyInteractables = new System.Collections.Generic.List<IInteractable>();
 
-        // Track the previously focused tree to call OnLoseFocus
         private General.InteractableBase _previouslyFocusedInteractable = null;
+
+        private Collider[] _colliderBuffer = new Collider[10];
 
         public Component CurrentCandidate
         {
@@ -63,7 +64,7 @@ namespace Player
 
             Vector3 centerPosition = transform.position;
 
-            Collider[] colliders = Physics.OverlapSphere(centerPosition, effectiveRadius, layerMask, QueryTriggerInteraction.Collide);
+            var hitCount = Physics.OverlapSphereNonAlloc(centerPosition, effectiveRadius, _colliderBuffer, layerMask, QueryTriggerInteraction.Collide);
 
             float minDistance = float.MaxValue;
             IInteractable closestInteractable = null;
@@ -72,8 +73,10 @@ namespace Player
 
             ICollectible closestCollectibleCandidate = null;
 
-            foreach (var collider in colliders)
+            for (int i = 0; i < hitCount; i++)
             {
+                var collider = _colliderBuffer[i];
+
                 if (collider.transform.root == transform.root) continue;
 
                 if (collider is MeshCollider meshCollider && !meshCollider.convex) continue;
@@ -177,23 +180,26 @@ namespace Player
                 }
             }
 
-
+#if UNITY_EDITOR
             if (currentCollectible != null || currentInteractable != null)
             {
                 var targetPos = (currentCollectible as Component)?.transform.position ?? (currentInteractable as Component)?.transform.position ?? transform.position;
                 var color = (currentCollectible != null) ? Color.blue : Color.green;
-                Debug.DrawLine(transform.position + transform.up * 1.5f, targetPos, color);
+                //Debug.DrawLine(transform.position + transform.up * 1.5f, targetPos, color);
             }
             else
             {
-                Debug.DrawRay(transform.position, transform.forward * effectiveRadius, Color.red);
+                //Debug.DrawRay(transform.position, transform.forward * effectiveRadius, Color.red);
             }
+#endif
         }
 
+        /*
         void OnDrawGizmosSelected()
         {
             Gizmos.color = (currentCollectible != null || currentInteractable != null) ? Color.green : Color.yellow;
             Gizmos.DrawWireSphere(transform.position, detectionDistance);
         }
+        */
     }
 }

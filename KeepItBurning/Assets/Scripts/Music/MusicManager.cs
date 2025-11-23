@@ -37,18 +37,18 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("[MusicManager] Starting...");
+        //Debug.Log("[MusicManager] Starting...");
         // Subscribe to game state changes
         if (GameStateManager.instance != null)
         {
-            Debug.Log($"[MusicManager] Found GameStateManager, subscribing. Current state: {GameStateManager.instance.currentState}");
+            //Debug.Log($"[MusicManager] Found GameStateManager, subscribing. Current state: {GameStateManager.instance.currentState}");
             GameStateManager.OnGameStateChanged += OnGameStateChanged;
             // Play music based on initial state
             OnGameStateChanged(GameStateManager.instance.currentState);
         }
         else
         {
-            Debug.LogWarning("[MusicManager] GameStateManager.instance is null! Music will not play.");
+            //Debug.LogWarning("[MusicManager] GameStateManager.instance is null! Music will not play.");
         }
 
         // Find and subscribe to campfire
@@ -63,11 +63,11 @@ public class MusicManager : MonoBehaviour
         if (fireplace != null)
         {
             fireplace.OnFuelChanged += UpdateMusicSpeed;
-            Debug.Log("[MusicManager] Subscribed to fireplace fuel changes.");
+            //Debug.Log("[MusicManager] Subscribed to fireplace fuel changes.");
         }
         else
         {
-            Debug.LogWarning("[MusicManager] Fireplace not found. Music speed won't change dynamically.");
+            //Debug.LogWarning("[MusicManager] Fireplace not found. Music speed won't change dynamically.");
         }
     }
 
@@ -92,10 +92,7 @@ public class MusicManager : MonoBehaviour
             fireplace.OnFuelChanged -= UpdateMusicSpeed;
         }
     }
-
-    /// <summary>
-    /// Updates music pitch based on campfire fuel level
-    /// </summary>
+    
     private void UpdateMusicSpeed(float currentFuel, float maxFuel)
     {
         // Only affect game music during gameplay
@@ -123,17 +120,17 @@ public class MusicManager : MonoBehaviour
 
     private void OnGameStateChanged(GameStateManager.GameState newState)
     {
-        Debug.Log($"[MusicManager] Game state changed to: {newState}");
+        //Debug.Log($"[MusicManager] Game state changed to: {newState}");
 
         switch (newState)
         {
             case GameStateManager.GameState.MainMenu:
-                Debug.Log("[MusicManager] Playing MainMenuMusic");
+                //Debug.Log("[MusicManager] Playing MainMenuMusic");
                 PlayMusic(SoundAction.MainMenuMusic);
                 break;
 
             case GameStateManager.GameState.GamePlay:
-                Debug.Log("[MusicManager] Playing GameMusic");
+                //Debug.Log("[MusicManager] Playing GameMusic");
                 PlayMusic(SoundAction.GameMusic);
                 // Try to find and subscribe to fireplace when entering gameplay
                 if (fireplace == null)
@@ -143,53 +140,47 @@ public class MusicManager : MonoBehaviour
                 break;
 
             case GameStateManager.GameState.GameOver:
-                Debug.Log("[MusicManager] Playing GameOverMusic");
+                //Debug.Log("[MusicManager] Playing GameOverMusic");
                 PlayMusic(SoundAction.GameOverMusic);
                 break;
 
             case GameStateManager.GameState.Paused:
-                Debug.Log("[MusicManager] Paused - keeping current music");
+                //Debug.Log("[MusicManager] Paused - keeping current music");
                 // Don't change music when paused, keep current track playing
                 break;
         }
     }
-
-    /// <summary>
-    /// Play a music track. Stops the current track if different.
-    /// </summary>
+    
     public void PlayMusic(SoundAction musicAction)
     {
-        Debug.Log($"[MusicManager] PlayMusic called with: {musicAction}");
+        //Debug.Log($"[MusicManager] PlayMusic called with: {musicAction}");
 
         // If already playing this track, don't restart
         if (currentMusicTrack == musicAction && currentMusicSource != null && currentMusicSource.isPlaying)
         {
-            Debug.Log($"[MusicManager] Already playing {musicAction}, skipping");
+            //Debug.Log($"[MusicManager] Already playing {musicAction}, skipping");
             return;
         }
 
-        Debug.Log($"[MusicManager] Stopping current music: {currentMusicTrack}");
+        //Debug.Log($"[MusicManager] Stopping current music: {currentMusicTrack}");
         // Stop current music
         StopCurrentMusic();
 
-        Debug.Log($"[MusicManager] Starting new music loop: {musicAction}");
+        //Debug.Log($"[MusicManager] Starting new music loop: {musicAction}");
         // Play new music as a loop
         currentMusicSource = SoundManager.PlayLoop(musicAction);
         currentMusicTrack = musicAction;
 
         if (currentMusicSource != null)
         {
-            Debug.Log($"[MusicManager] Successfully started {musicAction}. AudioSource playing: {currentMusicSource.isPlaying}");
+            //Debug.Log($"[MusicManager] Successfully started {musicAction}. AudioSource playing: {currentMusicSource.isPlaying}");
         }
         else
         {
-            Debug.LogError($"[MusicManager] Failed to start {musicAction} - SoundManager.PlayLoop returned null!");
+            //Debug.LogError($"[MusicManager] Failed to start {musicAction} - SoundManager.PlayLoop returned null!");
         }
     }
-
-    /// <summary>
-    /// Stop the currently playing music with optional fade out
-    /// </summary>
+    
     public void StopCurrentMusic(bool fadeOut = true)
     {
         if (currentMusicTrack.HasValue)
@@ -199,10 +190,7 @@ public class MusicManager : MonoBehaviour
             currentMusicSource = null;
         }
     }
-
-    /// <summary>
-    /// Manually play a specific music track (use for special events)
-    /// </summary>
+    
     public void PlayMusicOverride(SoundAction musicAction)
     {
         PlayMusic(musicAction);

@@ -27,7 +27,7 @@ public class PlaySoundOnInteract : MonoBehaviour
         }
         catch (System.InvalidOperationException e)
         {
-            Debug.LogWarning("[PlaySoundOnInteract] Could not get IInputService. Error: " + e.Message);
+            //Debug.LogWarning("[PlaySoundOnInteract] Could not get IInputService. Error: " + e.Message);
         }
     }
 
@@ -76,10 +76,10 @@ public class PlaySoundOnInteract : MonoBehaviour
 
     private void OnInteractPressed()
     {
-        Debug.Log($"[PlaySoundOnInteract] OnInteractPressed called. playerInside: {playerInside}, audioSource: {audioSource != null}");
+        //Debug.Log($"[PlaySoundOnInteract] OnInteractPressed called. playerInside: {playerInside}, audioSource: {audioSource != null}");
         if (playerInside && audioSource != null)
         {
-            Debug.Log("[PlaySoundOnInteract] Playing sound!");
+            //Debug.Log("[PlaySoundOnInteract] Playing sound!");
             audioSource.Play();
         }
     }

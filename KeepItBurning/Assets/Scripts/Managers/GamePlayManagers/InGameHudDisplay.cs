@@ -123,6 +123,26 @@ namespace Managers.GamePlayManagers
         }
 
         // New: Update the slider based on the fireplace fuel
+        private float _targetFuelValue;
+        private float _currentDisplayFuel;
+
+        private void Update()
+        {
+            if (fireFuelSlider != null)
+            {
+                // OPTIMIZATION: Smoothly interpolate the visual slider value
+                // This makes the 10Hz data updates look like 60Hz smooth motion
+                if (Mathf.Abs(fireFuelSlider.value - _targetFuelValue) > 0.01f)
+                {
+                    fireFuelSlider.value = Mathf.Lerp(fireFuelSlider.value, _targetFuelValue, Time.deltaTime * 5f);
+                }
+                else
+                {
+                    fireFuelSlider.value = _targetFuelValue;
+                }
+            }
+        }
+
         private void UpdateFireFuelSlider(float currentFuel, float maxFuel)
         {
             if (fireFuelSlider != null)
@@ -131,10 +151,12 @@ namespace Managers.GamePlayManagers
                 if (fireFuelSlider.maxValue != maxFuel)
                 {
                     fireFuelSlider.maxValue = maxFuel;
+                    fireFuelSlider.value = currentFuel; // Snap immediately on first set
+                    _targetFuelValue = currentFuel;
                 }
                 
-                // Set current value
-                fireFuelSlider.value = currentFuel;
+                // Set target value for smooth interpolation
+                _targetFuelValue = currentFuel;
             }
         }
     }

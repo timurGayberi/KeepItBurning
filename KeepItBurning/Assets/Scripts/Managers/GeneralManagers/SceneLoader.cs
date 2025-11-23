@@ -38,7 +38,7 @@ namespace Managers.GeneralManagers
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.Log($"[SceneLoader] Scene loaded: {scene.name}");
+            //Debug.Log($"[SceneLoader] Scene loaded: {scene.name}");
             
             
             var newState = GameStateManager.GameState.Default;
@@ -72,7 +72,7 @@ namespace Managers.GeneralManagers
         
         public void ReloadCurrentScene()
         {
-            Scene currentScene = SceneManager.GetActiveScene();
+            var currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.name);
         }
     }

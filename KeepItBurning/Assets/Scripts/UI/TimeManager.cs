@@ -11,10 +11,19 @@ namespace Score
 
         [SerializeField] public TextMeshProUGUI timeText;
 
+        private int _lastSecond = -1;
+
         public void Timer()
         {
             timer += Time.deltaTime;
-            timeText.text = GetFormatedTime();
+
+            // OPTIMIZATION: Only update text when value changes to avoid GC
+            int currentSecond = Mathf.FloorToInt(timer);
+            if (currentSecond != _lastSecond)
+            {
+                _lastSecond = currentSecond;
+                timeText.text = GetFormatedTime();
+            }
 
             if (timer > IncreaseTime)
             {

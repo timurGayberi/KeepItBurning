@@ -8,9 +8,4 @@ public class AmbienceMusic : MonoBehaviour
         SoundManager.Play(SoundAction.AmbienceMusic);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

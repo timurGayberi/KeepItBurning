@@ -51,6 +51,10 @@ namespace GamePlay.Interactables
 
         public event Action<float, float> OnFuelChanged;
 
+        // OPTIMIZATION: Throttle UI updates
+        private float _uiUpdateTimer;
+        private const float UI_UPDATE_INTERVAL = 0.1f; // 10 times per second
+
         private void Awake()
         {
             _currentFuel = maxFuel;
@@ -100,8 +104,15 @@ namespace GamePlay.Interactables
                 _currentFuel -= currentDecayRate * Time.deltaTime;
                 _currentFuel = Mathf.Max(0, _currentFuel);
 
-                OnFuelChanged?.Invoke(_currentFuel, maxFuel);
-                UpdateVFXController();
+                // OPTIMIZATION: Throttle UI updates to 10Hz
+                _uiUpdateTimer += Time.deltaTime;
+                if (_uiUpdateTimer >= UI_UPDATE_INTERVAL)
+                {
+                    _uiUpdateTimer = 0f;
+                    OnFuelChanged?.Invoke(_currentFuel, maxFuel);
+                }
+
+                UpdateVFXController(); // Keep VFX smooth (every frame)
                 UpdateScore();
 
                 if (_currentFuel <= 0)
@@ -117,7 +128,7 @@ namespace GamePlay.Interactables
                     }
                     else
                     {
-                        Debug.LogError("PlayGameManager instance not found. Cannot trigger Game Over!");
+                        //Debug.LogError("PlayGameManager instance not found. Cannot trigger Game Over!");
                     }
 
                     enabled = false;
@@ -131,7 +142,7 @@ namespace GamePlay.Interactables
 
             if (inventory == null)
             {
-                Debug.LogError("PlayerInventory component not found on interactor!");
+                //Debug.LogError("PlayerInventory component not found on interactor!");
                 return;
             }
 
@@ -156,16 +167,16 @@ namespace GamePlay.Interactables
                         enabled = true;
                     }
 
-                    Debug.Log($"[CAMPFIRE] Added {fuelToAdd} fuel. Current Fuel: {_currentFuel:F1}/{maxFuel}.");
+                    //Debug.Log($"[CAMPFIRE] Added {fuelToAdd} fuel. Current Fuel: {_currentFuel:F1}/{maxFuel}.");
                 }
                 else
                 {
-                    Debug.LogWarning("[CAMPFIRE] Log carried has zero fuel value, or the inventory failed to provide it.");
+                    //Debug.LogWarning("[CAMPFIRE] Log carried has zero fuel value, or the inventory failed to provide it.");
                 }
             }
             else
             {
-                Debug.Log("[CAMPFIRE] Interaction attempted, but player is not carrying wood.");
+                //Debug.Log("[CAMPFIRE] Interaction attempted, but player is not carrying wood.");
             }
         }
 
@@ -190,7 +201,7 @@ namespace GamePlay.Interactables
 
         public override void Interact()
         {
-            Debug.LogWarning("[FIREPLACE] Standard Interact() called. Ensure the player's InteractionHandler is calling TryAddFuel(GameObject) instead.");
+            //Debug.LogWarning("[FIREPLACE] Standard Interact() called. Ensure the player's InteractionHandler is calling TryAddFuel(GameObject) instead.");
         }
 
         public override InteractionData GetInteractionData()

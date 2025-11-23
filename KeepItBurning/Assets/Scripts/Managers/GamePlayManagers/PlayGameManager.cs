@@ -18,6 +18,9 @@ namespace Managers.GamePlayManagers
         public event Action<string> OnTimeUpdated;
         public event Action<int> OnScoreUpdated;
 
+        // OPTIMIZATION: Throttle time updates
+        private int _lastSecond = -1;
+
         private void Awake()
         {
             if (Instance == null)
@@ -33,14 +36,21 @@ namespace Managers.GamePlayManagers
                 return;
             }
         }
-        
+
 
         private void Update()
         {
             if (Time.timeScale > 0)
             {
                 timer += Time.deltaTime;
-                OnTimeUpdated?.Invoke(GetFormatedTime());
+
+                // OPTIMIZATION: Only update UI when the second actually changes
+                int currentSecond = Mathf.FloorToInt(timer);
+                if (currentSecond != _lastSecond)
+                {
+                    _lastSecond = currentSecond;
+                    OnTimeUpdated?.Invoke(GetFormatedTime());
+                }
             }
         }
 
@@ -55,7 +65,7 @@ namespace Managers.GamePlayManagers
         {
             return score;
         }
-        
+
         public string GetCurrentFormattedTime()
         {
             return GetFormatedTime();
@@ -65,24 +75,24 @@ namespace Managers.GamePlayManagers
         {
             timer = 0f;
             score = 0;
-            
+
             OnScoreUpdated?.Invoke(score);
             OnTimeUpdated?.Invoke(GetFormatedTime());
-            
+
             Debug.Log("[PlayGameManager] All stats reset.");
         }
-        
+
         public void TriggerGameOver()
         {
             if (GameStateManager.instance != null)
             {
                 GameStateManager.instance.TriggerGameOver();
-                
+
                 // --- this Save manager thingy need to be modified -----//
-                
+
                 SaveManager saveManager = FindObjectOfType<SaveManager>();
-                
-                
+
+
                 if (saveManager != null)
                 {
                     float finalScore = score;
@@ -93,9 +103,9 @@ namespace Managers.GamePlayManagers
 
                     saveManager.AddScoreToLb(finalScore);
                 }
-                
+
                 // ------------------------------------------------------//
-                
+
                 if (ScoreManager.Instance != null)
                 {
                     ScoreManager.Instance.SubmitFinalScore();
@@ -104,7 +114,7 @@ namespace Managers.GamePlayManagers
                 {
                     Debug.LogError("[PlayGameManager] ScoreManager not found. Score cannot be submitted.");
                 }
-                
+
                 GameStateManager.instance.TriggerGameOver();
             }
             else

@@ -44,7 +44,7 @@ namespace Managers.GeneralManagers
         {
             if (!_loginSuccess)
             {
-                Debug.LogWarning("Nickname save blocked: Not logged into PlayFab.");
+                //Debug.LogWarning("Nickname save blocked: Not logged into PlayFab.");
                 return;
             }
 
@@ -58,14 +58,14 @@ namespace Managers.GeneralManagers
         
         private static void OnDisplayNameUpdateSuccess(UpdateUserTitleDisplayNameResult result)
         {
-            Debug.Log($"Player Display Name updated to: {result.DisplayName}");
+            //Debug.Log($"Player Display Name updated to: {result.DisplayName}");
         }
         
         public void SubmitScore(int score)
         {
             if (!_loginSuccess)
             {
-                Debug.LogWarning("Score submission blocked: Not logged into PlayFab.");
+                //Debug.LogWarning("Score submission blocked: Not logged into PlayFab.");
                 return;
             }
             
@@ -122,7 +122,7 @@ namespace Managers.GeneralManagers
                     nickname = $"[Player {item.PlayFabId}]";
                 }
                 
-                Debug.Log($"Rank {item.Position + 1}: {nickname} - Score: {item.StatValue}");
+                //Debug.Log($"Rank {item.Position + 1}: {nickname} - Score: {item.StatValue}");
             }
         }
         
@@ -143,14 +143,14 @@ namespace Managers.GeneralManagers
         
         private void OnSuccess(LoginResult result)
         {
-            Debug.Log("Login Success");
+            //Debug.Log("Login Success");
             _loginSuccess = true;
             GetPlayerData();
         }
 
         private void OnError(PlayFabError error)
         {
-            Debug.LogError("PlayFab login Failed!" + error.GenerateErrorReport());
+            //Debug.LogError("PlayFab login Failed!" + error.GenerateErrorReport());
             _loginSuccess = false;
         }
         
@@ -158,12 +158,12 @@ namespace Managers.GeneralManagers
         
         private static void OnNicknameSaveSuccess(UpdateUserDataResult result)
         {
-            Debug.Log("Nickname saved successfully!");
+            //Debug.Log("Nickname saved successfully!");
         }
 
         private static void OnLeaderboardUpdate(UpdatePlayerStatisticsResult result)
         {
-            Debug.Log("Score submitted successfully!");
+            //Debug.Log("Score submitted successfully!");
         }
         
         #region Data handling
@@ -172,7 +172,7 @@ namespace Managers.GeneralManagers
         {
             if (!_loginSuccess)
             {
-                Debug.LogWarning("Player data retrieval blocked: Not logged into PlayFab.");
+                //Debug.LogWarning("Player data retrieval blocked: Not logged into PlayFab.");
                 return;
             }
             
@@ -187,12 +187,12 @@ namespace Managers.GeneralManagers
             {
                 var savedNickname = result.Data[NicknameKey].Value;
                 
-                Debug.Log($"Retrieved Player Data Nickname: {savedNickname}");
+                //Debug.Log($"Retrieved Player Data Nickname: {savedNickname}");
                 
             }
             else
             {
-                Debug.LogWarning($"Player Data Key '{NicknameKey}' not found.");
+                //Debug.LogWarning($"Player Data Key '{NicknameKey}' not found.");
             }
         }
         

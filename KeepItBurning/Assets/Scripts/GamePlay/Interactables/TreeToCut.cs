@@ -69,7 +69,7 @@ namespace GamePlay.Interactables
                     if (trunkRenderer != null)
                     {
                         outlineRenderers.Add(trunkRenderer);
-                        Debug.Log($"[TreeToCut] Auto-assigned trunk renderer from '_trunk' reference.");
+                        // Debug.Log($"[TreeToCut] Auto-assigned trunk renderer from '_trunk' reference.");
                     }
                 }
 
@@ -80,7 +80,7 @@ namespace GamePlay.Interactables
                     if (selfRenderer != null)
                     {
                         outlineRenderers.Add(selfRenderer);
-                        Debug.Log($"[TreeToCut] Auto-assigned renderer from self.");
+                        // Debug.Log($"[TreeToCut] Auto-assigned renderer from self.");
                     }
                 }
             }
@@ -137,7 +137,7 @@ namespace GamePlay.Interactables
 
         private void CutDownTree()
         {
-            Debug.Log($"[CHOP COMPLETE] Tree Destroyed.");
+            // Debug.Log($"[CHOP COMPLETE] Tree Destroyed.");
 
             if (logPrefab != null)
             {
@@ -241,14 +241,14 @@ namespace GamePlay.Interactables
                 return;
             }
 
-            Debug.Log($"[TreeToCut] OpenOutline called on {gameObject.name}. Count: {_materialInstances.Length}");
+            // Debug.Log($"[TreeToCut] OpenOutline called on {gameObject.name}. Count: {_materialInstances.Length}");
 
             for (int i = 0; i < _materialInstances.Length; i++)
             {
                 if (_materialInstances[i] != null)
                 {
                     _materialInstances[i].SetFloat("_OutlineSize", 50f);
-                    Debug.Log($"[TreeToCut] Set _OutlineSize to 50 on {_materialInstances[i].name}");
+                    // Debug.Log($"[TreeToCut] Set _OutlineSize to 50 on {_materialInstances[i].name}");
                 }
                 else
                 {
@@ -259,7 +259,7 @@ namespace GamePlay.Interactables
 
         public override void OnFocus()
         {
-            Debug.Log($"[TreeToCut] OnFocus called on {gameObject.name}. Status: {currentTreeStatus}");
+            // Debug.Log($"[TreeToCut] OnFocus called on {gameObject.name}. Status: {currentTreeStatus}");
             if (currentTreeStatus == TreeStatus.Uncut)
             {
                 OpenOutline();
