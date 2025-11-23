@@ -3,6 +3,7 @@ using Interfaces;
 using UnityEngine;
 using ScriptableObjects;
 using General;
+using System.Collections.Generic;
 
 namespace GamePlay.Interactables
 {
@@ -26,6 +27,12 @@ namespace GamePlay.Interactables
         [Header("Log Spawn Settings")]
         [Tooltip("Optional: Drag the spawn point child object here. If set, logs will spawn at this position instead of being calculated.")]
         [SerializeField] private Transform logSpawnPoint;
+
+        [Header("Outline Control")]
+        [Tooltip("Drag ONLY the Trunk renderer here (not Leaves)")]
+        [SerializeField] private List<MeshRenderer> outlineRenderers = new List<MeshRenderer>();
+
+        private Material[] _materialInstances;
 
         public TreeStatus currentTreeStatus = TreeStatus.Default;
 
@@ -51,7 +58,47 @@ namespace GamePlay.Interactables
                 Debug.LogError($"[TreeToCut] TreeData missing on {gameObject.name}!");
             }
 
+            // Fallback: If outlineRenderers is empty, try to auto-assign from _trunk
+            if (outlineRenderers == null || outlineRenderers.Count == 0)
+            {
+                if (outlineRenderers == null) outlineRenderers = new List<MeshRenderer>();
+
+                if (_trunk != null)
+                {
+                    var trunkRenderer = _trunk.GetComponent<MeshRenderer>();
+                    if (trunkRenderer != null)
+                    {
+                        outlineRenderers.Add(trunkRenderer);
+                        Debug.Log($"[TreeToCut] Auto-assigned trunk renderer from '_trunk' reference.");
+                    }
+                }
+
+                // If still empty, try getting renderer from self
+                if (outlineRenderers.Count == 0)
+                {
+                    var selfRenderer = GetComponent<MeshRenderer>();
+                    if (selfRenderer != null)
+                    {
+                        outlineRenderers.Add(selfRenderer);
+                        Debug.Log($"[TreeToCut] Auto-assigned renderer from self.");
+                    }
+                }
+            }
+
+            if (outlineRenderers != null && outlineRenderers.Count > 0)
+            {
+                _materialInstances = new Material[outlineRenderers.Count];
+                for (int i = 0; i < outlineRenderers.Count; i++)
+                {
+                    if (outlineRenderers[i] != null)
+                    {
+                        _materialInstances[i] = outlineRenderers[i].material;
+                    }
+                }
+            }
+
             SetTreeVisuals(currentTreeStatus);
+            CloseOutline(); // Ensure outline is off at start
         }
 
         public override InteractionData GetInteractionData()
@@ -151,6 +198,7 @@ namespace GamePlay.Interactables
 
             if (newStatus == TreeStatus.Cut)
             {
+                CloseOutline(); // Turn off outline when tree is cut
                 StartCoroutine(RegrowCoroutine());
             }
             else if (newStatus == TreeStatus.Uncut)
@@ -169,5 +217,60 @@ namespace GamePlay.Interactables
             }
             SetTreeVisuals(TreeStatus.Uncut);
         }
+
+        #region Outline setup
+
+        private void CloseOutline()
+        {
+            if (_materialInstances == null) return;
+
+            for (int i = 0; i < _materialInstances.Length; i++)
+            {
+                if (_materialInstances[i] != null)
+                {
+                    _materialInstances[i].SetFloat("_OutlineSize", 0f);
+                }
+            }
+        }
+
+        private void OpenOutline()
+        {
+            if (_materialInstances == null)
+            {
+                Debug.LogError($"[TreeToCut] OpenOutline: _materialInstances is NULL on {gameObject.name}");
+                return;
+            }
+
+            Debug.Log($"[TreeToCut] OpenOutline called on {gameObject.name}. Count: {_materialInstances.Length}");
+
+            for (int i = 0; i < _materialInstances.Length; i++)
+            {
+                if (_materialInstances[i] != null)
+                {
+                    _materialInstances[i].SetFloat("_OutlineSize", 50f);
+                    Debug.Log($"[TreeToCut] Set _OutlineSize to 50 on {_materialInstances[i].name}");
+                }
+                else
+                {
+                    Debug.LogError($"[TreeToCut] Material instance {i} is null!");
+                }
+            }
+        }
+
+        public override void OnFocus()
+        {
+            Debug.Log($"[TreeToCut] OnFocus called on {gameObject.name}. Status: {currentTreeStatus}");
+            if (currentTreeStatus == TreeStatus.Uncut)
+            {
+                OpenOutline();
+            }
+        }
+
+        public override void OnLoseFocus()
+        {
+            CloseOutline();
+        }
+
+        #endregion
     }
 }

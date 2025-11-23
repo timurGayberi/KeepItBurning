@@ -7,21 +7,24 @@ namespace Player
     {
         [Header("Detection Settings")]
         [Tooltip("Radius of the detection sphere cast forward.")]
-        [SerializeField] private float detectionRadius = 0.5f; 
+        [SerializeField] private float detectionRadius = 0.5f;
         [Tooltip("Maximum distance the sphere is cast.")]
-        [SerializeField] private float detectionDistance = 3f; 
+        [SerializeField] private float detectionDistance = 3f;
 
         [Tooltip("The tags we consider valid targets (e.g., 'Interactable', 'Collectible').")]
-        [SerializeField] private string[] targetTags = { "Interactable", "Collectible" }; 
+        [SerializeField] private string[] targetTags = { "Interactable", "Collectible" };
 
         [Header("Physics Filter")]
         [Tooltip("Layers to IGNORE during raycasting (Should include 'Player').")]
         [SerializeField] private LayerMask ignoreLayers;
-        
+
         public IInteractable currentInteractable { get; private set; }
         public ICollectible currentCollectible { get; private set; }
 
         private System.Collections.Generic.List<IInteractable> allNearbyInteractables = new System.Collections.Generic.List<IInteractable>();
+
+        // Track the previously focused tree to call OnLoseFocus
+        private General.InteractableBase _previouslyFocusedInteractable = null;
 
         public Component CurrentCandidate
         {
@@ -68,25 +71,25 @@ namespace Player
             Vector3? closestTargetPosition = null;
 
             ICollectible closestCollectibleCandidate = null;
-            
-            foreach (var collider in colliders) 
+
+            foreach (var collider in colliders)
             {
                 if (collider.transform.root == transform.root) continue;
 
                 if (collider is MeshCollider meshCollider && !meshCollider.convex) continue;
                 if (collider is TerrainCollider) continue;
-                
+
                 float distance;
                 try
                 {
                     distance = Vector3.Distance(transform.position, collider.ClosestPoint(transform.position));
                 }
-                catch (System.Exception) 
+                catch (System.Exception)
                 {
                     continue;
                 }
-                
-                if (distance < effectiveRadius) 
+
+                if (distance < effectiveRadius)
                 {
                     var isTargetTag = false;
                     foreach (var tag in targetTags)
@@ -97,7 +100,7 @@ namespace Player
                             break;
                         }
                     }
-                    
+
                     if (isTargetTag)
                     {
                         var collectible = collider.GetComponent<ICollectible>();
@@ -136,7 +139,7 @@ namespace Player
                     }
                 }
             }
-            
+
             if (closestCollectibleCandidate != null)
             {
                 currentCollectible = closestCollectibleCandidate;
@@ -148,7 +151,33 @@ namespace Player
                 currentInteractable = closestInteractable;
             }
 
-            
+            // Handle focus tracking for outlines (ONLY for trees)
+            if (currentInteractable is GamePlay.Interactables.TreeToCut newFocusedTree)
+            {
+                if (_previouslyFocusedInteractable != newFocusedTree)
+                {
+                    // Lost focus on previous tree
+                    if (_previouslyFocusedInteractable != null)
+                    {
+                        _previouslyFocusedInteractable.OnLoseFocus();
+                    }
+
+                    // Gained focus on new tree
+                    newFocusedTree.OnFocus();
+                    _previouslyFocusedInteractable = newFocusedTree as General.InteractableBase;
+                }
+            }
+            else if (currentInteractable == null || !(currentInteractable is GamePlay.Interactables.TreeToCut))
+            {
+                // Not focusing on any tree or focusing on something else
+                if (_previouslyFocusedInteractable != null)
+                {
+                    _previouslyFocusedInteractable.OnLoseFocus();
+                    _previouslyFocusedInteractable = null;
+                }
+            }
+
+
             if (currentCollectible != null || currentInteractable != null)
             {
                 var targetPos = (currentCollectible as Component)?.transform.position ?? (currentInteractable as Component)?.transform.position ?? transform.position;
