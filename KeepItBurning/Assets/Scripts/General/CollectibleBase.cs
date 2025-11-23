@@ -61,7 +61,7 @@ namespace General
                 if (success)
                 {
                     OnCollected(); // Hook for sound/VFX
-                    Debug.Log($"Collected: {gameObject.name} (ID: {collectibleID}).");
+                    //Debug.Log($"Collected: {gameObject.name} (ID: {collectibleID}).");
                     Destroy(gameObject); 
                 }
                 
