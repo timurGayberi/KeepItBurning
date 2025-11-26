@@ -5,13 +5,11 @@ using Player;
 using General; 
 using System;
 using GamePlay.Interactables;
-
+using TMPro;
 namespace Managers.GamePlayManagers
 {
     public class InGameHudDisplayComponent : MonoBehaviour
     {
-        [Header("UI References")]
-        
         [Tooltip("The TextMeshPro element displaying the current player score.")]
         public TextMeshProUGUI scoreText;
         
@@ -25,6 +23,12 @@ namespace Managers.GamePlayManagers
         
         private PlayerInventory playerInventory;
         private FireplaceInteraction fireplaceInteraction;
+        
+        
+        
+        private int frameCount = 0;
+        private float elapsedTime = 0f;
+        private float updateInterval = 0.5f;
 
         void OnEnable()
         {
@@ -83,7 +87,7 @@ namespace Managers.GamePlayManagers
                 fireplaceInteraction.OnFuelChanged -= UpdateFireFuelSlider;
             }
         }
-
+         
         private void SetupFireplaceListener()
         {
             fireplaceInteraction = FindObjectOfType<FireplaceInteraction>();
@@ -141,6 +145,25 @@ namespace Managers.GamePlayManagers
                     fireFuelSlider.value = _targetFuelValue;
                 }
             }
+            
+            // frameCount++;
+            // elapsedTime += Time.unscaledDeltaTime;
+            //
+            // if (elapsedTime >= updateInterval)
+            // {
+            //     // Calculate FPS
+            //     float fps = frameCount / elapsedTime;
+            //
+            //     // Display FPS as text
+            //     if (fpsText != null)
+            //     {
+            //         fpsText.text = $"FPS: {fps:F1}";
+            //     }
+            //
+            //     // Reset counters
+            //     frameCount = 0;
+            //     elapsedTime = 0f;
+            // }
         }
 
         private void UpdateFireFuelSlider(float currentFuel, float maxFuel)

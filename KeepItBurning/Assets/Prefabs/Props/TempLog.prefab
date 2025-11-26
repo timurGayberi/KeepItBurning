@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 9f73019250847dc41805ca70b9f80c6c, type: 2}
+      objectReference: {fileID: 2100000, guid: 5c5ef7cc91286e04f84c85e1f718a4a0, type: 2}
     - target: {fileID: 919132149155446097, guid: b3fb1d44f45aa55438baf1d81c7c1af7, type: 3}
       propertyPath: m_Name
       value: TempLog

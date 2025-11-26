@@ -5,9 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77d39179-a0bd-4433-b0bd-e3b946c1d673" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.KeepItBurning/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KeepItBurning/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D_Models/Props/atlas.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/3D_Models/Props/atlas.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AlphaAssets/3D_Assets/Props/Trees/LeafTexture 5.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AlphaAssets/3D_Assets/Props/Trees/LeafTexture 5.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AlphaAssets/3D_Assets/Props/Trees/Materials/Materials/trimsheet_Trimsheet_AlbedoTransparency_sRGB.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AlphaAssets/3D_Assets/Props/Trees/Materials/Materials/trimsheet_Trimsheet_AlbedoTransparency_sRGB.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Art/Trees/tcolorpalet.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/Trees/tcolorpalet.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs to trasnfer/TrreToCut.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs to trasnfer/TrreToCut.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/VFX/outline Material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/VFX/outline Material.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/GameScene.unity" afterDir="false" />
+<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/Assets/Settings/Mobile_RPAsset.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Mobile_RPAsset.asset" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GamePlay/Interactables/TreeToCut.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GamePlay/Interactables/TreeToCut.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GamePlayManagers/InGameHudDisplay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/GamePlayManagers/InGameHudDisplay.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/Mobile_Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Mobile_Renderer.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_MK/MKToon/Shader/Lib/Surface.hlsl" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_MK/MKToon/Shader/Lib/Surface.hlsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +38,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d35f3fd492a14898b9e7cb0372b7ba3d1e0200/45/3ed3e31a/Object.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/ResumeButtonHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GamePlay/Collectibles/Log.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GamePlay/Collectibles/Mushroom.cs" root0="FORCE_HIGHLIGHTING" />
@@ -60,6 +78,10 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+<<<<<<< Updated upstream
+=======
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+>>>>>>> Stashed changes
     &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.25375494&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -121,13 +143,15 @@
       <option name="useMixedMode" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="20076">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="20076" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list />
+        <list>
+          <MonoRuntime />
+        </list>
       </option>
       <option name="selectedOptions">
         <list />
@@ -156,6 +180,11 @@
       <workItem from="1763455895883" duration="3901000" />
       <workItem from="1763742584137" duration="643000" />
       <workItem from="1763831295523" duration="9426000" />
+<<<<<<< Updated upstream
+=======
+      <workItem from="1763913525288" duration="5884000" />
+      <workItem from="1764099144809" duration="2656000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
@@ -188,6 +217,19 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/GamePlay/Interactables/TreeToCut.cs</url>
+          <line>111</line>
+          <properties documentPath="C:\Users\mehmet.gayberi\Desktop\Desktop\GP1\KIB\KeepItBurning\KeepItBurning\Assets\Scripts\GamePlay\Interactables\TreeToCut.cs" containingFunctionPresentation="Method 'Awake'">
+            <startOffsets>
+              <option value="4012" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4046" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

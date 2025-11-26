@@ -388,7 +388,7 @@
 		#ifdef MK_FOG
 			surfaceData.fogFactor = fogFactor;
 		#endif
-
+		
 		#if defined(MK_URP_2020_2_Or_Newer) && defined(MK_LIT)
 			#if defined(SHADOWS_SHADOWMASK) && defined(LIGHTMAP_ON)
 				surfaceData.shadowMask = SAMPLE_SHADOWMASK(lightmapUV);
@@ -397,7 +397,7 @@
 			#else
 				surfaceData.shadowMask = half4(1, 1, 1, 1);
 			#endif
-		#endif
+		#endif 
 
 		#ifdef MK_VERTEX_COLOR_REQUIRED
 			surfaceData.vertexColor = vertexColor;
